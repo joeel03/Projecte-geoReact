@@ -1,16 +1,25 @@
 import React from 'react'
+import { useState } from "react";
+
 
 const Login = ({ setLogin }) => {
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  const sendLogin = (e) => {
+    e.preventDefault();
+
+    alert("He enviat les Dades:  " + email + "/" + password);
+  };
   return (
     <div>
       <form>
         <div className="form-outline mb-4">
-          <input type="email" id="form2Example1" className="form-control" />
+          <input name="email" type="email" id="form2Example1" className="form-control" onChange={(e)=>{setEmail(e.target.value);}}/>
           <label className="form-label" for="form2Example1">Email address</label>
         </div>
 
         <div className="form-outline mb-4">
-          <input type="password" id="form2Example2" className="form-control" />
+          <input name="password" type="password" id="form2Example2" className="form-control" onChange={(e)=>{setPassword(e.target.value);}}/>
           <label className="form-label" for="form2Example2">Password</label>
         </div>
 
@@ -27,7 +36,9 @@ const Login = ({ setLogin }) => {
           </div>
         </div>
 
-        <button type="button" className="btn btn-primary btn-block mb-4">Sign in</button>
+        <button type="button" className="btn btn-primary btn-block mb-4" onClick={(e) => {
+            sendLogin(e);
+          }}>Sign in</button>
 
         <div className="text-center">
           <p>Not a member? <a href="#!"
