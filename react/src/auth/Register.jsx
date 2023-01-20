@@ -10,7 +10,7 @@ const Register = ({ setLogin }) => {
 
     setFormulari({
       ...formulari,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.tahandleRegisterhandleRegisterrget.value
     });
   };
   const handleRegister = (e) => {
@@ -25,7 +25,32 @@ const Register = ({ setLogin }) => {
         password +
         "/" +
         password2
-    );};
+    );
+    if (password2 !== password) {
+      alert("Els passwords han de coincidir");
+      return false;
+    }
+    fetch("https://backend.insjoaquimmir.cat/api/register", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      // Si els noms i les variables coincideix, podem simplificar
+      body: JSON.stringify({ name, email, password })
+    })
+      .then((data) => data.json())
+      .then((resposta) => {
+        console.log(resposta);
+        if (resposta.success === true) {
+          alert(resposta.authToken);
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+        alert("Catchch");
+      });
+  };
   return (
     <div>
       <form>
@@ -50,12 +75,12 @@ const Register = ({ setLogin }) => {
           <label className="form-label" for="form3Example4cdg">Repeat your password</label>
         </div>
 
-        <div className="form-check d-flex justify-content-center mb-5">
+        {/* <div className="form-check d-flex justify-content-center mb-5">
           <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
           <label className="form-check-label" for="form2Example3g">
             I agree all statements in <a href="#!" className="text-body"><u>Terms of service</u></a>
           </label>
-        </div>
+        </div> */}
 
         <div className="d-flex justify-content-center">
           <button type="button" 
