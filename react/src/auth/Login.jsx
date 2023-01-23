@@ -5,6 +5,9 @@ import { useState } from "react";
 const Login = ({ setLogin }) => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
+  let [error, setError] = useState("");
+  let { authToken,setAuthToken } = useContext(UserContext)
+
   const sendLogin = (e) => {
     e.preventDefault();
 
@@ -21,13 +24,19 @@ const Login = ({ setLogin }) => {
         console.log(resposta);
         if (resposta.success === true) {
           alert(resposta.authToken);
+        }else
+        {
+          setError(resposta.message);
+          console.log(resposta)
         }
       })
       .catch((data) => {
         console.log(data);
         alert("Catchch");
       });
-  };
+      // alert("He enviat les Dades:  " + email + "/" + password);
+
+    };
   return (
     <div>
       <form>
@@ -58,6 +67,8 @@ const Login = ({ setLogin }) => {
         <button type="button" className="btn btn-primary btn-block mb-4" onClick={(e) => {
             sendLogin(e);
           }}>Sign in</button>
+          {error? (<div>{error}</div>):(<></>) }
+
 
         <div className="text-center">
           <p>Not a member? <a href="#!"

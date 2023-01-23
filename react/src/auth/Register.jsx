@@ -4,30 +4,32 @@ import { useState } from "react";
 
 const Register = ({ setLogin }) => {
   let [formulari, setFormulari] = useState({});
+  let [error, setError] = useState("");
+  let { authToken,setAuthToken } = useContext(UserContext)
 
   const handleChange = (e) => {
     e.preventDefault();
 
     setFormulari({
       ...formulari,
-      [e.target.name]: e.tahandleRegisterhandleRegisterrget.value
+      [e.target.name]: e.target.value
     });
   };
   const handleRegister = (e) => {
     e.preventDefault();
     let { name, password, password2, email } = formulari;
-    alert(
-      "He enviat les Dades:  " +
-        name +
-        "/" +
-        email +
-        "/" +
-        password +
-        "/" +
-        password2
-    );
+    // alert(
+    //   "He enviat les Dades:  " +
+    //     name +
+    //     "/" +
+    //     email +
+    //     "/" +
+    //     password +
+    //     "/" +
+    //     password2
+    // );
     if (password2 !== password) {
-      alert("Els passwords han de coincidir");
+0+      setError("Els passwords han de coincidir")
       return false;
     }
     fetch("https://backend.insjoaquimmir.cat/api/register", {
@@ -44,6 +46,11 @@ const Register = ({ setLogin }) => {
         console.log(resposta);
         if (resposta.success === true) {
           alert(resposta.authToken);
+        }
+        else
+        {
+          setError(resposta.message);
+          console.log(resposta)
         }
       })
       .catch((data) => {
@@ -88,6 +95,13 @@ const Register = ({ setLogin }) => {
               handleRegister(e);
             }}>Register</button>
         </div>
+       {error? (<div>{error}</div>):(<></>) }
+        
+        
+          
+        
+         
+
 
         <p className="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
             onClick={() => {
