@@ -1,11 +1,11 @@
 import React from 'react'
 
-const About = () => {
+const Places = () => {
   return (
     <div>
-      Esto es el about
+      places
     </div>
   )
 }
 
-export default About
+export default Places

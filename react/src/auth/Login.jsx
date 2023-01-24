@@ -1,12 +1,15 @@
 import React from 'react'
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../userContext";
 
 
 const Login = ({ setLogin }) => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [error, setError] = useState("");
-  let { authToken,setAuthToken } = useContext(UserContext)
+  let { authToken, setAuthToken } = useContext(UserContext);
+
 
   const sendLogin = (e) => {
     e.preventDefault();
@@ -23,7 +26,7 @@ const Login = ({ setLogin }) => {
       .then((resposta) => {
         console.log(resposta);
         if (resposta.success === true) {
-          alert(resposta.authToken);
+          setAuthToken(resposta.authToken);
         }else
         {
           setError(resposta.message);

@@ -1,11 +1,14 @@
 import React from 'react'
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../userContext";
 
 
 const Register = ({ setLogin }) => {
   let [formulari, setFormulari] = useState({});
   let [error, setError] = useState("");
-  let { authToken,setAuthToken } = useContext(UserContext)
+  let { authToken, setAuthToken } = useContext(UserContext);
+
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -29,7 +32,7 @@ const Register = ({ setLogin }) => {
     //     password2
     // );
     if (password2 !== password) {
-0+      setError("Els passwords han de coincidir")
+      setError("Els passwords han de coincidir")
       return false;
     }
     fetch("https://backend.insjoaquimmir.cat/api/register", {
@@ -45,7 +48,7 @@ const Register = ({ setLogin }) => {
       .then((resposta) => {
         console.log(resposta);
         if (resposta.success === true) {
-          alert(resposta.authToken);
+          setAuthToken(resposta.authToken);
         }
         else
         {

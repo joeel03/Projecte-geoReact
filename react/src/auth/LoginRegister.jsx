@@ -4,9 +4,9 @@ import Login from './Login'
 import Register from './Register'
 
 
+
 const LoginRegister = () => {
     let [login, setLogin] = useState(true);
-    let { authToken,setAuthToken } = useContext(UserContext)
 
     return (
       <div>
