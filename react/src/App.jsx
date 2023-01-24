@@ -10,7 +10,8 @@ import Footer from './Layout/Footer';
 import { Routes, Route } from "react-router-dom";
 import NotFound from "./NotFound";
 import About from "./About";
-
+import Places from './places/Places'
+import Posts from './posts/Posts'
 
 function App() {
   let [authToken, setAuthToken] = useState("");
@@ -25,6 +26,8 @@ function App() {
               <Route path="*" element={<NotFound />} />
               <Route path="/" element={<About />} />
               <Route path="/about" element={<About />} />
+              <Route path="/places" element={<Places />} />
+              <Route path="/posts" element={<Posts />} />
             </Routes>
         <Footer/>
         </>
