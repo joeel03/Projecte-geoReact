@@ -18,50 +18,33 @@ const Register = ({ setLogin }) => {
       [e.target.name]: e.target.value
     });
   };
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     let { name, password, password2, email } = formulari;
-    // alert(
-    //   "He enviat les Dades:  " +
-    //     name +
-    //     "/" +
-    //     email +
-    //     "/" +
-    //     password +
-    //     "/" +
-    //     password2
-    // );
-    if (password2 !== password) {
-      setError("Els passwords han de coincidir")
-      return false;
-    }
-    fetch("https://backend.insjoaquimmir.cat/api/register", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      method: "POST",
-      // Si els noms i les variables coincideix, podem simplificar
-      body: JSON.stringify({ name, email, password })
-    })
-      .then((data) => data.json())
-      .then((resposta) => {
-        console.log(resposta);
-        if (resposta.success === true) {
-          setAuthToken(resposta.authToken);
-        }
-        else
-        {
-          setError(resposta.message);
-          console.log(resposta)
-        }
-      })
-      .catch((data) => {
-        console.log(data);
-        alert("Catchch");
+    try{
+      if (password2 !== password) {
+        setError("Els passwords han de coincidir")
+        return false;
+      }
+      const data = await fetch("https://backend.insjoaquimmir.cat/api/register", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        // Si els noms i les variables coincideix, podem simplificar
+        body: JSON.stringify({ name, email, password })
       });
-  };
-  return (
+      const resposta = await data.json();
+      if (resposta.success === true) 
+      setAuthToken(resposta.authToken);
+      else alert("La resposta no ha triomfat");
+    }catch{
+      console.log("Error");
+      alert("Catchch");
+    };
+  }
+    return (
     <div>
       <form>
 

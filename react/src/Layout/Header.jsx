@@ -10,37 +10,38 @@ const Header = () => {
   let [username, setUsername]=useState("");
   let [ roles, setRoles] = useState([]);
 
+  const getUser = async ()=> {
+      try {
+        const data = await fetch("https://backend.insjoaquimmir.cat/api/user", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer '  + authToken, 
+          },
+          method: "GET",
+        });
+        const resposta = await data.json();
+        if (resposta.success === true) {
+          setUsername(resposta.user.name);
+          setRoles(resposta.roles);
+  
+        }        
+        else setError(resposta.message);;
+      } catch{
+        console.log("Error");
+        alert("Catchch");
+      }; 
+         
+  }
   useEffect(() => {
-  fetch("https://backend.insjoaquimmir.cat/api/user", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer '  + authToken, 
-      },
-      method: "GET",
-    })
-    .then((data) => data.json())
-    .then((resposta) => {
-      console.log(resposta);
-      if (resposta.success === true) {
-        setUsername(resposta.user.name);
-        setRoles(resposta.roles);
-       }
-       else
-      {
-        setError(resposta.message);
-      }
-    })
-    .catch((data) => {
-      console.log(data);
-      alert("Catchch");
-    });
+    getUser();
   },[]);
-  const sendLogout = (e) => {
+
+  const sendLogout = async (e) => {
     e.preventDefault();
 
-
-    fetch("https://backend.insjoaquimmir.cat/api/logout", {
+    try {
+    const data = await fetch("https://backend.insjoaquimmir.cat/api/logout", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -48,25 +49,16 @@ const Header = () => {
       },
       method: "POST",
       body: JSON.stringify({ })
-    })
-      .then((data) => data.json())
-      .then((resposta) => {
-        console.log(resposta);
-        if (resposta.success === true) {
-          setAuthToken("");
-         }else
-        {
-          setError(resposta.message);
-          console.log(resposta)
-        }
-      })
-      .catch((data) => {
-        console.log(data);
-        alert("Catchch");
-      });
-      // alert("He enviat les Dades:  " + email + "/" + password);
-
-    };
+    });
+    const resposta = await data.json();
+      if (resposta.success === true) 
+      setAuthToken("");
+      else alert("La resposta no ha triomfat");
+  }catch{
+    console.log("Error");
+    alert("Catchch");
+  };
+}
   return (
     <div>
       Hello estoy loggeado.
