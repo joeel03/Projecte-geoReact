@@ -25,7 +25,7 @@ const Login = ({ setLogin }) => {
       const resposta = await data.json();
       if (resposta.success === true) 
       setAuthToken(resposta.authToken);
-      else alert("La resposta no ha triomfat");
+      else setError(resposta.message);
     } catch{
         console.log("Error");
         alert("Catchch");
@@ -34,7 +34,7 @@ const Login = ({ setLogin }) => {
 
     };
   return (
-    <div>
+    <div className="center">
       <form>
         <div className="form-outline mb-4">
           <input name="email" type="email" id="form2Example1" className="form-control" onChange={(e)=>{setEmail(e.target.value);}}/>

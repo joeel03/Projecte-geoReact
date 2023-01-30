@@ -1,8 +1,9 @@
 import React from 'react'
 import { useContext } from "react";
 import { UserContext } from "../userContext";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState,useEffect } from 'react';
+import PlacesMenu from '../places/PlacesMenu';
 
 const Header = () => {
   let { authToken, setAuthToken } = useContext(UserContext);
@@ -26,7 +27,7 @@ const Header = () => {
           setRoles(resposta.roles);
   
         }        
-        else setError(resposta.message);;
+        else setError(resposta.message);
       } catch{
         console.log("Error");
         alert("Catchch");
@@ -60,18 +61,22 @@ const Header = () => {
   };
 }
   return (
+    <>
+     <PlacesMenu/>
     <div>
       Hello estoy loggeado.
       Token: <strong>{authToken}</strong>
       <div>
-        <Link to="/places">places </Link>
+        
+        <Link to="/places/1">places </Link>
         <Link to="/posts">posts </Link>
         <Link to="/about">About </Link>
       </div>
       <button className="btn btn-primary btn-block mb-4" onClick={(e) => {
               sendLogout(e);}}>
                 {username} - { roles.map (  (v)=> ( <span key={v}> {v} </span>  ) ) }- Logout</button>
-    </div>
+    </div></>
+   
 
   )
 }

@@ -38,14 +38,14 @@ const Register = ({ setLogin }) => {
       const resposta = await data.json();
       if (resposta.success === true) 
       setAuthToken(resposta.authToken);
-      else alert("La resposta no ha triomfat");
+      else setError(resposta.message);
     }catch{
       console.log("Error");
       alert("Catchch");
     };
   }
     return (
-    <div>
+    <div className="center">
       <form>
 
         <div className="form-outline mb-4">

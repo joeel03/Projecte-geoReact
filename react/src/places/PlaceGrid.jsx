@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Places = () => {
+const PlaceGrid = () => {
   return (
     <div>
-      places
+      
     </div>
   )
 }
 
-export default Places
+export default PlaceGrid
