@@ -13,9 +13,12 @@ import About from "./About";
 import Place from './places/Place'
 import Posts from './posts/Posts'
 import PlaceCreate from './places/PlaceCreate'
-import PlaceList from './places/PlaceList'
 import PlaceEdit from './places/PlaceEdit'
+
+import PlaceList from './places/PlaceList'
 import PlaceGrid from './places/PlaceGrid'
+import PlacesGrid from './places/PlacesGrid'
+import PlacesList from './places/PlacesList'
 
 function App() {
   let [authToken, setAuthToken] = useState("");
@@ -34,8 +37,8 @@ function App() {
               <Route path="/places/:id" element={ <Place/> } /> 
               <Route path="/places/add" element={ <PlaceCreate/> } /> 
               <Route path="/places/edit/:id" element={ <PlaceEdit/> } /> 
-              <Route path="/places/grid" element={ <PlaceGrid/> } /> 
-              <Route path="/places/list" element={ <PlaceList/> } /> 
+              <Route path="/places/grid" element={ <PlacesGrid/> } /> 
+              <Route path="/places/list" element={ <PlacesList/> } /> 
 
             </Routes>
             <Footer />

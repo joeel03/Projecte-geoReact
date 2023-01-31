@@ -24,6 +24,13 @@ background-color: orangered;
   text-decoration: none;
   color: white;
 }
+.element{
+  border:1px solid black;
+  display: inline-flex;
+  width: 40%;
+
+}
+
 /* #root{
   max-width: 1280px;
   margin:0 auto;
