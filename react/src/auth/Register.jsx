@@ -36,9 +36,12 @@ const Register = ({ setLogin }) => {
         body: JSON.stringify({ name, email, password })
       });
       const resposta = await data.json();
-      if (resposta.success === true) 
-      setAuthToken(resposta.authToken);
-      else setError(resposta.message);
+      if (resposta.success === true) {
+        setAuthToken(resposta.authToken);
+      }
+      else {
+        console.log(resposta.message)
+        setError(resposta.message);}
     }catch{
       console.log("Error");
       alert("Catchch");
@@ -82,13 +85,7 @@ const Register = ({ setLogin }) => {
             }}>Register</button>
         </div>
        {error? (<div>{error}</div>):(<></>) }
-        
-        
-          
-        
-         
-
-
+  
         <p className="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
             onClick={() => {
               setLogin(true)

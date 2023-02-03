@@ -9,6 +9,8 @@ const PlacesList = () => {
     let { authToken, setAuthToken } = useContext(UserContext);
     let [error, setError] = useState("");
     let [places, setPlaces] = useState([]);
+    let {usuari, setUsuari} = useContext(UserContext);
+
     //const { id } = useParams();
 
     const getPlaces = async () => {
@@ -25,7 +27,6 @@ const PlacesList = () => {
             if (resposta.success === true) {
                 console.log(resposta)
                 setPlaces(resposta.data);
-
             }
             else setError(resposta.message);
         } catch {
@@ -37,7 +38,6 @@ const PlacesList = () => {
     useEffect(() => {
         getPlaces();
     }, []);
-
     return (
         <div>
             <h1>Places List</h1>
@@ -53,7 +53,15 @@ const PlacesList = () => {
 
                 </tr>
                 {places.map((place) => (
-                        <tr key={place.id}> {<PlaceList place={place}/>} </tr>
+                        <tr key={place.id}> 
+                        {usuari==place.author.email||place.visibility.name=='public'?
+
+                            <PlaceList place={place}/>
+                            :<></>}
+                          
+                             
+
+                        </tr>
 
 
                 ))}

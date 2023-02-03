@@ -10,6 +10,7 @@ const Header = () => {
   let [error, setError] = useState("");
   let [username, setUsername]=useState("");
   let [ roles, setRoles] = useState([]);
+  let {usuari, setUsuari} = useContext(UserContext);
 
   const getUser = async ()=> {
       try {
@@ -25,7 +26,10 @@ const Header = () => {
         if (resposta.success === true) {
           setUsername(resposta.user.name);
           setRoles(resposta.roles);
-  
+          console.log(resposta.user.email);
+          setUsuari(resposta.user.email)
+          console.log(usuari);
+
         }        
         else setError(resposta.message);
       } catch{

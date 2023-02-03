@@ -22,10 +22,11 @@ import PlacesList from './places/PlacesList'
 
 function App() {
   let [authToken, setAuthToken] = useState("");
+  let [usuari, setUsuari] = useState("");
 
   return (
     <>
-      <UserContext.Provider value={{ authToken, setAuthToken }}  >
+      <UserContext.Provider value={{ usuari, setUsuari,authToken, setAuthToken }}  >
         {authToken ?
           <>
             <Header />
@@ -38,7 +39,7 @@ function App() {
               <Route path="/places/add" element={ <PlaceCreate/> } /> 
               <Route path="/places/edit/:id" element={ <PlaceEdit/> } /> 
               <Route path="/places/grid" element={ <PlacesGrid/> } /> 
-              <Route path="/places/list" element={ <PlacesList/> } /> 
+              <Route path="/places/list" element={ <PlacesList usuari={usuari}/> } /> 
 
             </Routes>
             <Footer />
