@@ -1,67 +1,104 @@
 import React from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
-
-const Register = () => {
-  return (
-    <div>
-
-      <div className="col-lg-10 mb-5 mb-lg-0 position-relative">
-
-        <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
-
-        <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
-
-        <div className="card bg-glass">
-          <h2 className="fw-bold mb-3 text-uppercase">Register</h2>
+import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../userContext";
 
 
-          <form>
-
-            <div className="row">
-              <div className="col-md-6 mb-4">
-                <div className="form-outline">
-                  <label className="fw mb-2 text" for="form3Example1">First name</label>
-
-                  <input type="text" id="form3Example1" className="form-control" />
-                </div>
-              </div>
-              <div className="col-md-6 mb-4">
-                <div className="form-outline">
-                  <label className="form-label" for="form3Example2">Last name</label>
-
-                  <input type="text" id="form3Example2" className="form-control" />
-                </div>
-              </div>
-            </div>
-
-            <div className="form-outline mb-4">
-              <label className="form-label" for="form3Example3">Email address</label>
-
-              <input type="email" id="form3Example3" className="form-control" />
-            </div>
-
-            <div className="form-outline mb-4">
-              <label className="form-label" for="form3Example4">Password</label>
-
-              <input type="password" id="form3Example4" className="form-control" />
-            </div>
-
-            <div className="form-check d-flex justify-content-center mb-4">
-              <input className="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-              <label className="form-check-label" for="form2Example33">
-                Subscribe to our newsletter
-              </label>
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-block mb-4">
-              Sign up
-            </button>
+const Register = ({ setLogin }) => {
+  let [formulari, setFormulari] = useState({});
+  let [error, setError] = useState("");
+  let { authToken, setAuthToken } = useContext(UserContext);
 
 
-          </form>
+  const handleChange = (e) => {
+    e.preventDefault();
+
+    setFormulari({
+      ...formulari,
+      [e.target.name]: e.target.value
+    });
+  };
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    let { name, password, password2, email } = formulari;
+    try{
+      if (password2 !== password) {
+        setError("Els passwords han de coincidir")
+        return false;
+      }
+      const data = await fetch("https://backend.insjoaquimmir.cat/api/register", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        // Si els noms i les variables coincideix, podem simplificar
+        body: JSON.stringify({ name, email, password })
+      });
+      const resposta = await data.json();
+      if (resposta.success === true) 
+      setAuthToken(resposta.authToken);
+      else setError(resposta.message);
+    }catch{
+      console.log("Error");
+      alert("Catchch");
+    };
+  }
+    return (
+    <div className="center">
+      <form>
+
+        <div className="form-outline mb-4">
+          <input name="name" type="text" id="form3Example1cg" className="form-control form-control-lg" onChange={handleChange} />
+          <label className="form-label" for="form3Example1cg">Your Name</label>
         </div>
-      </div>
+
+        <div className="form-outline mb-4">
+          <input name="email" type="email" id="form3Example3cg" className="form-control form-control-lg" onChange={handleChange} />
+          <label className="form-label" for="form3Example3cg">Your Email</label>
+        </div>
+
+        <div className="form-outline mb-4">
+          <input name="password" type="password" id="form3Example4cg" className="form-control form-control-lg" onChange={handleChange} />
+          <label className="form-label" for="form3Example4cg">Password</label>
+        </div>
+
+        <div className="form-outline mb-4">
+          <input name="password2" type="password" id="form3Example4cdg" className="form-control form-control-lg" onChange={handleChange} />
+          <label className="form-label" for="form3Example4cdg">Repeat your password</label>
+        </div>
+
+        {/* <div className="form-check d-flex justify-content-center mb-5">
+          <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+          <label className="form-check-label" for="form2Example3g">
+            I agree all statements in <a href="#!" className="text-body"><u>Terms of service</u></a>
+          </label>
+        </div> */}
+
+        <div className="d-flex justify-content-center">
+          <button type="button" 
+            className="btn btn-success btn-block btn-lg gradient-custom-4 text-body" onClick={(e) => {
+              handleRegister(e);
+            }}>Register</button>
+        </div>
+       {error? (<div>{error}</div>):(<></>) }
+        
+        
+          
+        
+         
+
+
+        <p className="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
+            onClick={() => {
+              setLogin(true)
+            }}
+          >Login here</a></p>
+
+      </form>
+
     </div>
+
   )
 }
 

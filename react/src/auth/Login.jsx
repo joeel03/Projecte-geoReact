@@ -1,28 +1,80 @@
 import React from 'react'
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../userContext";
 
-const Login = () => {
+
+const Login = ({ setLogin }) => {
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let [error, setError] = useState("");
+  let { authToken, setAuthToken } = useContext(UserContext);
+
+
+  const sendLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await fetch("https://backend.insjoaquimmir.cat/api/login", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({ email: email, password: password })
+      });
+      const resposta = await data.json();
+      if (resposta.success === true) 
+      setAuthToken(resposta.authToken);
+      else setError(resposta.message);
+    } catch{
+        console.log("Error");
+        alert("Catchch");
+      };
+      // alert("He enviat les Dades:  " + email + "/" + password);
+
+    };
   return (
-    <div>
-      <div className="mb-md-5 mt-md-4 pb-5">
-
-        <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
-        <p className="text-black-50 mb-5">Please enter your login and password!</p>
-        <div className="form-outline form-black mb-4">
-        <label className="form-label" for="typeEmailX">Email</label>
-          <input type="email" id="typeEmailX" className="form-control form-control-lg" />
+    <div className="center">
+      <form>
+        <div className="form-outline mb-4">
+          <input name="email" type="email" id="form2Example1" className="form-control" onChange={(e)=>{setEmail(e.target.value);}}/>
+          <label className="form-label" for="form2Example1">Email address</label>
         </div>
 
-        <div className="form-outline form-black mb-4">
-        <label className="form-label" for="typePasswordX">Password</label>
-          <input type="password" id="typePasswordX" className="form-control form-control-lg" />
+        <div className="form-outline mb-4">
+          
+          <input name="password" type="password" id="form2Example2" className="form-control" onChange={(e)=>{setPassword(e.target.value);}}/>
+          <label className="form-label" for="form2Example2">Password</label>
         </div>
-        <button type="button" class="btn btn-primary btn-block mb-4">Login</button>
-        <p className="small mb-5 pb-lg-2"><a className="text-black-50" href="#!">Forgot password?</a></p>
-        <button className="mb-0">Don't have an account? <a href="#!" className="text-black-50 fw-bold">Sign Up</a></button>
 
-      </div>
+        {/* <div className="row mb-4">
+          <div className="col d-flex justify-content-center">
+            <div className="form-check">
+              <input className="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+              <label className="form-check-label" for="form2Example31"> Remember me </label>
+            </div>
+          </div>
+
+          <div className="col">
+            <a href="#!">Forgot password?</a>
+          </div>
+        </div> */}
+
+        <button type="button" className="btn btn-primary btn-block mb-4" onClick={(e) => {
+            sendLogin(e);
+          }}>Sign in</button>
+          {error? (<div>{error}</div>):(<></>) }
+
+
+        <div className="text-center">
+          <p>Not a member? <a href="#!"
+            onClick={() => {
+              setLogin(false)
+            }}
+          >Register</a></p>
+
+        </div>
+      </form>
     </div>
   )
 }
