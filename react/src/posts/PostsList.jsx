@@ -3,13 +3,15 @@ import { useContext } from "react";
 import { UserContext } from "../userContext";
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import PostGrid from './PostGrid';
+import PostList from './PostList'
 
-const PostsGrid = () => {
+const PostsList = () => {
     let { authToken, setAuthToken } = useContext(UserContext);
     let [error, setError] = useState("");
     let [posts, setPosts] = useState([]);
     let {usuari, setUsuari} = useContext(UserContext);
+
+    //const { id } = useParams();
 
     const getPosts = async () => {
         try {
@@ -25,27 +27,43 @@ const PostsGrid = () => {
             if (resposta.success === true) {
                 console.log(resposta)
                 setPosts(resposta.data);
-
             }
             else setError(resposta.message);
         } catch {
             console.log("Error");
-            alert("Catchch");
+            alert("Catch");
         };
 
     }
     useEffect(() => {
         getPosts();
     }, []);
-
     return (
         <div>
-            <h1>Posts Grid</h1>
-            {posts.map((post) => (
-                <div key={post.id}> {<PostGrid post={post} />} </div>
-            ))}
+            <h1>Posts List</h1>
+            <table>
+                <tr>
+                    <th>body</th>
+                    <th>latitude</th>
+                    <th>longitude</th>
+                    <th>visibility</th>
+                    <th>author</th>
+                    <th>likes</th>
+                </tr>
+                {posts.map((post) => (
+                        <tr key={post.id}> 
+                        {usuari==post.author.email||post.visibility.name=='public'?
+                            <PostList post={post}/>
+                            :<></>}
+                        </tr>
+                ))}
+            </table>
+
+
+
+
         </div>
     )
 }
 
-export default PostsGrid
+export default PostsList
