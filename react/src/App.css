@@ -27,8 +27,6 @@ background-color: orangered;
 .element{
   border:1px solid black;
   display: inline-flex;
-  width: 40%;
-
 }
 
 /* #root{

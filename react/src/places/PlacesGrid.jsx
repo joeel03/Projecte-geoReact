@@ -9,6 +9,7 @@ const PlacesGrid = () => {
     let { authToken, setAuthToken } = useContext(UserContext);
     let [error, setError] = useState("");
     let [places, setPlaces] = useState([]);
+    let {usuari, setUsuari} = useContext(UserContext);
 
     const getPlaces = async () => {
         try {
@@ -24,7 +25,6 @@ const PlacesGrid = () => {
             if (resposta.success === true) {
                 console.log(resposta)
                 setPlaces(resposta.data);
-
             }
             else setError(resposta.message);
         } catch {
@@ -41,7 +41,11 @@ const PlacesGrid = () => {
         <div>
             <h1>Places Grid</h1>
             {places.map((place) => (
-                <div key={place.id}> {<PlaceGrid place={place} />} </div>
+                <div key={place.id}> {usuari==place.author.email||place.visibility.name=='public'?
+
+                <PlaceGrid place={place}/>
+                :<></>} 
+                </div>
             ))}
         </div>
     )

@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 
 const PlaceGrid = ({place}) => {
   let { authToken, setAuthToken } = useContext(UserContext);
+  let {usuari, setUsuari} = useContext(UserContext);
+
   return (
     <>
     <div className="element">
@@ -17,8 +19,14 @@ const PlaceGrid = ({place}) => {
       <div className="texto">
         <div className="titulo">{place.name}</div>
         <div className="description">{place.description}</div>
-        <div className="likes">{place.favorites_count}</div>
-        <div className="veureeditaresborrar"></div>
+        <div className="likes">❤️{place.favorites_count}</div>
+        <div className="veureeditaresborrar"><button >veure</button>
+        {usuari==place.author.email?
+          <>
+          <button>editar</button> <button>esborrar</button>
+          </>
+          :<></>}
+          </div>
       </div>
     </div>
     </>

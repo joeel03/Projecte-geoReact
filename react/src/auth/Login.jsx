@@ -23,8 +23,11 @@ const Login = ({ setLogin }) => {
       body: JSON.stringify({ email: email, password: password })
       });
       const resposta = await data.json();
-      if (resposta.success === true) 
-      setAuthToken(resposta.authToken);
+      if (resposta.success === true) {
+        console.log(resposta)
+        setAuthToken(resposta.authToken);
+        
+      }
       else setError(resposta.message);
     } catch{
         console.log("Error");
