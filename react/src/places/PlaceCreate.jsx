@@ -89,7 +89,7 @@ const PlaceCreate = () => {
           <h1 className="text-center h2 fw-bold">Crear sitio</h1>
 
         </div >
-        <form method="post" className="separar " action="{{ route('places.store') }}" enctype="multipart/form-data">
+        <form method="post" className="separar" enctype="multipart/form-data">
           <div className="form-group">
             <label for="name">Name</label>
             <input type="text" value={formulari.name} onChange={handleChange} name="name" className="form-control" />

@@ -9,6 +9,7 @@ const PlaceList = ({ place }) => {
     let { authToken, setAuthToken } = useContext(UserContext);
     let {usuari, setUsuari} = useContext(UserContext);
     let navigate = useNavigate();
+
     return (
         <>
             <td>{place.name}</td>
@@ -21,7 +22,7 @@ const PlaceList = ({ place }) => {
             <td><button onClick={(e) => {navigate("/places/"+place.id)}}>👁️</button>
                 {usuari == place.author.email ?
                     <>
-                        <button>📝</button> <button>🗑️</button>
+                        <button onClick={(e) => {navigate("/places/edit/"+place.id)}}>📝</button> <button>🗑️</button>
                     </>
                     : <></>}    
                     </td>

@@ -3,11 +3,13 @@ import { useContext } from "react";
 import { UserContext } from "../userContext";
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 
 const PlaceGrid = ({place}) => {
   let { authToken, setAuthToken } = useContext(UserContext);
   let {usuari, setUsuari} = useContext(UserContext);
+  let navigate = useNavigate();
 
   return (
     <>
@@ -20,10 +22,10 @@ const PlaceGrid = ({place}) => {
         <div className="titulo">{place.name}</div>
         <div className="description">{place.description}</div>
         <div className="likes">❤️{place.favorites_count}</div>
-        <div className="veureeditaresborrar"><button >veure</button>
+        <div className="veureeditaresborrar"><button onClick={(e) => {navigate("/places/"+place.id)}}>veure</button>
         {usuari==place.author.email?
           <>
-          <button>editar</button> <button>esborrar</button>
+          <button onClick={(e) => {navigate("/places/edit/"+place.id)}}>editar</button> <button>esborrar</button>
           </>
           :<></>}
           </div>
