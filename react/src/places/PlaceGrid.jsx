@@ -25,7 +25,8 @@ const PlaceGrid = ({place}) => {
         <div className="veureeditaresborrar"><button onClick={(e) => {navigate("/places/"+place.id)}}>veure</button>
         {usuari==place.author.email?
           <>
-          <button onClick={(e) => {navigate("/places/edit/"+place.id)}}>editar</button> <button>esborrar</button>
+          <button onClick={(e) => {navigate("/places/edit/"+place.id)}}>editar</button> <button onClick={(e) => {
+            deletePlace(place.id)}} >esborrar</button>
           </>
           :<></>}
           </div>

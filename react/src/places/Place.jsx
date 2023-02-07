@@ -3,14 +3,17 @@ import { useContext } from "react";
 import { UserContext } from "../userContext";
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
-const Places = () => {
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+const Place = () => {
   let { authToken, setAuthToken } = useContext(UserContext);
   let [error, setError] = useState("");
   const { id } = useParams();
   let [loading, setLoading] = useState(true);
   let [place, setPlace] = useState([])
-
+  let {usuari, setUsuari} = useContext(UserContext);
+  let navigate = useNavigate();
+  const { state } = useLocation();
   const getPlace = async () => {
     try {
       console.log(id)
@@ -83,6 +86,12 @@ const Places = () => {
 
                 </tbody>
               </table>
+                {usuari == place.author.email ?
+                    <>
+                        <button onClick={(e) => {navigate("/places/edit/"+place.id)}}>📝</button> 
+                        <button onClick={(e) => {state.deletePlace(place.id)}}>🗑️</button>
+                    </>
+                    : <></>}    
             </div>
 
           </div>
@@ -95,4 +104,4 @@ const Places = () => {
 
 }
 
-export default Places
+export default Place

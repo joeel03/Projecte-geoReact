@@ -23,10 +23,12 @@ import PlacesList from './places/PlacesList'
 function App() {
   let [authToken, setAuthToken] = useState("");
   let [usuari, setUsuari] = useState("");
+  let [refresh,setRefresh] = useState(false)
+
 
   return (
     <>
-      <UserContext.Provider value={{ usuari, setUsuari,authToken, setAuthToken }}  >
+      <UserContext.Provider value={{ refresh,setRefresh,usuari, setUsuari,authToken, setAuthToken }}  >
         {authToken ?
           <>
             <Header />
