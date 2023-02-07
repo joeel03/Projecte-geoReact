@@ -10,24 +10,18 @@ const PostCreate = () => {
   let [error, setError] = useState("");
   let { authToken, setAuthToken } = useContext(UserContext);
 
-  let { body, upload, latitude, longitude, visibility } = formulari;
-  const formData = new FormData();
-  formData.append("body", body);
-  formData.append("upload", upload);
-  formData.append("latitude", latitude);
-  formData.append("longitude", longitude);
-  formData.append("visibility", visibility);
+
 
   const handleChange = (e) => {
     if (e.target.type && e.target.type === "file") {
       setFormulari({
         ...formulari,
-        [e.target.body]: e.target.files[0]
+        [e.target.name]: e.target.files[0]
       })
     } else {
       setFormulari({
         ...formulari,
-        [e.target.body]: e.target.value
+        [e.target.name]: e.target.value
       })
     }
   };
@@ -41,6 +35,13 @@ const PostCreate = () => {
   };
   const handleCreate = async (e) => {
     e.preventDefault();
+    let { body, upload, latitude, longitude, visibility = 1} = formulari;
+    const formData = new FormData();
+    formData.append("body", body);
+    formData.append("upload", upload);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
+    formData.append("visibility", visibility);
     try {
       const data = await fetch("https://backend.insjoaquimmir.cat/api/posts", {
         headers: {
@@ -81,7 +82,7 @@ const PostCreate = () => {
       <div className="card ">
         <div className="card-header ">
 
-          <h1 className="text-center h2 fw-bold">Crear sitio</h1>
+          <h1 className="text-center h2 fw-bold">Crear Post</h1>
 
         </div >
         <form method="post" className="separar " action="{{ route('posts.store') }}" enctype="multipart/form-data">
@@ -90,7 +91,7 @@ const PostCreate = () => {
             <input type="text" value={formulari.body} onChange={handleChange} name="body" className="form-control" />
           </div>
           <div className="form-group">
-            <label for="file">File</label>
+            <label for="upload">File</label>
             <input type="file" value={formulari.file} onChange={handleChange} name="upload" className="form-control" />
           </div>
           <div className="form-group">
