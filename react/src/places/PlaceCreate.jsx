@@ -10,7 +10,7 @@ const PlaceCreate = () => {
   let [error, setError] = useState("");
   let { authToken, setAuthToken } = useContext(UserContext);
 
-  let { name, description, upload, latitude, longitude, visibility=1 } = formulari;
+  let { name, description, upload, latitude, longitude, visibility = 1 } = formulari;
   const formData = new FormData;
   formData.append("name", name);
   formData.append("description", description);
@@ -37,9 +37,10 @@ const PlaceCreate = () => {
     e.preventDefault()
     setFormulari({
       ...formulari,
-    name: "",
-    description:"",
-    upload:""})
+      name: "",
+      description: "",
+      upload: ""
+    })
   };
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -55,7 +56,7 @@ const PlaceCreate = () => {
       const resposta = await data.json();
       if (resposta.success === true) {
         console.log("place creado")
-        navigate("/places/"+resposta.data.id)
+        navigate("/places/" + resposta.data.id)
 
       }
       else {
@@ -112,20 +113,21 @@ const PlaceCreate = () => {
           </div>
           <div className="form-group">
             <label for="visibility">Visibility</label>
-  
-              <select name="visibility"  value={formulari.visibility} onChange={handleChange} className="form-control"  >
-                <option value="1" selected>public</option>
-                <option value="2">contacts</option>
-                <option value="3">private</option>
-              </select>
-            
+
+            <select name="visibility" value={formulari.visibility} onChange={handleChange} className="form-control"  >
+              <option value="1" selected>public</option>
+              <option value="2">contacts</option>
+              <option value="3">private</option>
+            </select>
+
           </div>
           <button className="btn btn-primary" onClick={(e) => {
             handleCreate(e);
           }}>Create</button>
           <button className="btn btn-secondary" onClick={(e) => {
-            handleReset(e)}}>Reset</button>
-          {error? (<div>{error}</div>):(<></>) }        </form>
+            handleReset(e)
+          }}>Reset</button>
+          {error ? (<div>{error}</div>) : (<></>)}        </form>
       </div>
     </div>
   )
