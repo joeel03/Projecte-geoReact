@@ -6,11 +6,10 @@ import { useParams } from 'react-router-dom';
 import PlaceList from './PlaceList'
 
 const PlacesList = () => {
-    let { authToken, setAuthToken } = useContext(UserContext);
+    let { authToken, setAuthToken,usuari, setUsuari } = useContext(UserContext);
     let [error, setError] = useState("");
     let [places, setPlaces] = useState([]);
-    let {usuari, setUsuari} = useContext(UserContext);
-    let {refresh, setRefresh}=useContext(UserContext);
+    const [ refresh, setRefresh ] = useState(false)
     const { id } = useParams();
 
     const getPlaces = async () => {
@@ -50,15 +49,14 @@ const PlacesList = () => {
           const resposta = await data.json();
           if (resposta.success === true) {
             console.log("place eliminado")
-            navigate("/places/list")
             setRefresh(!refresh)
           }
           else {
             console.log(resposta.message)
             setError(resposta.message);
           }
-        } catch {
-          console.log("Error");
+        } catch(err) {
+          console.log(err.message);
           alert("Catchch");
         };
       }

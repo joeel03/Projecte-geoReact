@@ -56,7 +56,6 @@ const PlaceCreate = () => {
       if (resposta.success === true) {
         console.log("place creado")
         navigate("/places/"+resposta.data.id)
-
       }
       else {
         console.log(resposta.message)
