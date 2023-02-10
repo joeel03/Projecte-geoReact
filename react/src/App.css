@@ -28,7 +28,9 @@ background-color: orangered;
   border:1px solid black;
   display: inline-flex;
 }
-
+.bold{
+  font-weight: bold;
+}
 /* #root{
   max-width: 1280px;
   margin:0 auto;

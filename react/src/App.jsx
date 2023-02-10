@@ -35,10 +35,13 @@ import PostGrid from './posts/PostGrid';
 function App() {
   let [authToken, setAuthToken] = useState("");
   let [usuari, setUsuari] = useState("");
+  let [refresh,setRefresh] = useState(false);
+  let[reviewCreada,setReviewCreada]=useState(false)
+  let [reviews, setReviews] = useState([]);
 
   return (
     <>
-      <UserContext.Provider value={{ usuari, setUsuari,authToken, setAuthToken }}  >
+      <UserContext.Provider value={{ refresh,setRefresh,usuari, setUsuari,authToken, setAuthToken,reviewCreada,setReviewCreada ,reviews, setReviews,refresh,setRefresh}}  >
         {authToken ?
           <>
             <Header />

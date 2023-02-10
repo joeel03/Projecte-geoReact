@@ -10,6 +10,7 @@ const PlacesGrid = () => {
     let [error, setError] = useState("");
     let [places, setPlaces] = useState([]);
     let {usuari, setUsuari} = useContext(UserContext);
+    const [ refresh, setRefresh ] = useState(false)
 
     const getPlaces = async () => {
         try {
@@ -35,15 +36,38 @@ const PlacesGrid = () => {
     }
     useEffect(() => {
         getPlaces();
-    }, []);
+    }, [refresh]);
 
+    const deletePlace = async (id) => {
+        try {
+          const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/"+id), {
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer ' + authToken
+            },
+            method: "DELETE",
+          });
+          const resposta = await data.json();
+          if (resposta.success === true) {
+            console.log("place eliminado")
+            setRefresh(!refresh)
+          }
+          else {
+            console.log(resposta.message)
+            setError(resposta.message);
+          }
+        } catch(err) {
+          console.log(err.message);
+          alert("Catchch");
+        };
+      }
     return (
         <div>
             <h1>Places Grid</h1>
             {places.map((place) => (
                 <div key={place.id}> {usuari==place.author.email||place.visibility.name=='public'?
 
-                <PlaceGrid place={place}/>
+                <PlaceGrid place={place} deletePlace={deletePlace}/>
                 :<></>} 
                 </div>
             ))}

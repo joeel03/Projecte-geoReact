@@ -6,12 +6,11 @@ import { useParams } from 'react-router-dom';
 import PlaceList from './PlaceList'
 
 const PlacesList = () => {
-    let { authToken, setAuthToken } = useContext(UserContext);
+    let { authToken, setAuthToken,usuari, setUsuari } = useContext(UserContext);
     let [error, setError] = useState("");
     let [places, setPlaces] = useState([]);
-    let {usuari, setUsuari} = useContext(UserContext);
-
-    //const { id } = useParams();
+    const [ refresh, setRefresh ] = useState(false)
+    const { id } = useParams();
 
     const getPlaces = async () => {
         try {
@@ -33,11 +32,35 @@ const PlacesList = () => {
             console.log("Error");
             alert("Catchch");
         };
-
     }
     useEffect(() => {
         getPlaces();
-    }, []);
+    }, [refresh]);
+        
+    const deletePlace = async (id) => {
+        try {
+          const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/"+id), {
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer ' + authToken
+            },
+            method: "DELETE",
+          });
+          const resposta = await data.json();
+          if (resposta.success === true) {
+            console.log("place eliminado")
+            setRefresh(!refresh)
+          }
+          else {
+            console.log(resposta.message)
+            setError(resposta.message);
+          }
+        } catch(err) {
+          console.log(err.message);
+          alert("Catchch");
+        };
+      }
+    
     return (
         <div>
             <h1>Places List</h1>
@@ -56,7 +79,7 @@ const PlacesList = () => {
                         <tr key={place.id}> 
                         {usuari==place.author.email||place.visibility.name=='public'?
 
-                            <PlaceList place={place}/>
+                            <PlaceList place={place} deletePlace={deletePlace}/>
                             :<></>}
                           
                              

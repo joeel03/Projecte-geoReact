@@ -29,7 +29,7 @@ const Header = () => {
           setRoles(resposta.roles);
           console.log(resposta.user.email);
           setUsuari(resposta.user.email)
-          console.log(usuari);
+          // console.log(usuari);
 
         }        
         else setError(resposta.message);
