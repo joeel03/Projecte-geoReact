@@ -4,7 +4,7 @@ import { UserContext } from '../../userContext';
 import { useNavigate } from "react-router-dom";
 
 const ReviewAdd = () => {
-  let { authToken, setAuthToken,usuari, setUsuari , reviewCreada,setReviewCreada,reviews, setReviews,refresh,setRefresh} = useContext(UserContext);
+  let { authToken, setAuthToken,usuari, setUsuari ,reviews, setReviews,refresh,setRefresh} = useContext(UserContext);
   let [formulari, setFormulari] = useState({});
   const { id } = useParams();
   let navigate = useNavigate();
@@ -37,7 +37,6 @@ const createReview = async (e) => {
     const resposta = await data.json();
     if (resposta.success === true) {
       console.log("reseña añadida")
-      setReviewCreada(true);
       setFormulari({
         ...formulari,
       review: "",})
@@ -57,12 +56,11 @@ return (
   <div>
     <label for="review">Review</label>
     <textarea name="review" value={formulari.review} onChange={handleChange} className="form-control"></textarea>
-    {reviewCreada?
-    <></>:
+    
     <button className="btn btn-primary" onClick={(e) => {
       createReview(e);
     }}>Add Review</button>
-    }
+   
     {error? (<div>{error}</div>):(<></>) }       
 
     

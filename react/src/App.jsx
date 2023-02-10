@@ -29,7 +29,7 @@ function App() {
 
   return (
     <>
-      <UserContext.Provider value={{ refresh,setRefresh,usuari, setUsuari,authToken, setAuthToken,reviewCreada,setReviewCreada ,reviews, setReviews,refresh,setRefresh}}  >
+      <UserContext.Provider value={{ refresh,setRefresh,usuari, setUsuari,authToken, setAuthToken,reviewCreada,setReviewCreada ,reviews, setReviews}}  >
         {authToken ?
           <>
             <Header />
