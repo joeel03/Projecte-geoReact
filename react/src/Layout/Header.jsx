@@ -4,6 +4,7 @@ import { UserContext } from "../userContext";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 import PlacesMenu from '../places/PlacesMenu';
+import PostsMenu from '../posts/PostsMenu';
 
 const Header = () => {
   let { authToken, setAuthToken } = useContext(UserContext);
@@ -67,22 +68,23 @@ const Header = () => {
   return (
     <>
      <PlacesMenu/>
+     <PostsMenu/>
     <div>
       Hello estoy loggeado.
       Token: <strong>{authToken}</strong>
       <div>
-        
         <Link to="/places/1">places </Link>
         <Link to="/posts">posts </Link>
         <Link to="/about">About </Link>
       </div>
+      
       <button className="btn btn-primary btn-block mb-4" onClick={(e) => {
               sendLogout(e);}}>
                 {username} - { roles.map (  (v)=> ( <span key={v}> {v} </span>  ) ) }- Logout</button>
     </div></>
-   
-
   )
+  
+  
 }
 
 export default Header

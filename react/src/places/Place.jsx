@@ -12,7 +12,7 @@ const Place = () => {
   const { id } = useParams();
   let [loading, setLoading] = useState(true);
   let [place, setPlace] = useState([])
-  let {usuari, setUsuari} = useContext(UserContext);
+  let { usuari, setUsuari } = useContext(UserContext);
   let navigate = useNavigate();
   let [favorite, setFavorite] = useState(null);
 
@@ -130,7 +130,7 @@ const Place = () => {
  
   const deletePlace = async (id) => {
     try {
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/"+id), {
+      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + authToken
@@ -161,7 +161,7 @@ const Place = () => {
         <>
           <div class="card">
             <div class="card-header">
-              <img class="img-fluid" src={"https://backend.insjoaquimmir.cat/storage/" + place.file.filepath}  title="Image preview" width="300px" />
+              <img class="img-fluid" src={"https://backend.insjoaquimmir.cat/storage/" + place.file.filepath} title="Image preview" width="300px" />
               <table class="table">
                 <tbody>
                   <tr>
@@ -206,7 +206,7 @@ const Place = () => {
             </div>
 
           </div>
-          <ReviewList/>
+          <ReviewList />
         </>
 
       }

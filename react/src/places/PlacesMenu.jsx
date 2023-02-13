@@ -9,8 +9,6 @@ const PlacesMenu = () => {
        <Link className='click blue' to="/places/add">Afegir Entrada</Link>
        <Link className='click orange' to="/places/grid">Grid</Link>
        <Link className='click gray' to="/places/list">Llista</Link>
-
-
     </div>
   )
 }
