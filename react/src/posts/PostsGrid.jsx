@@ -6,12 +6,14 @@ import { useParams } from 'react-router-dom';
 import PostGrid from './PostGrid';
 import { useNavigate } from "react-router-dom";
 
+
 const PostsGrid = () => {
     let { authToken, setAuthToken } = useContext(UserContext);
     let [error, setError] = useState("");
     let [posts, setPosts] = useState([]);
     let {usuari, setUsuari} = useContext(UserContext);
     let navigate = useNavigate();
+    const [ refresh, setRefresh ] = useState(false)
     
     const getPosts = async () => {
         try {
@@ -38,7 +40,7 @@ const PostsGrid = () => {
     }
     useEffect(() => {
         getPosts();
-    }, []);
+    }, [refresh]);
 
     const deletePost = async (id) => {
         try {
@@ -52,7 +54,7 @@ const PostsGrid = () => {
           const resposta = await data.json();
           if (resposta.success === true) {
             console.log("post eliminado")
-            navigate("/posts/grid")
+            setRefresh(!refresh)
           }
           else {
             console.log(resposta.message)
