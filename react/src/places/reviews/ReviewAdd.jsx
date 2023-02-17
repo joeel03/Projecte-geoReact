@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../../userContext';
 import { useNavigate } from "react-router-dom";
+import { useForm } from '../../hooks/useForm';
 
 const ReviewAdd = () => {
   let { authToken, setAuthToken,usuari, setUsuari ,reviews, setReviews,refresh,setRefresh} = useContext(UserContext);
@@ -10,10 +11,18 @@ const ReviewAdd = () => {
   let navigate = useNavigate();
   let [error, setError] = useState("");
 
-  let { review } = formulari;
+  
+
+  const { formState, onInputChange,OnResetForm} = useForm({
+
+    review: "",
+    
+    });
+  const {review} = formState 
+
+  
   const formData = new FormData;
   formData.append("review", review);
-
   const handleChange = (e) => {
     e.preventDefault();
     setFormulari({
@@ -55,11 +64,12 @@ const createReview = async (e) => {
 return (
   <div>
     <label for="review">Review</label>
-    <textarea name="review" value={formulari.review} onChange={handleChange} className="form-control"></textarea>
+    <textarea name="review" value={formulari.review} onChange={onInputChange} className="form-control"></textarea>
     
     <button className="btn btn-primary" onClick={(e) => {
       createReview(e);
     }}>Add Review</button>
+    <button className="btn btn-primary" onClick={OnResetForm}>Reset</button>
    
     {error? (<div>{error}</div>):(<></>) }       
 

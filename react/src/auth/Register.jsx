@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../userContext";
+import { useForm } from '../hooks/useForm';
 
 
 const Register = ({ setLogin }) => {
@@ -9,7 +10,16 @@ const Register = ({ setLogin }) => {
   let [error, setError] = useState("");
   let { authToken, setAuthToken } = useContext(UserContext);
 
+  const { formState, onInputChange } = useForm({
 
+    name: "",
+    password: "",
+    password2: "",
+    email: "",
+    
+    });
+  const {name, password, password2, email} = formState 
+  
   const handleChange = (e) => {
     e.preventDefault();
 
@@ -20,7 +30,8 @@ const Register = ({ setLogin }) => {
   };
   const handleRegister = async (e) => {
     e.preventDefault();
-    let { name, password, password2, email } = formulari;
+    let { name, password, password2, email } = formState;
+    console.log(formulari)
     try{
       if (password2 !== password) {
         setError("Els passwords han de coincidir")
@@ -52,22 +63,22 @@ const Register = ({ setLogin }) => {
       <form>
 
         <div className="form-outline mb-4">
-          <input name="name" type="text" id="form3Example1cg" className="form-control form-control-lg" onChange={handleChange} />
+          <input name="name" type="text" id="form3Example1cg" className="form-control form-control-lg" onChange={onInputChange} />
           <label className="form-label" for="form3Example1cg">Your Name</label>
         </div>
 
         <div className="form-outline mb-4">
-          <input name="email" type="email" id="form3Example3cg" className="form-control form-control-lg" onChange={handleChange} />
+          <input name="email" type="email" id="form3Example3cg" className="form-control form-control-lg" onChange={onInputChange} />
           <label className="form-label" for="form3Example3cg">Your Email</label>
         </div>
 
         <div className="form-outline mb-4">
-          <input name="password" type="password" id="form3Example4cg" className="form-control form-control-lg" onChange={handleChange} />
+          <input name="password" type="password" id="form3Example4cg" className="form-control form-control-lg" onChange={onInputChange} />
           <label className="form-label" for="form3Example4cg">Password</label>
         </div>
 
         <div className="form-outline mb-4">
-          <input name="password2" type="password" id="form3Example4cdg" className="form-control form-control-lg" onChange={handleChange} />
+          <input name="password2" type="password" id="form3Example4cdg" className="form-control form-control-lg" onChange={onInputChange} />
           <label className="form-label" for="form3Example4cdg">Repeat your password</label>
         </div>
 
