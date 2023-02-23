@@ -7,14 +7,95 @@ import { useNavigate } from "react-router-dom";
 import ReviewList from './reviews/ReviewList';
 
 const Place = () => {
-  let { authToken, setAuthToken } = useContext(UserContext);
+  let { authToken, setAuthToken, refresh, setRefresh } = useContext(UserContext);
   let [error, setError] = useState("");
   const { id } = useParams();
   let [loading, setLoading] = useState(true);
   let [place, setPlace] = useState([])
   let { usuari, setUsuari } = useContext(UserContext);
   let navigate = useNavigate();
+  let [favorite, setFavorite] = useState(null);
 
+  const comprovarFavorite = async () => {
+    try {
+      console.log(id)
+      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + authToken,
+        },
+        method: "POST",
+      });
+      const resposta = await data.json();
+      if (resposta.success === true) {
+        console.log(resposta)
+        eliminarFavorite();
+
+      }
+      else {
+        setFavorite(false)
+        console.log(resposta)
+        setError(resposta.message);
+      }
+    } catch (err) {
+      console.log(err.message);
+      alert("Catchch");
+    };
+  }
+  const darFavorite = async (e) => {
+    try {
+      console.log(id)
+      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + authToken,
+        },
+        method: "POST",
+      });
+      const resposta = await data.json();
+      if (resposta.success === true) {
+        console.log(resposta)
+        console.log("favorite añadido")
+        setFavorite(false)
+
+      }
+      else {
+        console.log(resposta.message)
+        setError(resposta.message);
+      }
+    } catch (err) {
+      console.log(err.message);
+      alert("Catchch");
+    };
+  }
+  const eliminarFavorite = async () => {
+    try {
+      console.log(id)
+      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + authToken,
+        },
+        method: "DELETE",
+      });
+      const resposta = await data.json();
+      if (resposta.success === true) {
+        console.log(resposta)
+        setFavorite(true)
+        console.log("favorite eliminado")
+      }
+      else {
+        console.log(resposta.message)
+        setError(resposta.message);
+      }
+    } catch (err) {
+      console.log(err.message);
+      alert("Catchch");
+    };
+  }
   const getPlace = async () => {
     try {
       console.log(id)
@@ -44,6 +125,7 @@ const Place = () => {
   }
   useEffect(() => {
     getPlace();
+    comprovarFavorite();
   }, []);
 
   const deletePlace = async (id) => {
@@ -115,6 +197,12 @@ const Place = () => {
                   <button onClick={(e) => { deletePlace(place.id) }}>🗑️</button>
                 </>
                 : <></>}
+              {favorite ?
+                <button onClick={(e) => { darFavorite(e) }}>⭐</button>
+                :
+                <button onClick={(e) => { eliminarFavorite(e) }}>⭐❌</button>
+
+              }
             </div>
 
           </div>

@@ -5,9 +5,11 @@ import ReviewAdd from './ReviewAdd'
 import Review from './Review'
 
 const ReviewList = () => {
-  let { authToken, setAuthToken, usuari, setUsuari,reviews, setReviews,refresh,setRefresh } = useContext(UserContext);
+  let { authToken, setAuthToken, usuari, setUsuari,reviews, setReviews,refresh,setRefresh,reviewCreada,setReviewCreada } = useContext(UserContext);
   const { id } = useParams();
   let [error, setError] = useState("");
+  let [loading, setLoading] = useState(true);
+
 
   const getReviews = async () => {
     try {
@@ -24,7 +26,17 @@ const ReviewList = () => {
       if (resposta.success === true) {
         console.log(resposta)
         setReviews(resposta.data);
-       
+        console.log(resposta.data)
+        console.log(usuari)
+
+        resposta.data.map((review) => 
+          {review.user.email==usuari ?
+        setReviewCreada(true)
+        :
+        setReviewCreada(false)
+        })
+        setLoading(false)
+
 
       }
       else setError(resposta.message);
@@ -39,7 +51,10 @@ const ReviewList = () => {
 
   return (
     <>
-      <ReviewAdd />
+    {reviewCreada ?
+    <></>:
+      <ReviewAdd />}
+    
       <div>{reviews.length>0?
        <div class="card">Hay {reviews.length} review</div>
        : <div class="card">No hay reviwes</div>
@@ -52,7 +67,6 @@ const ReviewList = () => {
                 </div>
         ))}
       </div>
-
     </>
   )
 }

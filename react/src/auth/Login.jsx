@@ -2,15 +2,23 @@ import React from 'react'
 import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../userContext";
-
+import { useForm } from '../hooks/useForm';
 
 const Login = ({ setLogin }) => {
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
+  // let [email, setEmail] = useState("");
+  // let [password, setPassword] = useState("");
   let [error, setError] = useState("");
   let { authToken, setAuthToken } = useContext(UserContext);
 
+  const { formState, onInputChange } = useForm({
 
+    email: "",
+    
+    password: "",
+    
+    });
+  const {email,password} = formState 
+  
   const sendLogin = async (e) => {
     e.preventDefault();
     try {
@@ -40,13 +48,13 @@ const Login = ({ setLogin }) => {
     <div className="center">
       <form>
         <div className="form-outline mb-4">
-          <input name="email" type="email" id="form2Example1" className="form-control" onChange={(e)=>{setEmail(e.target.value);}}/>
+          <input name="email" type="email" id="form2Example1" className="form-control" onChange={onInputChange}/>
           <label className="form-label" for="form2Example1">Email address</label>
         </div>
 
         <div className="form-outline mb-4">
           
-          <input name="password" type="password" id="form2Example2" className="form-control" onChange={(e)=>{setPassword(e.target.value);}}/>
+          <input name="password" type="password" id="form2Example2" className="form-control" onChange={onInputChange}/>
           <label className="form-label" for="form2Example2">Password</label>
         </div>
 
