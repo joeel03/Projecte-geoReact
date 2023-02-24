@@ -76,7 +76,6 @@ const Login = ({ setLogin }) => {
           }}>Sign in</button>
           {error? (<div>{error}</div>):(<></>) }
 
-
         <div className="text-center">
           <p>Not a member? <a href="#!"
             onClick={() => {

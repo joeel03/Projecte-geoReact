@@ -109,7 +109,8 @@ const Posts = () => {
               </>
               : <></>}
           </div>
-          <CommentsList />
+          <CommentsList
+          id={post.id} comments_count={post.comments_count} />
         </div>
 
       }
