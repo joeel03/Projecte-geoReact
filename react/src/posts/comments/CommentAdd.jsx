@@ -3,12 +3,19 @@ import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../userContext";
 import { CommentsContext } from "./commentsContext";
+import { useForm } from "../../hooks/useForm";
 
 export const CommentAdd = ({ id }) => {
   let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
-  const [comment, setComment] = useState("");
+  //const [comment, setComment] = useState("");
   let { setAdd, setRefresca, commentsCount, setCommentsCount } =
     useContext(CommentsContext);
+
+  const { formState, onInputChange, OnResetForm } = useForm({
+    comment: ""
+  });
+
+  const { comment } = formState
 
   const addComment = async () => {
     let data = await fetch(
@@ -29,7 +36,6 @@ export const CommentAdd = ({ id }) => {
     console.log(resposta);
     if (resposta.success == true) {
       console.log("Todo bien");
-      setComment("");
       setRefresca(true);
       setCommentsCount(commentsCount + 1);
     } else {
@@ -46,10 +52,10 @@ export const CommentAdd = ({ id }) => {
             </h2>
             <div class="w-full md:w-full px-3 mb-2 mt-2">
               <textarea
-                onChange={(e) => setComment(e.target.value)}
+                onChange={onInputChange}
                 value={comment}
                 class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
-                name="body"
+                name="comment"
                 placeholder="Escriu el teu comentari"
                 required
               ></textarea>
@@ -64,6 +70,18 @@ export const CommentAdd = ({ id }) => {
                   value="Post Comment"
                 />
               </div>
+              
+              <br></br>
+
+              <div class="-mr-1">
+                <input
+                  onClick={OnResetForm}
+                  type="button"
+                  class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100"
+                  value="Reset Comment"
+                />
+              </div>
+
             </div>
           </div>
         </form>
