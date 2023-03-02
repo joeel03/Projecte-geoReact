@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../userContext";
 import { useForm } from '../hooks/useForm';
-import { doLogin } from '../hooks/useLogin';
+import { useLogin } from '../hooks/useLogin';
 import { useEffect } from 'react';
 const Login = ({ setLogin }) => {
   // let [email, setEmail] = useState("");
@@ -20,6 +20,7 @@ const Login = ({ setLogin }) => {
   });
   const { email, password } = formState
 
+  const {doLogin}=useLogin()
 
   // const sendLogin = async (e) => {
   //   e.preventDefault();
@@ -74,7 +75,7 @@ const Login = ({ setLogin }) => {
         </div> */}
 
         <button type="button" className="btn btn-primary btn-block mb-4" onClick={() => {
-          doLogin(formState())
+          doLogin(formState)
         }}>Sign in</button>
         {/* {error ? (<div>{error}</div>) : (<></>)} */}
 

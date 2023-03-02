@@ -1,63 +1,60 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
-import LoginRegister from '../auth/LoginRegister'
 import { useContext } from "react";
 import { UserContext } from "../userContext";
-export function useLogin() {
-    const [url, setUrl] = useState(initialUrl);
-    const [options, setOptions] = useState(initialOptions);
-    const [data, setData] = useState();
-    const [error, setError] = useState();
-    const [login, setLogin] = useState("");
 
-    let { authToken, setAuthToken } = useContext(UserContext);
-    // localStorage = window.localStorage;
-
-    setError(undefined);
-
+export const useLogin = () => {
+    const [error, setError] = useState("");
+    let { setAuthToken } = useContext(UserContext);
     async function checkAuthToken() {
         try {
-            if (localStorage.getItem(authToken)) {
-                if (localStorage.getItem(authToken) == "") {
-                    setAuthToken("")
+            let localAuthToken = localStorage.getItem("authToken")
+            console.log(localAuthToken)
+            if (localAuthToken) {
+
+                const data = await fetch("https://backend.insjoaquimmir.cat/api/user", {
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        'Authorization': 'Bearer ' + localAuthToken,
+                    },
+                    method: "GET",
+                });
+                const resposta =  await data.json();
+                console.log(resposta)
+                if (resposta.success) {
+                    setAuthToken(localAuthToken)
                 } else {
-                    const { data, error, loading, setUrl } = useFetch("https://backend.insjoaquimmir.cat/api/user", {
-                        headers: {
-                            Accept: "application/json",
-                            "Content-Type": "application/json",
-                            'Authorization': 'Bearer ' + localStorage.getItem(authToken),
-                        },
-                        method: "GET",
-                    });
-                    if (data.success) {
-                        setAuthToken(localStorage.getItem(authToken))
-                    }
+                    console.log("INVALID local storage auth token")
+                    localStorage.removeItem("authToken")
                 }
+            } else {
+                console.log("No auth token at local storage")
             }
         } catch (e) {
             setError(e);
         }
     }
-    const doLogin = (formState) => {
-        setError(undefined);
-
+    const doLogin = async (formState) => {
+        setError("");   
         try {
-            const data = fetch("https://backend.insjoaquimmir.cat/api/login", {
+            const data = await fetch("https://backend.insjoaquimmir.cat/api/login", {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
                 },
                 method: "POST",
-                body: JSON.stringify({ formState })
+                body: JSON.stringify( formState )
             });
-            const resposta =  data.json();
+            const resposta =  await data.json();
             if (resposta.success === true) {
                 console.log(resposta)
                 setAuthToken(resposta.authToken);
+                localStorage.setItem("authToken",resposta.authToken)
             }
             else setError(resposta.message);
-        } catch {
-            console.log("Error");
+        } catch(e) {
+            console.log(e.err);
             alert("Catchch");
         };
     }
@@ -67,5 +64,5 @@ export function useLogin() {
 
 
 
-    return { data, error, login };
+    return { error, doLogin };
 }

@@ -32,6 +32,8 @@ import PostList from './posts/PostList';
 import PostsGrid from './posts/PostsGrid';
 import PostGrid from './posts/PostGrid';
 
+import Todos from './todos/Todos'
+
 function App() {
   let [authToken, setAuthToken] = useState("");
   let [usuari, setUsuari] = useState("");
@@ -63,6 +65,7 @@ function App() {
               <Route path="/posts/grid" element={ <PostsGrid/> } />  
               <Route path="/posts/list" element={ <PostsList usuari={usuari}/> } /> 
 
+              <Route path="/todos/todo" element={<Todos/>} />
             </Routes>
             <Footer />
           </>
