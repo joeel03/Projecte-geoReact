@@ -66,11 +66,11 @@ export const CommentsList = ({ id, comments_count }) => {
       <div class="flex mx-auto items-center justify-center  mt-6 mx-8 mb-4 max-w-lg">
         {commentsCount == 0 ? (
           <div className="flex mb-4 w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200">
-            No hi ha reviews
+            No hi ha commentaris
           </div>
         ) : (
           <div className="flex mb-4 w-full items-center space-x-2 rounded-2xl bg-blue-50 px-4 ring-2 ring-blue-200">
-            Hi ha {commentsCount} {commentsCount > 1 ? " ressenyes" : " ressenya"}{" "}
+            Hi ha {commentsCount} {commentsCount > 1 ? " comentaris" : " comentari"}{" "}
           </div>
         )}
       </div>
