@@ -10,8 +10,7 @@ const PostsList = () => {
     let [error, setError] = useState("");
     let [posts, setPosts] = useState([]);
     let {usuari, setUsuari} = useContext(UserContext);
-
-    //const { id } = useParams();
+    const [refresh, setRefresh] = useState(false);
 
     const getPosts = async () => {
         try {

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import {CommentsList} from './comments/CommentsList';
+import { useFetch } from '../hooks/useFetch';
 
 const Posts = () => {
   let { authToken, setAuthToken } = useContext(UserContext);
