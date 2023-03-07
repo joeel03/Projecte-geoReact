@@ -5,9 +5,14 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import ReviewList from './reviews/ReviewList';
+import { useLocation } from 'react-router-dom';
+import PlaceMarks from './PlaceMarks';
+import { placeMarkReducer } from './placeMarkReducer';
+import { useReducer } from 'react';
+const initialState = [];
 
 const Place = () => {
-  let { authToken, setAuthToken,refresh,setRefresh } = useContext(UserContext);
+  let { authToken, setAuthToken, refresh, setRefresh } = useContext(UserContext);
   let [error, setError] = useState("");
   const { id } = useParams();
   let [loading, setLoading] = useState(true);
@@ -16,10 +21,29 @@ const Place = () => {
   let navigate = useNavigate();
   let [favorite, setFavorite] = useState(null);
 
+  const init = () => {
+    return JSON.parse(localStorage.getItem("marks")) || []
+  }
+
+  const [marks, dispatchMark] = useReducer(placeMarkReducer, initialState, init);
+  
+  useEffect(() => {
+
+    localStorage.setItem('marks', JSON.stringify(marks))
+
+  }, [marks])
+  console.log(marks)
+
+
+  const { pathname } = useLocation()
+
+
   const comprovarFavorite = async () => {
+
     try {
-      console.log(id) 
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id +"/favorites"), {
+
+      console.log(id)
+      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -46,7 +70,7 @@ const Place = () => {
   const darFavorite = async (e) => {
     try {
       console.log(id)
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id +"/favorites"), {
+      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -73,7 +97,7 @@ const Place = () => {
   const eliminarFavorite = async () => {
     try {
       console.log(id)
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id +"/favorites"), {
+      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -127,7 +151,28 @@ const Place = () => {
     getPlace();
     comprovarFavorite();
   }, []);
- 
+
+  const addMark = () => {
+
+
+    const data = {
+      "id": place.id,
+      "name": place.name,
+      "description": place.description,
+      "ruta": pathname
+
+    }
+    const action = {
+      type: "Save Mark",
+      payload: data
+    }
+
+    dispatchMark(action);
+
+
+  }
+
+
   const deletePlace = async (id) => {
     try {
       const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
@@ -191,18 +236,21 @@ const Place = () => {
 
                 </tbody>
               </table>
-                {usuari == place.author.email ?
-                    <>
-                        <button onClick={(e) => {navigate("/places/edit/"+place.id)}}>📝</button> 
-                        <button onClick={(e) => {deletePlace(place.id)}}>🗑️</button>
-                    </>
-                    : <></>}    
-                    {favorite?
-                    <button onClick={(e) =>{darFavorite(e)}}>⭐</button> 
-                    :
-                    <button onClick={(e) => {eliminarFavorite(e)}}>⭐❌</button> 
+              {usuari == place.author.email ?
+                <>
+                  <button onClick={(e) => { navigate("/places/edit/" + place.id) }}>📝</button>
+                  <button onClick={(e) => { deletePlace(place.id) }}>🗑️</button>
+                </>
+                : <></>}
+              <button onClick={() => {
+                addMark()
+              }}>DESA</button>
+              {favorite ?
+                <button onClick={(e) => { darFavorite(e) }}>⭐</button>
+                :
+                <button onClick={(e) => { eliminarFavorite(e) }}>⭐❌</button>
 
-                  }
+              }
             </div>
 
           </div>

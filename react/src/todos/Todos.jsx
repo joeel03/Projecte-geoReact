@@ -3,64 +3,54 @@ import Todo from './Todo';
 import TodoAdd from './TodoAdd';
 import { useReducer ,useEffect} from 'react';
 import { useSelector } from "react-redux";
-import { todoReducer } from './todoReducer';
-const initialState = [];
-const init = () => {
-  return JSON.parse(localStorage.getItem("todos")) || []
-}
+// import { todoReducer } from './todoReducer';
+// const initialState = [];
+// const init = () => {
+//   return JSON.parse(localStorage.getItem("todos")) || []
+// }
 
 const Todos = () => {
-  const [todos, dispatchTodos] = useReducer(todoReducer, initialState, init);
+  //const [todos, dispatchTodos] = useReducer(todoReducer, initialState, init);
+  const { todos } = useSelector(state => state.todos)
 
-  // const addTodo = (todo) => {
-  //   dispatchTodos({ type: 'Add Todo', payload: todo })
-
-  // }
-  // const delTodo = (id) => {
-  //   dispatchTodos({ type: 'Del Todo', payload: id })
-  //   return initialState.map((todo) => {
-  //     if (todo.id === action.payload) { //id
-  //       return { ...todo, done: !todo.done } // invertim el done
-  //     }
-  //     return todo
-  //   })
-  // }
+  const dispatch = useDispatch();
+  
   useEffect(() => {
 
     localStorage.setItem('todos', JSON.stringify(todos))
 
   }, [todos])
-  const handleNewToDo = (todo) => {
-    dispatchTodos({
+  // const handleNewToDo = (todo) => {
+  //   dispatchTodos({
 
-      type: 'Add Todo',
+  //     type: 'Add Todo',
 
-      payload: todo
+  //     payload: todo
 
-    })}
-    const handleDeleteToDo = (id) => {
-      dispatchTodos({
+  //   })}
+  //   const handleDeleteToDo = (id) => {
+  //     dispatchTodos({
   
-        type: 'Del Todo',
+  //       type: 'Del Todo',
   
-        payload: id
+  //       payload: id
   
-      })}
-      const handleToggleTodo = (id) => {
-        dispatchTodos({
+  //     })}
+  //     const handleToggleTodo = (id) => {
+  //       dispatchTodos({
     
-          type: 'Toggle Todo',
+  //         type: 'Toggle Todo',
     
-          payload: id
+  //         payload: id
     
-        })
-  }
+  //       })
+  // }
   return (
     <div>
       <TodoAdd handleNewToDo={handleNewToDo}/>
      
       {todos.map((todo) => (
-        <Todo key={todo.id} todo={todo} handleDelete={handleDeleteToDo} handleToggleTodo={handleToggleTodo} />
+        <Todo key={todo.id} todo={todo} handleDeleteTodo={handleDeleteToDo} handleToggleTodo={handleToggleTodo} />
       ))}
 
     </div>

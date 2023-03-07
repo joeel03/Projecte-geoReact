@@ -31,6 +31,8 @@ import PostList from './posts/PostList';
 
 import PostsGrid from './posts/PostsGrid';
 import Todos  from './todos/Todos'
+import PlacesMarks from './places/PlacesMarks'
+import PlaceMarks from './places/PlaceMarks'
 
 function App() {
   let [authToken, setAuthToken] = useState("");
@@ -56,6 +58,7 @@ function App() {
               <Route path="/places/edit/:id" element={ <PlaceEdit/> } /> 
               <Route path="/places/grid" element={ <PlacesGrid/> } /> 
               <Route path="/places/list" element={ <PlacesList usuari={usuari}/> } /> 
+              <Route path="/places/marks" element={<PlacesMarks  />} />
 
               <Route path="/posts/:id" element={ <Post/> } /> 
               <Route path="/posts/add" element={ <PostCreate/> } />
@@ -64,6 +67,7 @@ function App() {
               <Route path="/posts/list" element={ <PostsList usuari={usuari}/> } /> 
 
               <Route path="/todos" element={<Todos  />} />
+
             </Routes>
             <Footer />
           </>
