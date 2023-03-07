@@ -2,41 +2,27 @@ import React from 'react'
 import { useContext } from "react";
 import { UserContext } from "../userContext";
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useFetcher, useParams } from 'react-router-dom';
 import PlaceList from './PlaceList'
+import { useFetch } from '../hooks/useFetch';
 
 const PlacesList = () => {
     let { authToken, setAuthToken,usuari, setUsuari } = useContext(UserContext);
-    let [error, setError] = useState("");
+    // let [error, setError] = useState("");
     let [places, setPlaces] = useState([]);
     const [ refresh, setRefresh ] = useState(false)
     const { id } = useParams();
+    const { data, error,reRender, loading, setUrl } = useFetch("https://backend.insjoaquimmir.cat/api/places", {
+      headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + authToken,
+      },
+      method: "GET",
+  });
+      //setPlaces(data);
+    console.log(data)
 
-    const getPlaces = async () => {
-        try {
-            const data = await fetch("https://backend.insjoaquimmir.cat/api/places/", {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    'Authorization': 'Bearer ' + authToken,
-                },
-                method: "GET",
-            });
-            const resposta = await data.json();
-            if (resposta.success === true) {
-                console.log(resposta)
-                setPlaces(resposta.data);
-            }
-            else setError(resposta.message);
-        } catch {
-            console.log("Error");
-            alert("Catchch");
-        };
-    }
-    useEffect(() => {
-        getPlaces();
-    }, [refresh]);
-        
     const deletePlace = async (id) => {
         try {
           const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/"+id), {
@@ -49,7 +35,7 @@ const PlacesList = () => {
           const resposta = await data.json();
           if (resposta.success === true) {
             console.log("place eliminado")
-            setRefresh(!refresh)
+            reRender();
           }
           else {
             console.log(resposta.message)
@@ -75,24 +61,18 @@ const PlacesList = () => {
                     <th>favorits</th>
 
                 </tr>
-                {places.map((place) => (
-                        <tr key={place.id}> 
-                        {usuari==place.author.email||place.visibility.name=='public'?
+                {loading?
+                "cargando..": 
+                (data.data).map((place) => (
+                  <tr key={place.id}> 
+                  {usuari==place.author.email||place.visibility.name=='public'?
 
-                            <PlaceList place={place} deletePlace={deletePlace}/>
-                            :<></>}
-                          
-                             
-
-                        </tr>
-
-
-                ))}
+                      <PlaceList place={place} deletePlace={deletePlace}/>
+                      :<></>}
+                  </tr>
+          ))}
+                
             </table>
-
-
-
-
         </div>
     )
 }

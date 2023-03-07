@@ -75,7 +75,8 @@ const Header = () => {
       <div>
         <Link to="/places/1">places </Link>
         <Link to="/posts">posts </Link>
-        <Link to="/about">About </Link>
+        <Link to="/todos">Todos </Link>
+
       </div>
       
       <button className="btn btn-primary btn-block mb-4" onClick={(e) => {

@@ -23,13 +23,6 @@ const ReviewAdd = () => {
   
   const formData = new FormData;
   formData.append("review", review);
-  const handleChange = (e) => {
-    e.preventDefault();
-    setFormulari({
-      ...formulari,
-      [e.target.name]: e.target.value
-    })
-  }
 
 const createReview = async (e) => {
   e.preventDefault();
@@ -46,9 +39,7 @@ const createReview = async (e) => {
     const resposta = await data.json();
     if (resposta.success === true) {
       console.log("reseña añadida")
-      setFormulari({
-        ...formulari,
-      review: "",})
+      OnResetForm()
       setError("")
       setRefresh(!refresh)  
   }
@@ -64,7 +55,7 @@ const createReview = async (e) => {
 return (
   <div>
     <label for="review">Review</label>
-    <textarea name="review" value={formulari.review} onChange={onInputChange} className="form-control"></textarea>
+    <textarea name="review" value={review} onChange={onInputChange} className="form-control"></textarea>
     
     <button className="btn btn-primary" onClick={(e) => {
       createReview(e);

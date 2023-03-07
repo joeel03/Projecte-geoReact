@@ -2,41 +2,51 @@ import React from 'react'
 import { useContext } from "react";
 import { UserContext } from "../userContext";
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useFetcher, useParams } from 'react-router-dom';
 import PostList from './PostList'
+import { useFetch } from '../hooks/useFetch';
 
 const PostsList = () => {
-    let { authToken, setAuthToken } = useContext(UserContext);
-    let [error, setError] = useState("");
+    let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
+    //let [error, setError] = useState("");
     let [posts, setPosts] = useState([]);
-    let {usuari, setUsuari} = useContext(UserContext);
+    const { id } = useParams();
     const [refresh, setRefresh] = useState(false);
 
-    const getPosts = async () => {
-        try {
-            const data = await fetch("https://backend.insjoaquimmir.cat/api/posts/", {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    'Authorization': 'Bearer ' + authToken,
-                },
-                method: "GET",
-            });
-            const resposta = await data.json();
-            if (resposta.success === true) {
-                console.log(resposta)
-                setPosts(resposta.data);
-            }
-            else setError(resposta.message);
-        } catch {
-            console.log("Error");
-            alert("Catch");
-        };
+    const { data, reRender, /*error,*/ loading, seUrl } = useFetch("https://backend.insjoaquimmir.cat/api/posts/", {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + authToken,
+        },
+        method: "GET",
+    });
+    console.log(data)
 
-    }
-    useEffect(() => {
-        getPosts();
-    }, []);
+    const deletePost = async (id) => {
+        try {
+          const data = await fetch(("https://backend.insjoaquimmir.cat/api/posts/"+id), {
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer ' + authToken
+            },
+            method: "DELETE",
+          });
+          const resposta = await data.json();
+          if (resposta.success === true) {
+            console.log("post eliminado")
+            reRender();
+          }
+          else {
+            console.log(resposta.message)
+            setError(resposta.message);
+          }
+        } catch(err) {
+          console.log(err.message);
+          alert("Catch");
+        };
+      }    
+
     return (
         <div>
             <h1>Posts List</h1>
@@ -49,18 +59,18 @@ const PostsList = () => {
                     <th>author</th>
                     <th>likes</th>
                 </tr>
-                {posts.map((post) => (
-                        <tr key={post.id}> 
-                        {usuari==post.author.email||post.visibility.name=='public'?
-                            <PostList post={post}/>
-                            :<></>}
-                        </tr>
+                {loading?
+                "Cargando...":
+                (data.data).map((post) => (
+                    <tr key={post.id}>
+                        {usuari == post.author.email || post.visibility.name == 'public'?
+
+                            <PostList post={post} deletePost={deletePost} />
+                            : <></>}
+                    </tr>
                 ))}
+
             </table>
-
-
-
-
         </div>
     )
 }
