@@ -3,6 +3,7 @@ import Todo from './Todo';
 import TodoAdd from './TodoAdd';
 import { useReducer ,useEffect} from 'react';
 import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
 // import { todoReducer } from './todoReducer';
 // const initialState = [];
 // const init = () => {
@@ -47,10 +48,13 @@ const Todos = () => {
   // }
   return (
     <div>
-      <TodoAdd handleNewToDo={handleNewToDo}/>
+      {/* <TodoAdd handleNewToDo={handleNewToDo}/> */}
+      <TodoAdd />
      
       {todos.map((todo) => (
-        <Todo key={todo.id} todo={todo} handleDeleteTodo={handleDeleteToDo} handleToggleTodo={handleToggleTodo} />
+                // <Todo key={todo.id} todo={todo} handleDeleteTodo={handleDeleteToDo} handleToggleTodo={handleToggleTodo} />
+
+        <Todo key={todo.id} todo={todo} />
       ))}
 
     </div>

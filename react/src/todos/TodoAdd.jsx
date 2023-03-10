@@ -1,14 +1,15 @@
 import React from 'react'
 import { useForm } from '../hooks/useForm';
-// import { useDispatch, useSelector } from "react-redux";
+ import { useDispatch } from "react-redux";
+ import { addtodo } from "../slices/todoSlice";
 
-const TodoAdd = ({ handleNewToDo }) => {
+const TodoAdd = () => {
     const { description, formState, onInputChange, onResetForm } = useForm({
         description: ""
     });
     //const { todos } = useSelector(state => state.todos)
     // console.log(todos)
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const onFormSubmit = (event) => {
         event.preventDefault();
@@ -26,7 +27,7 @@ const TodoAdd = ({ handleNewToDo }) => {
 
         }
 
-        onResetForm()
+        //  onResetForm()
 
         //handle(newTodo)
 

@@ -48,4 +48,4 @@ export const todosSlice = createSlice({
 
 export const { addtodo, deltodo, toggletodo } = todosSlice.actions;
 
-export default todosReducer = todosSlice.reducer 
+export const todosReducer = todosSlice.reducer 
