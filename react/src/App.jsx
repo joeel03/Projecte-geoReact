@@ -29,6 +29,10 @@ import PostEdit from './posts/PostEdit';
 import PostsList from './posts/PostsList';
 import PostList from './posts/PostList';
 
+import PostsMarks from './posts/PostsMarks'
+import PostMarks from './posts/PostMarks'
+
+
 import PostsGrid from './posts/PostsGrid';
 import Todos  from './todos/Todos'
 import PlacesMarks from './places/PlacesMarks'
@@ -67,6 +71,7 @@ function App() {
               <Route path="/posts/edit/:id" element={ <PostEdit/> } /> 
               <Route path="/posts/grid" element={ <PostsGrid/> } />  
               <Route path="/posts/list" element={ <PostsList usuari={usuari}/> } /> 
+              <Route path="/posts/marks" element={<PostsMarks/>} />
 
               <Route path="/todos" element={<Todos  />} />
 

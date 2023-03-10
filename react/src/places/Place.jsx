@@ -41,10 +41,6 @@ const Place = () => {
   const comprovarFavorite = async () => {
 
     try {
-<<<<<<< HEAD
-=======
-
->>>>>>> db0c6946658a5cd48c9c7ad6661013290c31b20b
       console.log(id)
       const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
         headers: {
@@ -155,8 +151,6 @@ const Place = () => {
     comprovarFavorite();
   }, []);
 
-<<<<<<< HEAD
-=======
   const addMark = () => {
 
 
@@ -178,7 +172,6 @@ const Place = () => {
   }
 
 
->>>>>>> db0c6946658a5cd48c9c7ad6661013290c31b20b
   const deletePlace = async (id) => {
     try {
       const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
@@ -248,12 +241,9 @@ const Place = () => {
                   <button onClick={(e) => { deletePlace(place.id) }}>🗑️</button>
                 </>
                 : <></>}
-<<<<<<< HEAD
-=======
               <button onClick={() => {
                 addMark()
               }}>DESA</button>
->>>>>>> db0c6946658a5cd48c9c7ad6661013290c31b20b
               {favorite ?
                 <button onClick={(e) => { darFavorite(e) }}>⭐</button>
                 :

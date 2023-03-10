@@ -7,6 +7,7 @@ const PostsMenu = () => {
        <Link className='click orange' to="/posts/add">Afegir Entrada</Link>
        <Link className='click gray' to="/posts/grid">Grid</Link>
        <Link className='click blue' to="/posts/list">Llista</Link>
+       <Link className='click orange' to="/posts/marks">Marks</Link>
     </div>
   )
 }
