@@ -2,12 +2,12 @@ import React from 'react'
 import { useForm } from '../hooks/useForm';
 // import { useDispatch, useSelector } from "react-redux";
 
-const TodoAdd = ({handleNewToDo}) => {
+const TodoAdd = ({ handleNewToDo }) => {
     const { description, formState, onInputChange, onResetForm } = useForm({
         description: ""
     });
     //const { todos } = useSelector(state => state.todos)
-   // console.log(todos)
+    // console.log(todos)
     //const dispatch = useDispatch();
 
     const onFormSubmit = (event) => {
@@ -17,17 +17,23 @@ const TodoAdd = ({handleNewToDo}) => {
         if (description.length <= 1) return;
 
         const newTodo = {
-            id: new Date().getTime(),
-            description: description,
-            done: false
-        };
-    
-        console.log("Abans del dispatch");
-        handleNewToDo(newTodo)
 
-      };
-    
-  
+            id: new Date().getTime(),
+
+            description: description,
+
+            done: false
+
+        }
+
+        onResetForm()
+
+        //handle(newTodo)
+
+        dispatch(addtodo(newTodo))
+    };
+
+
 
     return (
         <div >

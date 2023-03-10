@@ -5,6 +5,11 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import ReviewList from './reviews/ReviewList';
+import { useLocation } from 'react-router-dom';
+import PlaceMarks from './PlaceMarks';
+import { placeMarkReducer } from './placeMarkReducer';
+import { useReducer } from 'react';
+const initialState = [];
 
 const Place = () => {
   let { authToken, setAuthToken, refresh, setRefresh } = useContext(UserContext);
@@ -16,8 +21,30 @@ const Place = () => {
   let navigate = useNavigate();
   let [favorite, setFavorite] = useState(null);
 
+  const init = () => {
+    return JSON.parse(localStorage.getItem("marks")) || []
+  }
+
+  const [marks, dispatchMark] = useReducer(placeMarkReducer, initialState, init);
+  
+  useEffect(() => {
+
+    localStorage.setItem('marks', JSON.stringify(marks))
+
+  }, [marks])
+  console.log(marks)
+
+
+  const { pathname } = useLocation()
+
+
   const comprovarFavorite = async () => {
+
     try {
+<<<<<<< HEAD
+=======
+
+>>>>>>> db0c6946658a5cd48c9c7ad6661013290c31b20b
       console.log(id)
       const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
         headers: {
@@ -128,6 +155,30 @@ const Place = () => {
     comprovarFavorite();
   }, []);
 
+<<<<<<< HEAD
+=======
+  const addMark = () => {
+
+
+    const data = {
+      "id": place.id,
+      "name": place.name,
+      "description": place.description,
+      "ruta": pathname
+
+    }
+    const action = {
+      type: "Save Mark",
+      payload: data
+    }
+
+    dispatchMark(action);
+
+
+  }
+
+
+>>>>>>> db0c6946658a5cd48c9c7ad6661013290c31b20b
   const deletePlace = async (id) => {
     try {
       const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
@@ -197,6 +248,12 @@ const Place = () => {
                   <button onClick={(e) => { deletePlace(place.id) }}>🗑️</button>
                 </>
                 : <></>}
+<<<<<<< HEAD
+=======
+              <button onClick={() => {
+                addMark()
+              }}>DESA</button>
+>>>>>>> db0c6946658a5cd48c9c7ad6661013290c31b20b
               {favorite ?
                 <button onClick={(e) => { darFavorite(e) }}>⭐</button>
                 :
