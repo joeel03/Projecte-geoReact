@@ -3,24 +3,28 @@ import PlaceMarks from './PlaceMarks'
 import { placeMarkReducer } from './placeMarkReducer';
 import { useReducer } from 'react';
 import { useEffect } from 'react';
-const initialState = [];
-const init = () => {
-  return JSON.parse(localStorage.getItem("marks")) || []
-  console.log(marks)
-}
+import { useSelector } from 'react-redux';
+// const initialState = [];
+// const init = () => {
+//   return JSON.parse(localStorage.getItem("marks")) || []
+//   console.log(marks)
+// }
+
 
 const PlacesMarks = () => {
-  const [marks, dispatchMarks] = useReducer(placeMarkReducer, initialState, init);
+  const { marks } = useSelector(state => state.marks)
 
-  const handleDeleteMark = (id) => {
-    dispatchMarks({
+  // const [marks, dispatchMarks] = useReducer(placeMarkReducer, initialState, init);
 
-      type: 'Del Mark',
+  // const handleDeleteMark = (id) => {
+  //   dispatchMarks({
 
-      payload: id
+  //     type: 'Del Mark',
 
-    })
-  }
+  //     payload: id
+
+  //   })
+  // }
   console.log(marks)
 
   return (
@@ -35,7 +39,9 @@ const PlacesMarks = () => {
         </tr>
 
         {marks.map((mark) => (
-          <PlaceMarks key={mark.id} mark={mark} handleDeleteMark={handleDeleteMark} />
+          
+          // <PlaceMarks key={mark.id} mark={mark} handleDeleteMark={handleDeleteMark} />
+          <PlaceMarks key={mark.id} mark={mark} />
         ))}
       </table>
 
