@@ -12,6 +12,7 @@ import { useReducer } from 'react';
 import { useSelector } from 'react-redux';
 import { addMark } from '../slices/placeMarkSlice.';
 import { useDispatch } from 'react-redux';
+import { ismarked } from '../slices/placeMarkSlice.';
 // const initialState = [];
 
 const Place = () => {
@@ -156,7 +157,8 @@ const Place = () => {
   useEffect(() => {
     getPlace();
     comprovarFavorite();
-  }, []);
+    dispatch(ismarked(id))
+  }, [marks]);
 
   // const addMark = () => {
 
@@ -168,10 +170,10 @@ const Place = () => {
     "ruta": pathname
 
   }
-  const action = {
-    type: "Save Mark",
-    payload: data
-  }
+  // const action = {
+  //   type: "Save Mark",
+  //   payload: data
+  // }
 
   //   dispatchMark(action);
 

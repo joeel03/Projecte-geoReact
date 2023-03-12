@@ -27,18 +27,14 @@ export const placeMarkSlice = createSlice({
         ismarked: (state, action) => {
             state.isMarked = false
             state.marks.map((mark) => {
-                if (mark.id == action.payload.id)
+                if (mark.id == action.payload)
                     state.isMarked = true
-            }
+                }
             )
-
-
         }
-
     }
-
 });
 
-export const { addMark, delMark, isMarked } = placeMarkSlice.actions;
+export const { addMark, delMark, ismarked } = placeMarkSlice.actions;
 
 export const placeMarkReducer = placeMarkSlice.reducer 
