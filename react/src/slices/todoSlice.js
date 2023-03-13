@@ -17,7 +17,7 @@ export const todosSlice = createSlice({
         addtodo: (state, action) => {
 
             state.todos.push(action.payload) // aqui podem fer push
-
+            
         },
 
         deltodo: (state, action) => {

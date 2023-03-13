@@ -9,7 +9,11 @@ import { useLocation } from 'react-router-dom';
 import PlaceMarks from './PlaceMarks';
 import { placeMarkReducer } from './placeMarkReducer';
 import { useReducer } from 'react';
-const initialState = [];
+import { useSelector } from 'react-redux';
+import { addMark } from '../slices/placeMarkSlice.';
+import { useDispatch } from 'react-redux';
+import { ismarked } from '../slices/placeMarkSlice.';
+// const initialState = [];
 
 const Place = () => {
   let { authToken, setAuthToken, refresh, setRefresh } = useContext(UserContext);
@@ -21,12 +25,15 @@ const Place = () => {
   let navigate = useNavigate();
   let [favorite, setFavorite] = useState(null);
 
-  const init = () => {
-    return JSON.parse(localStorage.getItem("marks")) || []
-  }
+  //  const init = () => {
+  //    return JSON.parse(localStorage.getItem("marks")) || []
+  //  }
 
-  const [marks, dispatchMark] = useReducer(placeMarkReducer, initialState, init);
-  
+  //  const [marks, dispatchMark] = useReducer(placeMarkReducer, initialState, init);
+  const { marks, isMarked } = useSelector(state => state.marks)
+  const dispatch = useDispatch();
+
+
   useEffect(() => {
 
     localStorage.setItem('marks', JSON.stringify(marks))
@@ -149,27 +156,28 @@ const Place = () => {
   useEffect(() => {
     getPlace();
     comprovarFavorite();
-  }, []);
+    dispatch(ismarked(id))
+  }, [marks]);
 
-  const addMark = () => {
+  // const addMark = () => {
 
 
-    const data = {
-      "id": place.id,
-      "name": place.name,
-      "description": place.description,
-      "ruta": pathname
-
-    }
-    const action = {
-      type: "Save Mark",
-      payload: data
-    }
-
-    dispatchMark(action);
-
+  const data = {
+    "id": place.id,
+    "name": place.name,
+    "description": place.description,
+    "ruta": pathname
 
   }
+  // const action = {
+  //   type: "Save Mark",
+  //   payload: data
+  // }
+
+  //   dispatchMark(action);
+
+
+  // }
 
 
   const deletePlace = async (id) => {
@@ -195,6 +203,7 @@ const Place = () => {
       alert("Catchch");
     };
   }
+  
 
   return (
 
@@ -240,10 +249,14 @@ const Place = () => {
                   <button onClick={(e) => { navigate("/places/edit/" + place.id) }}>📝</button>
                   <button onClick={(e) => { deletePlace(place.id) }}>🗑️</button>
                 </>
-                : <></>}
-              <button onClick={() => {
-                addMark()
-              }}>DESA</button>
+                : <></>}{isMarked ?
+                  <button>DESAT</button>
+                  :
+                  <button onClick={() => {
+                    dispatch(addMark(data))
+                  }}>DESA</button>
+              }
+
               {favorite ?
                 <button onClick={(e) => { darFavorite(e) }}>⭐</button>
                 :
