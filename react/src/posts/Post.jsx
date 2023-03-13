@@ -4,21 +4,57 @@ import { UserContext } from "../userContext";
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import {CommentsList} from './comments/CommentsList';
+import { CommentsList } from './comments/CommentsList';
+
+// USANDO REACT-REDUCER
+import { postMarkReducer } from './postMarkReducer';
+import PostMarks from './PostMarks';
+import { useReducer } from 'react';
+
+// USANDO SLICE POSTMARKSLICE
+import { addMark } from '../slices/postMarkSlice';
+import { useDispatch } from 'react-redux';
+import { ismarked } from '../slices/postMarkSlice';
+import { useSelector } from 'react-redux';
+import { postMarkSlice } from '../slices/postMarkSlice';
+
+import { useLocation } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 
+//const initialState = [];
+
 const Posts = () => {
-  let { authToken, setAuthToken } = useContext(UserContext);
-  let [post, setPost] = useState([])
+  let { authToken, setAuthToken, refresh, setRefresh } = useContext(UserContext);
   let [error, setError] = useState("");
   const { id } = useParams();
   let [loading, setLoading] = useState(true);
+  let [post, setPost] = useState([])
   let { usuari, setUsuari } = useContext(UserContext);
   let navigate = useNavigate();
 
+  /*
+    const init = () => {
+      return JSON.parse(localStorage.getItem("marks2")) || []
+    }
+  
+    const [marks2, dispatchMark] = useReducer(postMarkReducer, initialState, init);
+  */
+  const { marks2, isMarked } = useSelector(state => state.marks2)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    localStorage.setItem('marks2', JSON.stringify(marks2))
+
+  }, [marks2])
+  console.log(marks2)
+
+  const { pathname } = useLocation()
+
+
   const getPost = async () => {
     try {
-      const data = await fetch("https://backend.insjoaquimmir.cat/api/posts/" + id, {
+      const data = await fetch(("https://backend.insjoaquimmir.cat/api/posts/" + id), {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -44,7 +80,28 @@ const Posts = () => {
   }
   useEffect(() => {
     getPost();
-  }, []);
+    dispatch(ismarked(id))
+  }, [marks2]);
+
+  //const addMark = () => {
+
+
+  const data = {
+    "id": post.id,
+    "body": post.body,
+    "ruta": pathname
+  }
+  /*
+  const action = {
+    type: "Save Mark",
+    payload: data
+  }
+
+  dispatchMark(action);
+
+}
+*/
+
 
   const deletePost = async (id) => {
     try {
@@ -108,10 +165,16 @@ const Posts = () => {
                 <button onClick={(e) => { navigate("/posts/edit/" + post.id) }}>📝</button>
                 <button onClick={(e) => { deletePost(post.id) }}>🗑️</button>
               </>
-              : <></>}
+              : <></>}isMarked ?
+            <button>MARK DESAT</button>
+            :
+            <button onClick={() => {
+              dispatch(addMark(data))
+            }}>DESA MARK</button>
+
           </div>
           <CommentsList
-          id={post.id} comments_count={post.comments_count} />
+            id={post.id} comments_count={post.comments_count} />
         </div>
 
       }

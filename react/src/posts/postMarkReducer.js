@@ -5,10 +5,7 @@ export const postMarkReducer = (initialState, action) => {
         return [...initialState, action.payload];
   
       case "Del Mark":
-        // Retornarà un nou array amb tots els elements menys el de l'id
-        return initialState.filter((mark) => mark.id !== action.payload);
-  
-   
+        return initialState.filter((mark) => mark.id !== action.payload); 
     }
   };
   
