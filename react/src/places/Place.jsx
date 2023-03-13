@@ -204,7 +204,7 @@ const Place = () => {
     };
   }
   
-
+  
   return (
 
     <>
