@@ -28,7 +28,11 @@ const PostsMarks = () => {
     }
   */
   console.log(marks2)
+  useEffect(() => {
 
+    localStorage.setItem('marks2', JSON.stringify(marks2))
+
+  }, [marks2])
   return (
     <div>
       <table>

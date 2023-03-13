@@ -16,7 +16,6 @@ import { addMark } from '../slices/postMarkSlice';
 import { useDispatch } from 'react-redux';
 import { ismarked } from '../slices/postMarkSlice';
 import { useSelector } from 'react-redux';
-import { postMarkSlice } from '../slices/postMarkSlice';
 
 import { useLocation } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
@@ -130,7 +129,7 @@ const Posts = () => {
   return (
     <>
       {loading ?
-        "cargando..."
+        "loading..."
         :
         <div class="card">
           <div class="card-header">
@@ -165,12 +164,14 @@ const Posts = () => {
                 <button onClick={(e) => { navigate("/posts/edit/" + post.id) }}>📝</button>
                 <button onClick={(e) => { deletePost(post.id) }}>🗑️</button>
               </>
-              : <></>}isMarked ?
-            <button>MARK DESAT</button>
-            :
-            <button onClick={() => {
-              dispatch(addMark(data))
-            }}>DESA MARK</button>
+              : <></>}{isMarked ?
+                <button>MARK DESAT</button>
+                :
+                <button onClick={() => {
+                  dispatch(addMark(data))
+                }}>DESA MARK</button>
+            }
+
 
           </div>
           <CommentsList

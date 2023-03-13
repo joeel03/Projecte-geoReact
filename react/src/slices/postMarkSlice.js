@@ -20,7 +20,9 @@ export const postMarkSlice = createSlice({
         },
 
         delMark: (state, action) => {
+
             state.marks2 = state.marks2.filter(mark => mark.id !== action.payload)
+
         },
         ismarked: (state, action) => {
             state.isMarked = false

@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 
 const PostMarks = ({ mark }) => {
   const dispatch=useDispatch();
-
+  console.log(mark)
   return (
     <tr>
       <td>{mark.body}</td>
