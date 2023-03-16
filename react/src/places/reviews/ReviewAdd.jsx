@@ -5,11 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from '../../hooks/useForm';
 
 const ReviewAdd = () => {
-  let { authToken, setAuthToken,usuari, setUsuari ,reviews, setReviews,refresh,setRefresh} = useContext(UserContext);
-  let [formulari, setFormulari] = useState({});
+  // let { authToken, setAuthToken,usuari, setUsuari ,reviews, setReviews,refresh,setRefresh} = useContext(UserContext);
+
+  let { authToken, setAuthToken,usuari, setUsuari} = useContext(UserContext);
+  //  let [formulari, setFormulari] = useState({});
   const { id } = useParams();
   let navigate = useNavigate();
-  let [error, setError] = useState("");
+  // let [error, setError] = useState("");
 
   
 
@@ -62,7 +64,7 @@ return (
     }}>Add Review</button>
     <button className="btn btn-primary" onClick={OnResetForm}>Reset</button>
    
-    {error? (<div>{error}</div>):(<></>) }       
+    {/* {error? (<div>{error}</div>):(<></>) }        */}
 
     
   </div>
