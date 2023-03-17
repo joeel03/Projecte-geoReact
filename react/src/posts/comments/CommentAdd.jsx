@@ -6,9 +6,10 @@ import { CommentsContext } from "./commentsContext";
 import { useForm } from "../../hooks/useForm";
 
 export const CommentAdd = ({ id }) => {
-  let { usuari, setUsuari, authToken, setAuthToken,refresca, setRefresca, commentsCount, setCommentsCount } = useContext(UserContext);
-  // const [comment, setComment] = useState("");
-  // let {setRefresca, commentsCount, setCommentsCount } = useContext(CommentsContext);
+  let { usuari, setUsuari, authToken, setAuthToken, refresca, setRefresca, commentsCount, setCommentsCount } = useContext(UserContext);
+  //const [comment, setComment] = useState("");
+  // let { setAdd, setRefresca, commentsCount, setCommentsCount } =
+    useContext(CommentsContext);
 
   const { formState, onInputChange, OnResetForm } = useForm({
     comment: ""
@@ -35,6 +36,8 @@ export const CommentAdd = ({ id }) => {
     console.log(resposta);
     if (resposta.success == true) {
       console.log("Todo bien");
+      setRefresca(true);
+      setCommentsCount(commentsCount + 1);
     } else {
       console.log("S'ha produit un error");
     }
