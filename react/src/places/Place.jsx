@@ -16,12 +16,11 @@ import { ismarked } from '../slices/placeMarkSlice.';
 // const initialState = [];
 
 const Place = () => {
-  let { authToken, setAuthToken, refresh, setRefresh } = useContext(UserContext);
+  let { authToken, setAuthToken, refresh, setRefresh,usuari, setUsuari } = useContext(UserContext);
   let [error, setError] = useState("");
   const { id } = useParams();
   let [loading, setLoading] = useState(true);
   let [place, setPlace] = useState([])
-  let { usuari, setUsuari } = useContext(UserContext);
   let navigate = useNavigate();
   let [favorite, setFavorite] = useState(null);
 
@@ -266,7 +265,7 @@ const Place = () => {
             </div>
 
           </div>
-          <ReviewList />
+          <ReviewList id={place.id}/>
         </>
 
       }

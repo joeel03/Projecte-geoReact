@@ -3,12 +3,10 @@ import { UserContext } from '../../userContext';
 import ReactTimeAgo from 'react-time-ago'
 import { useDispatch } from 'react-redux';
 import { delReview } from './slices/thunks';
-
+import { useSelector } from 'react-redux';
 const Review = ({ review }) => {
   let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
-  const { reviews = [], page = 0, isLoading = true, reviewCreada = false, error = "", reviewsCount = 0 } =
-
-    useSelector((state) => state.reviews);
+  const { reviews = [], page = 0, isLoading = true, reviewCreada = false, error = "", reviewsCount = 0 } = useSelector((state) => state.reviews);
 
   const dispatch = useDispatch();
   // let { authToken, setAuthToken,usuari, setUsuari ,reviewCreada,setReviewCreada,reviews, setReviews} = useContext(UserContext);
@@ -55,7 +53,9 @@ const Review = ({ review }) => {
           <tr>
             <td><ReactTimeAgo date={review.created_at} locale="es" /></td>
             {usuari == review.user.email ?
-              <button onClick={(e) => { delReview(review,authToken) }}>🗑️</button>
+            <>              
+            <button onClick={(e) => {dispatch(delReview(review,authToken))}}>🗑️</button>
+            {console.log(authToken)}</>
               : <></>}
           </tr>
         </tbody>

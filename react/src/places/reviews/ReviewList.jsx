@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getReviews } from "./slices/thunks";
 
 
-const ReviewList = ({ id, reviews_count }) => {
+const ReviewList = ({ id }) => {
   // let { authToken, setAuthToken, usuari, setUsuari,reviews, setReviews,refresh,setRefresh,reviewCreada,setReviewCreada } = useContext(UserContext);
   let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
   // const { id } = useParams();
@@ -16,8 +16,8 @@ const ReviewList = ({ id, reviews_count }) => {
   const dispatch = useDispatch();
   // const { reviews = [], page = 0, isLoading = true, add = true, error = "", reviewsCount = 0 } =
 
-  const { reviews = [], page = 0, isLoading = true, reviewCreada=false , error = "" } =
-    useSelector((state) => state.reviews);
+  const { reviews = [], page = 0, isLoading = true, reviewCreada=false , error = "" } = useSelector((state) => state.reviews);
+
   useEffect(() => {
     // dispatch(setReviewsCount(reviews_count))
     dispatch(getReviews(0, id, authToken, usuari));
@@ -75,7 +75,6 @@ const ReviewList = ({ id, reviews_count }) => {
 
         {reviews.map((review) => (
           <div class="card" key={review.id}>
-            {console.log(id)}
             <Review review={review} id={id} />
           </div>
         ))}
