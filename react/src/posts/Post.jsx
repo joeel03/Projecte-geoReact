@@ -12,9 +12,9 @@ import PostMarks from './PostMarks';
 import { useReducer } from 'react';
 
 // USANDO SLICE POSTMARKSLICE
-import { addMark } from '../slices/postMarkSlice';
+import { postMarkSlice } from '../slices/posts/postMarkSlice';
 import { useDispatch } from 'react-redux';
-import { ismarked } from '../slices/postMarkSlice';
+import { ismarked } from '../slices/posts/postMarkSlice';
 import { useSelector } from 'react-redux';
 
 import { useLocation } from 'react-router-dom';
