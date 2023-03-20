@@ -36,7 +36,6 @@ export const CommentAdd = ({ id }) => {
     console.log(resposta);
     if (resposta.success == true) {
       console.log("Todo bien");
-      setRefresca(true);
       setCommentsCount(commentsCount + 1);
     } else {
       console.log("S'ha produit un error");

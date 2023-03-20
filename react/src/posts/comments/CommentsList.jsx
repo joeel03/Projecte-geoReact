@@ -16,7 +16,8 @@ export const CommentsList = ({ id, comments_count }) => {
 
   let { usuari, email, setUsuari, authToken, setAuthToken } = useContext(UserContext);
   const dispatch = useDispatch();
-  const { comment = [], page = 0, isLoading = true, add = true, error = "", commentsCount = 0 } = useSelector((state) => state.comments);
+  const { comments = [], page = 0, isLoading = true, add = true, error = "", commentsCount = 0 } = 
+      useSelector((state) => state.comments);
   
   useEffect(() => {
 
@@ -84,7 +85,7 @@ export const CommentsList = ({ id, comments_count }) => {
         <></>
       )}
 
-      {comment.map((v) => {
+      {comments.map((v) => {
         return <Comment key={v.id} comment={v} id = {id} />;
       })}
 

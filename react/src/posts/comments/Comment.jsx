@@ -12,7 +12,6 @@ import { delComment } from "../../slices/posts/comments/thunks";
 
 export const Comment = ({ comment }) => {
   const { usuari, email, setUsuari, authToken, setAuthToken } = useContext(UserContext);
-  const { comments = [], page = 0, isLoading = true, add = true, error = "", commentsCount = 0 } = useSelector((state) => state.comments);
   const dispatch = useDispatch();
 
   // let { setAdd, setRefresca} = useContext(CommentsContext);
