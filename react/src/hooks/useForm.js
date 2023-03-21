@@ -12,18 +12,19 @@ export const useForm = (initialForm = {}) => {
         // Desestructurem ara target
 
         const { name, value } = target;
-
+      
+   
         setFormState({
 
-            ...formState,
+             ...formState,
 
-            // [target.name] : target.value
+           //   [target.name] : target.value
 
-            [name]: value,
+             [name]: value,
 
-        });
+         });
 
-        // Si no haguéssim desestrcuturat res...
+         // Si no haguéssim desestrcuturat res...
 
         // [e.target.name] : e.target.value
     };

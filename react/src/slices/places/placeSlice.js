@@ -1,21 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
 
-    reviews: [],
+    formulari:[],
 
-    isLoading: false,
+    isSaving: true,
 
     error: "",
 
-    formulari: [],
-
-    reviewCreada: false,
-
 
 }
-export const reviewSlice = createSlice({
+export const placeSlice = createSlice({
 
-    name: "review",
+    name: "place",
 
     initialState,
 
@@ -25,15 +21,16 @@ export const reviewSlice = createSlice({
 
             //console.log("ABA")
 
-            state.isLoading = true;
+            // state.isLoading = true;
+            state.isSaving = true;
 
         },
 
-        setReviews: (state, action) => {
+        setFormulari: (state, action) => {
 
-            state.reviews = action.payload
+            state.formulari = action.payload
 
-            state.isLoading = false
+            // state.isLoading = false
         },
 
         setreviewCreada: (state, action) => {
@@ -63,6 +60,6 @@ export const reviewSlice = createSlice({
 
 });
 
-export const { setreviewCreada, startLoadingReviews, setReviews, setAdd, setError, setReviewsCount } = reviewSlice.actions;
+export const { setreviewCreada, startLoadingReviews, setReviews, setAdd, setError, setReviewsCount } = placeSlice.actions;
 
-export default reviewSlice.reducer
+export default placeSlice.reducer
