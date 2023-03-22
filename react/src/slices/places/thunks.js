@@ -1,98 +1,162 @@
-import { setAdd, setError, setComments, setCommentsCount, startLoadingComments } from "./commentSlice";
+import { setreviewCreada, startLoadingReviews, setReviews, setError } from "./reviewSlice"
+export const getReviews = (page = 0, id, authToken, usuari = "") => {
 
-export const getComments = (page = 0, id, authToken, usuari = "") => {
     return async (dispatch, getState) => {
 
-        dispatch(startLoadingComments());
-
+        dispatch(startLoadingReviews());
         const headers = {
+
             headers: {
+
                 Accept: "application/json",
+
                 "Content-Type": "application/json",
+
                 Authorization: "Bearer " + authToken,
+
             },
+
             method: "GET",
+
         };
-        const url = "https://backend.insjoaquimmir.cat/api/posts/" + id + "/comments"
+
+        const url = "https://backend.insjoaquimmir.cat/api/places/" + id + "/reviews"
 
         const data = await fetch(url, headers);
+
         const resposta = await data.json();
 
         if (resposta.success == true) {
-            dispatch(setComments(resposta.data));
+            console.log("entra")
+
+            dispatch(setReviews(resposta.data));
+            console.log(resposta.data)
+
         }
+
         else {
+
             dispatch(setError(resposta.message));
+
         }
 
         resposta.data.map((v) => {
+            console.log(usuari)
+
             if (v.user.email === usuari) {
-                dispatch(setAdd(false));
-                console.log("Te comment");
+
+                dispatch(setreviewCreada(true));
+
+                console.log("Te review");
+
             }
+
         });
 
     };
-}
 
-export const delComment = (comment, authToken) => {
+}
+export const delReview = (review, authToken) => {
+
     return async (dispatch, getState) => {
 
-
         const data = await fetch(
-            "https://backend.insjoaquimmir.cat/api/posts/" +
-            comment.post.id +
-            "/comments/" +
-            comment.id,
+
+            "https://backend.insjoaquimmir.cat/api/places/" +
+
+            review.place.id +
+
+            "/reviews/" +
+
+            review.id,
+
             {
+
                 headers: {
+
                     Accept: "application/json",
+
                     "Content-Type": "application/json",
+
                     Authorization: "Bearer " + authToken,
+
                 },
+
                 method: "DELETE",
+
             }
+
         );
+
         const resposta = await data.json();
 
-        console.log(resposta);
         if (resposta.success == true) {
-            dispatch(setAdd(true));
+
+            console.log("OK");
+
+            dispatch(setreviewCreada(false));
+
             // usuari no l'indiquem i per defecta estarà a ""
-            dispatch(getComments(0, comment.post.id, authToken))
-            const state = getState()
-            dispatch(setCommentsCount(state.setCommentsCount - 1));
+
+            dispatch(getReviews(0, review.place.id, authToken))
+
+            // const state = getState()
+
+            // dispatch(setReviewsCount(state.reviewsCount - 1));
+
         }
 
-
     };
+
 };
 
-export const addComment = (authToken, formData, id) => {
+export const addReview = (authToken,formData,id) => {
 
     return async (dispatch, getState) => {
 
         const data = await fetch(
-            "https://backend.insjoaquimmir.cat/api/posts/" +
+
+            "https://backend.insjoaquimmir.cat/api/places/" +
+
             id +
-            "/comments",
+
+            "/reviews" ,
+
             {
+
                 headers: {
+
                     Accept: "application/json",
+
                     Authorization: "Bearer " + authToken,
+
                 },
+
                 method: "POST",
-                body: formData
+                body:formData
+
             }
+
         );
 
         const resposta = await data.json();
-        console.log(resposta)
+            console.log(resposta)
         if (resposta.success == true) {
+
             console.log("OK");
-            dispatch(setAdd(true));
-            dispatch(getComments(0, id, authToken))
-        } else {
+
+            dispatch(setreviewCreada(true));
+
+            // usuari no l'indiquem i per defecta estarà a ""
+
+            dispatch(getReviews(0, id, authToken))
+
+            // const state = getState()
+
+            // dispatch(setReviewsCount(state.reviewsCount - 1));
+
+        
+    }else{
             dispatch(setError(resposta.message))
         }
 

@@ -4,9 +4,8 @@ import { Comment } from "./Comment";
 
 import { useContext } from "react";
 import { UserContext } from "../../userContext";
-
+import CommentAdd from "./CommentAdd";
 import { useState } from "react";
-import { CommentAdd } from "./CommentAdd";
 import { CommentsContext } from "./commentsContext";
 import { useDispatch, useSelector } from "react-redux";
 import { getComments } from "../../slices/posts/comments/thunks";

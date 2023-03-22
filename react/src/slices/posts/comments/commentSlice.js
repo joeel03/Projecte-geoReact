@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   comments: [],
-  page: 0,
   isLoading: false,
   add: true,
   error: "",
@@ -14,7 +13,6 @@ const initialState = {
   initialState,
   reducers: {
     startLoadingComments: (state) => {
-      //console.log("ABA")  
       state.isLoading = true;
     },
     setComments: (state, action ) => {
