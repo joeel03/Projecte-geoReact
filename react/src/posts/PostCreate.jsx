@@ -15,6 +15,7 @@ const PostCreate = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
+  const { posts = [], isLoading = true, addPost = false, error = "" } = useSelector((state) => state.posts);
 
   const { id } = useParams();
 
@@ -28,7 +29,7 @@ const PostCreate = () => {
   formData.append("post", post);
 
   let [formulari, setFormulari] = useState({});
-  let [error, setError] = useState("");
+  // let [error, setError] = useState("");
 
 
 
