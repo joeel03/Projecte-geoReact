@@ -1,62 +1,48 @@
-import { setreviewCreada, startLoadingReviews, setReviews, setError } from "./reviewSlice"
-export const getReviews = (page = 0, id, authToken, usuari = "") => {
-
+import { setreviewCreada, startLoadingReviews, setError } from "./placeSlice"
+export const addPlace = (formData   , authToken) => {
+    
     return async (dispatch, getState) => {
 
-        dispatch(startLoadingReviews());
+        // dispatch(startLoadingReviews());
         const headers = {
 
             headers: {
 
                 Accept: "application/json",
 
-                "Content-Type": "application/json",
-
                 Authorization: "Bearer " + authToken,
 
             },
 
-            method: "GET",
+            method: "POST",
+            body: formData  
+
 
         };
 
-        const url = "https://backend.insjoaquimmir.cat/api/places/" + id + "/reviews"
+        const url = "https://backend.insjoaquimmir.cat/api/places"
 
         const data = await fetch(url, headers);
 
         const resposta = await data.json();
 
         if (resposta.success == true) {
-            console.log("entra")
-
-            dispatch(setReviews(resposta.data));
-            console.log(resposta.data)
+            console.log("place creado: " + resposta.data)
+        
+            // dispatch(setPlaces(resposta.data));
+             navigate("/places/"+resposta.data.id)
 
         }
 
         else {
-
+            console.log(resposta)
             dispatch(setError(resposta.message));
 
         }
-
-        resposta.data.map((v) => {
-            console.log(usuari)
-
-            if (v.user.email === usuari) {
-
-                dispatch(setreviewCreada(true));
-
-                console.log("Te review");
-
-            }
-
-        });
-
     };
 
 }
-export const delReview = (review, authToken) => {
+export const delPlace = (review, authToken) => {
 
     return async (dispatch, getState) => {
 
