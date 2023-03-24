@@ -1,160 +1,155 @@
 import React from 'react'
-import { useContext } from "react";
 import { UserContext } from "../userContext";
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect,useContext } from 'react';
+import { useParams,useNavigate,useLocation } from 'react-router-dom';
 import ReviewList from './reviews/ReviewList';
-import { useLocation } from 'react-router-dom';
-import PlaceMarks from './PlaceMarks';
-import { placeMarkReducer } from './placeMarkReducer';
-import { useReducer } from 'react';
-import { useSelector } from 'react-redux';
+// import PlaceMarks from './PlaceMarks';
+// import { placeMarkReducer } from './placeMarkReducer';
+// import { useReducer } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import { addMark } from '../slices/placeMarkSlice.';
-import { useDispatch } from 'react-redux';
+import { setError } from './reviews/slices/reviewSlice';
 import { ismarked } from '../slices/placeMarkSlice.';
+import { getPlace,delPlace,comprovarFavorite,eliminarFavorite,darFavorite } from '../slices/places/thunks';
 // const initialState = [];
 
 const Place = () => {
   let { authToken, setAuthToken, refresh, setRefresh,usuari, setUsuari } = useContext(UserContext);
-  let [error, setError] = useState("");
+  // let [error, setError] = useState("");
   const { id } = useParams();
-  let [loading, setLoading] = useState(true);
-  let [place, setPlace] = useState([])
+  // let [loading, setLoading] = useState(true);
+  // let [place, setPlace] = useState([])
   let navigate = useNavigate();
   let [favorite, setFavorite] = useState(null);
+  const { isSaving = true, error ,isLoading,place } = useSelector((state) => state.places);
 
   //  const init = () => {
   //    return JSON.parse(localStorage.getItem("marks")) || []
   //  }
-
   //  const [marks, dispatchMark] = useReducer(placeMarkReducer, initialState, init);
+
   const { marks, isMarked } = useSelector(state => state.marks)
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-
     localStorage.setItem('marks', JSON.stringify(marks))
-
   }, [marks])
-  console.log(marks)
-
+  console.log("marks: "+marks)
 
   const { pathname } = useLocation()
 
+  // const comprovarFavorite = async () => {
 
-  const comprovarFavorite = async () => {
+  //   try {
+  //     console.log("Id place:"+id)
+  //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         'Authorization': 'Bearer ' + authToken,
+  //       },
+  //       method: "POST",
+  //     });
+  //     const resposta = await data.json();
+  //     if (resposta.success === true) {
+  //       console.log("Resposta:" +resposta)
+  //       eliminarFavorite();
 
-    try {
-      console.log(id)
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + authToken,
-        },
-        method: "POST",
-      });
-      const resposta = await data.json();
-      if (resposta.success === true) {
-        console.log(resposta)
-        eliminarFavorite();
+  //     }
+  //     else {
+  //       setFavorite(false)
+  //       console.log("Resposta:" +resposta)
+  //       setError(resposta.message);
+  //     }
+  //   } catch (err) {
+  //     console.log("Err message"+err.message);
+  //     alert("Catchch");
+  //   };
+  // // }
+  // const darFavorite = async (e) => {
+  //   try {
+  //     console.log(id)
+  //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         'Authorization': 'Bearer ' + authToken,
+  //       },
+  //       method: "POST",
+  //     });
+  //     const resposta = await data.json();
+  //     if (resposta.success === true) {
+  //       console.log(resposta)
+  //       console.log("favorite añadido")
+  //       setFavorite(false)
 
-      }
-      else {
-        setFavorite(false)
-        console.log(resposta)
-        setError(resposta.message);
-      }
-    } catch (err) {
-      console.log(err.message);
-      alert("Catchch");
-    };
-  }
-  const darFavorite = async (e) => {
-    try {
-      console.log(id)
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + authToken,
-        },
-        method: "POST",
-      });
-      const resposta = await data.json();
-      if (resposta.success === true) {
-        console.log(resposta)
-        console.log("favorite añadido")
-        setFavorite(false)
+  //     }
+  //     else {
+  //       console.log(resposta.message)
+  //       setError(resposta.message);
+  //     }
+  //   } catch (err) {
+  //     console.log(err.message);
+  //     alert("Catchch");
+  //   };
+  // //}
+  // const eliminarFavorite = async () => {
+  //   try {
+  //     console.log(id)
+  //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         'Authorization': 'Bearer ' + authToken,
+  //       },
+  //       method: "DELETE",
+  //     });
+  //     const resposta = await data.json();
+  //     if (resposta.success === true) {
+  //       console.log(resposta)
+  //       setFavorite(true)
+  //       console.log("favorite eliminado")
+  //     }
+  //     else {
+  //       console.log(resposta.message)
+  //       setError(resposta.message);
+  //     }
+  //   } catch (err) {
+  //     console.log(err.message);
+  //     alert("Catchch");
+  //   };
+  // }
+  // const getPlace = async () => {
+  //   try {
+  //     console.log(id)
+  //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         'Authorization': 'Bearer ' + authToken,
+  //       },
+  //       method: "GET",
+  //     });
+  //     const resposta = await data.json();
+  //     if (resposta.success === true) {
+  //       console.log(resposta)
+  //       setLoading(false);
+  //       setPlace(resposta.data)
+  //     }
+  //     else {
+  //       console.log(resposta)
+  //       setError(resposta.message);
+  //     }
+  //   } catch (err) {
+  //     console.log(err.message);
+  //     alert("Catchch");
+  //   };
 
-      }
-      else {
-        console.log(resposta.message)
-        setError(resposta.message);
-      }
-    } catch (err) {
-      console.log(err.message);
-      alert("Catchch");
-    };
-  }
-  const eliminarFavorite = async () => {
-    try {
-      console.log(id)
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites"), {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + authToken,
-        },
-        method: "DELETE",
-      });
-      const resposta = await data.json();
-      if (resposta.success === true) {
-        console.log(resposta)
-        setFavorite(true)
-        console.log("favorite eliminado")
-      }
-      else {
-        console.log(resposta.message)
-        setError(resposta.message);
-      }
-    } catch (err) {
-      console.log(err.message);
-      alert("Catchch");
-    };
-  }
-  const getPlace = async () => {
-    try {
-      console.log(id)
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + authToken,
-        },
-        method: "GET",
-      });
-      const resposta = await data.json();
-      if (resposta.success === true) {
-        console.log(resposta)
-        setLoading(false);
-        setPlace(resposta.data)
-      }
-      else {
-        console.log(resposta)
-        setError(resposta.message);
-      }
-    } catch (err) {
-      console.log(err.message);
-      alert("Catchch");
-    };
-
-  }
+  // }
   useEffect(() => {
-    getPlace();
-    comprovarFavorite();
+    // getPlace();
+    dispatch(getPlace(authToken,id))
+    dispatch(comprovarFavorite(authToken,id));
     dispatch(ismarked(id))
   }, [marks]);
 
@@ -179,35 +174,35 @@ const Place = () => {
   // }
 
 
-  const deletePlace = async (id) => {
-    try {
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + authToken
-        },
-        method: "DELETE",
-      });
-      const resposta = await data.json();
-      if (resposta.success === true) {
-        console.log("place eliminado")
-        navigate("/places/list")
-      }
-      else {
-        console.log(resposta.message)
-        setError(resposta.message);
-      }
-    } catch {
-      console.log("Error");
-      alert("Catchch");
-    };
-  }
+  // const deletePlace = async (id) => {
+  //   try {
+  //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Authorization': 'Bearer ' + authToken
+  //       },
+  //       method: "DELETE",
+  //     });
+  //     const resposta = await data.json();
+  //     if (resposta.success === true) {
+  //       console.log("place eliminado")
+  //       navigate("/places/list")
+  //     }
+  //     else {
+  //       console.log(resposta.message)
+  //       setError(resposta.message);
+  //     }
+  //   } catch {
+  //     console.log("Error");
+  //     alert("Catchch");
+  //   };
+  // }
   
   
   return (
 
     <>
-      {loading ?
+      {isLoading ?
         "cargando..."
         :
         <>
@@ -246,7 +241,7 @@ const Place = () => {
               {usuari == place.author.email ?
                 <>
                   <button onClick={(e) => { navigate("/places/edit/" + place.id) }}>📝</button>
-                  <button onClick={(e) => { deletePlace(place.id) }}>🗑️</button>
+                  <button onClick={(e) => { dispatch(delPlace(authToken,navigate,place.id)) }}>🗑️</button>
                 </>
                 : <></>}{isMarked ?
                   <button>DESAT</button>
@@ -257,9 +252,14 @@ const Place = () => {
               }
 
               {favorite ?
-                <button onClick={(e) => { darFavorite(e) }}>⭐</button>
+              
+                <button onClick={(e) => { e.preventDefault,dispatch(darFavorite(authToken,id)) }}>⭐</button>
                 :
-                <button onClick={(e) => { eliminarFavorite(e) }}>⭐❌</button>
+                <>
+                {console.log(id)}
+                <button onClick={(e) => { e.preventDefault,dispatch(eliminarFavorite(authToken,id)) }}>⭐❌</button>
+                
+                </>
 
               }
             </div>

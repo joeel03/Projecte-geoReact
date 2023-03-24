@@ -27,10 +27,8 @@ export const getReviews = (page = 0, id, authToken, usuari = "") => {
         const resposta = await data.json();
 
         if (resposta.success == true) {
-            console.log("entra")
 
             dispatch(setReviews(resposta.data));
-            console.log(resposta.data)
 
         }
 
@@ -92,7 +90,6 @@ export const delReview = (review, authToken) => {
 
         if (resposta.success == true) {
 
-            console.log("OK");
 
             dispatch(setreviewCreada(false));
 
