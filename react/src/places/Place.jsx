@@ -252,15 +252,12 @@ const Place = () => {
               }
 
               {favorite ?
-              
                 <button onClick={(e) => { e.preventDefault,dispatch(darFavorite(authToken,id)) }}>⭐</button>
                 :
                 <>
                 {console.log(id)}
                 <button onClick={(e) => { e.preventDefault,dispatch(eliminarFavorite(authToken,id)) }}>⭐❌</button>
-                
                 </>
-
               }
             </div>
 

@@ -116,8 +116,10 @@ export const comprovarFavorite = (authToken, id) => {
         );
         const resposta = await data.json();
         if (resposta.success == true) {
+            console.log("favorite del principio ")
             console.log("Resposta:" +resposta)
-            eliminarFavorite()
+            console.log(id)
+            dispatch(eliminarFavorite(authToken,id))
         }else {
             dispatch(setFavorite(false))
             dispatch(setError(resposta.message));
