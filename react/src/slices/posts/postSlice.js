@@ -1,35 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  posts: [],
-  isLoading: false,
-  addPost: true,
+  formulari: [],
+
+  isSaving: false,
+
   error: "",
+
+  isLoading: false,
+
+  post: {
+    body: "",
+    file: { filepath: "" },
+    author: { name: "" },
+    latitude: 0,
+    longitude: 0,
+    visibility: 0,
+  },
+
+  postCrear: true,
+
+
 }
 
- export const postSlice = createSlice({
+export const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    startLoadingPosts: (state) => {
-      state.isLoading = true;
+    postisSaving: (state, action) => {
+      state.isSaving = action.payload;
     },
-    setPosts: (state, action ) => {
+    postisLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
+    setPosts: (state, action) => {
+      state.post = action.payload
+    },
+    setpostCrear: (state, action) => {
+      state.postCrear = action.payload
+    },
+    setpostError: (state, action) => {
 
-      state.posts= action.payload
-      state.isLoading=false
-     
-      },
-      setaddPost: (state,action) => 
-      {
-        state.addPost = action.payload
-      },
-      setError: (state,action) => {
-
-        state.error = action.payload
-      }
+      state.error = action.payload
+    }
   }
 });
 
-export const { startLoadingPosts,setPosts,addPost,setError} = postSlice.actions;
+export const { postisSaving,postisLoading, setPosts, setpostCrear, setpostError } = postSlice.actions;
 export default postSlice.reducer
