@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react'
-import { useState } from "react";
-import { useContext } from "react";
+import React, { useEffect,useState,useContext } from 'react'
 import { UserContext } from "../userContext";
 import { addPlace } from '../slices/places/thunks';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 const PlaceCreate = () => {

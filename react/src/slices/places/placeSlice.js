@@ -19,7 +19,7 @@ const initialState = {
         visibility:0,
     },
     
-    favorite:null,
+    favorite:true,
 
 }
 export const placeSlice = createSlice({

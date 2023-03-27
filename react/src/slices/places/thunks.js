@@ -173,3 +173,28 @@ export const eliminarFavorite = (authToken, id) => {
 
     };
 };
+
+export const handleUpdate = (authToken, id,formData,navigate) => {
+    return async (dispatch, getState) => {
+        const data = await fetch(
+            "https://backend.insjoaquimmir.cat/api/places/" + id,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + authToken,
+                },
+                method: "POST",
+                body: formData
+            }
+        );
+        const resposta = await data.json();
+        if (resposta.success == true) {
+            console.log("place actualizado")
+            navigate("/places/" + resposta.data.id) 
+        }else {
+            dispatch(setError(resposta.message));
+        }
+
+    };
+};

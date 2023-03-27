@@ -20,8 +20,8 @@ const Place = () => {
   // let [loading, setLoading] = useState(true);
   // let [place, setPlace] = useState([])
   let navigate = useNavigate();
-  let [favorite, setFavorite] = useState(null);
-  const { isSaving = true, error ,isLoading,place } = useSelector((state) => state.places);
+  // let [favorite, setFavorite] = useState(null);
+  const { isSaving = true, error ,isLoading,place,favorite } = useSelector((state) => state.places);
 
   //  const init = () => {
   //    return JSON.parse(localStorage.getItem("marks")) || []
