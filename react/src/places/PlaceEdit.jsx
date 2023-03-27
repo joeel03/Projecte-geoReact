@@ -1,60 +1,70 @@
-import React, { useEffect,useState,useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { UserContext } from "../userContext";
-import { useNavigate,useParams } from "react-router-dom";
-import { useSelector,useDispatch } from 'react-redux';
-import { setisLoading,setPlace } from '../slices/places/placeSlice';
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { setisLoading, setPlace } from '../slices/places/placeSlice';
+import { getPlace,handleUpdate } from '../slices/places/thunks';
 const PlaceEdit = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-
   let [formulari, setFormulari] = useState({});
   let { authToken, setAuthToken } = useContext(UserContext);
   // let [error, setError] = useState("");
   const { id } = useParams();
   // let [loading, setLoading] = useState(true);
   // let [place, setPlace] = useState([])
-  const { isSaving = true, error ,isLoading,place,favorite } = useSelector((state) => state.places);
-
-
-  const getPlace = async () => {
-    try {
-      console.log(id)
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + authToken,
-        },
-        method: "GET",
-      });
-      const resposta = await data.json();
-      if (resposta.success === true) {
-        console.log(resposta);
-        dispatch(setisLoading(false));
-        dispatch(setPlace(resposta.data));
-        // setLoading(false);
-        // setPlace(resposta.data);
-        setFormulari({
-          name: resposta.data.name,
-          description: resposta.data.description,
-          upload: "",
-          latitude: resposta.data.latitude,
-          longitude: resposta.data.longitude,
-          visibility: resposta.data.visibility.id
-        })
-      }
-      else {
-        setError(resposta.message);
-      }
-    } catch (err) {
-      console.log(err.message);
-      alert("Catchch");
-    };
-
-  }
+  const { isSaving = true, error="", isLoading, place, favorite } = useSelector((state) => state.places);
   useEffect(() => {
-    getPlace();
+    dispatch(getPlace(authToken, id));
   }, []);
+  useEffect(() => {
+    console.log(place)
+    setFormulari({
+      name: place.name,
+      description: place.description,
+      longitude: place.longitude,
+      latitude: place.latitude,
+      visibility: place.visibility.id
+    })
+  }, [place])
+
+  // const getPlace = async () => {
+  //   try {
+  //     console.log(id)
+  //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         'Authorization': 'Bearer ' + authToken,
+  //       },
+  //       method: "GET",
+  //     });
+  //     const resposta = await data.json();
+  //     if (resposta.success === true) {
+  //       console.log(resposta);
+  //       dispatch(setisLoading(false));
+  //       dispatch(setPlace(resposta.data));
+  //       // setLoading(false);
+  //       // setPlace(resposta.data);
+  //       setFormulari({
+  //         name: resposta.data.name,
+  //         description: resposta.data.description,
+  //         upload: "",
+  //         latitude: resposta.data.latitude,
+  //         longitude: resposta.data.longitude,
+  //         visibility: resposta.data.visibility.id
+  //       })
+  //     }
+  //     else {
+  //       setError(resposta.message);
+  //     }
+  //   } catch (err) {
+  //     console.log(err.message);
+  //     alert("Catchch");
+  //   };
+
+  // }
+
   const handleChange = (e) => {
     e.preventDefault();
     if (e.target.type && e.target.type === "file") {
@@ -69,14 +79,6 @@ const PlaceEdit = () => {
       })
     }
   };
-  let { name, description, upload, latitude, longitude, visibility = 1 } = formulari;
-  const formData = new FormData;
-  formData.append("name", name);
-  formData.append("description", description);
-  formData.append("upload", upload);
-  formData.append("latitude", latitude);
-  formData.append("longitude", longitude);
-  formData.append("visibility", visibility);
 
   // const handleUpdate = async (e) => {
   //   e.preventDefault();
@@ -148,8 +150,9 @@ const PlaceEdit = () => {
                 </select>
 
               </div>
-              <button className="btn btn-primary" onClick={(e) => {e.preventDefault(),
-                dispatch(handleUpdate(authToken,id,formData,navigate));
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault(),
+                dispatch(handleUpdate(authToken, id, formulari, navigate));
               }}>Update</button>
 
               {error ? (<div>{error}</div>) : (<></>)}        </form>

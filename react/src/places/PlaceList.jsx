@@ -4,8 +4,10 @@ import { UserContext } from "../userContext";
 import { useState, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import { delPlace } from '../slices/places/thunks';
+// const PlaceList = ({ place , deletePlace}) => {
 
-const PlaceList = ({ place , deletePlace}) => {
+const PlaceList = ({place}) => {
     let { authToken, setAuthToken } = useContext(UserContext);
     let {usuari, setUsuari} = useContext(UserContext);
     let navigate = useNavigate();
@@ -22,8 +24,8 @@ const PlaceList = ({ place , deletePlace}) => {
             <td><button onClick={(e) => {navigate("/places/"+place.id)}}>👁️</button>
                 {usuari == place.author.email ?
                     <>
-                        <button onClick={(e) => {navigate("/places/edit/"+place.id)}}>📝</button> <button  onClick={(e) => {
-            deletePlace(place.id)}}>🗑️</button>
+                        <button onClick={(e) => {navigate("/places/edit/"+place.id)}}>📝</button> 
+                        <button onClick={(e) => {dispatch(delPlace(place.id))}}>🗑️</button>
                     </>
                     : <></>}    
                     </td>
