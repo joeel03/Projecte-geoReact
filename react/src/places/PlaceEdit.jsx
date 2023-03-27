@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react'
-import { useState } from "react";
-import { useContext } from "react";
+import React, { useEffect,useState,useContext } from 'react'
 import { UserContext } from "../userContext";
-import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
-
+import { useNavigate,useParams } from "react-router-dom";
+import { useSelector,useDispatch } from 'react-redux';
+import { setisLoading,setPlace } from '../slices/places/placeSlice';
 const PlaceEdit = () => {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
+
   let [formulari, setFormulari] = useState({});
   let { authToken, setAuthToken } = useContext(UserContext);
-  let [error, setError] = useState("");
+  // let [error, setError] = useState("");
   const { id } = useParams();
-  let [loading, setLoading] = useState(true);
-  let [place, setPlace] = useState([])
+  // let [loading, setLoading] = useState(true);
+  // let [place, setPlace] = useState([])
+  const { isSaving = true, error ,isLoading,place,favorite } = useSelector((state) => state.places);
 
 
   const getPlace = async () => {
@@ -29,8 +30,10 @@ const PlaceEdit = () => {
       const resposta = await data.json();
       if (resposta.success === true) {
         console.log(resposta);
-        setLoading(false);
-        setPlace(resposta.data);
+        dispatch(setisLoading(false));
+        dispatch(setPlace(resposta.data));
+        // setLoading(false);
+        // setPlace(resposta.data);
         setFormulari({
           name: resposta.data.name,
           description: resposta.data.description,
@@ -74,43 +77,44 @@ const PlaceEdit = () => {
   formData.append("latitude", latitude);
   formData.append("longitude", longitude);
   formData.append("visibility", visibility);
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + authToken
-        },
-        method: "POST",
-        body: formData
-      });
-      const resposta = await data.json();
-      if (resposta.success === true) {
-        console.log("place actualizado")
-        navigate("/places/" + resposta.data.id)
-      }
-      else {
-        console.log(resposta.message)
-        setError(resposta.message);
-      }
-    } catch {
-      console.log("Error");
-      alert("Catchch");
-    };
-  }
+
+  // const handleUpdate = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Authorization': 'Bearer ' + authToken
+  //       },
+  //       method: "POST",
+  //       body: formData
+  //     });
+  //     const resposta = await data.json();
+  //     if (resposta.success === true) {
+  //       console.log("place actualizado")
+  //       navigate("/places/" + resposta.data.id)
+  //     }
+  //     else {
+  //       console.log(resposta.message)
+  //       setError(resposta.message);
+  //     }
+  //   } catch {
+  //     console.log("Error");
+  //     alert("Catchch");
+  //   };
+  // }
 
 
   return (
     <>
-      {loading ?
+      {isLoading ?
         "cargando..."
         :
         <div>
           <div className="card ">
             <div className="card-header ">
 
-              <h1 className="text-center h2 fw-bold">Crear sitio</h1>
+              <h1 className="text-center h2 fw-bold">Editar sitio</h1>
 
             </div >
             <form method="post" className="separar" enctype="multipart/form-data">
@@ -144,8 +148,8 @@ const PlaceEdit = () => {
                 </select>
 
               </div>
-              <button className="btn btn-primary" onClick={(e) => {
-                handleUpdate(e);
+              <button className="btn btn-primary" onClick={(e) => {e.preventDefault(),
+                dispatch(handleUpdate(authToken,id,formData,navigate));
               }}>Update</button>
 
               {error ? (<div>{error}</div>) : (<></>)}        </form>

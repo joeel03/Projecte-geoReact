@@ -3,10 +3,23 @@ const initialState = {
 
     formulari:[],
 
-    isSaving: true,
+    isSaving: false,
 
     error: "",
-
+    
+    isLoading:false,
+    
+    place:{ 
+        name: "",
+        description: "",
+        file: { filepath: "" },
+        author: { name: "" },
+        latitude: 0,
+        longitude: 0,
+        visibility:0,
+    },
+    
+    favorite:true,
 
 }
 export const placeSlice = createSlice({
@@ -17,26 +30,16 @@ export const placeSlice = createSlice({
 
     reducers: {
 
-        startLoadingReviews: (state) => {
+        setisSaving: (state,action) => {
 
             //console.log("ABA")
-
             // state.isLoading = true;
-            state.isSaving = true;
-
+            state.isSaving = action.payload;
         },
 
-        setFormulari: (state, action) => {
+        setisLoading: (state, action) => {
 
-            state.formulari = action.payload
-
-            // state.isLoading = false
-        },
-
-        setreviewCreada: (state, action) => {
-
-            state.reviewCreada = action.payload
-
+            state.isLoading = action.payload;
         },
 
         setError: (state, action) => {
@@ -45,14 +48,14 @@ export const placeSlice = createSlice({
 
         },
 
-        // setFormulari: (state,action) => {
+        setPlace: (state,action) => {
 
-        // state.formulari = action.payload
+            state.place = action.payload
 
-        // },
-        setReviewsCount: (state, action) => {
+        },
+        setFavorite: (state, action) => {
 
-            state.reviewsCount = action.payload
+            state.favorite = action.payload
 
         }
 
@@ -60,6 +63,6 @@ export const placeSlice = createSlice({
 
 });
 
-export const { setreviewCreada, startLoadingReviews, setReviews, setAdd, setError, setReviewsCount } = placeSlice.actions;
+export const { setisSaving, setisLoading, setPlace, setError, setFavorite } = placeSlice.actions;
 
 export default placeSlice.reducer
