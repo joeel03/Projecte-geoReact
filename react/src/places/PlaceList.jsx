@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { delPlace } from '../slices/places/thunks';
+import Paginate from './Paginate';
 // const PlaceList = ({ place , deletePlace}) => {
 
 const PlaceList = ({place}) => {

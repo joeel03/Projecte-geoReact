@@ -1,4 +1,4 @@
-import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces } from "./placeSlice"
+import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces,setPages } from "./placeSlice"
 
 export const addPlace = (formData, authToken, navigate) => {
 
@@ -167,7 +167,7 @@ export const handleUpdate = (authToken, id, formulari, navigate) => {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
-        if (upload!=undefined) formData.append("upload", upload);
+        if (upload != undefined) formData.append("upload", upload);
         formData.append("latitude", latitude);
         formData.append("longitude", longitude);
         formData.append("visibility", visibility);
@@ -194,9 +194,16 @@ export const handleUpdate = (authToken, id, formulari, navigate) => {
 
     };
 };
-export const getPlaces = (authToken) => {
+export const getPlaces = (authToken,page=1) => {
     return async (dispatch, getState) => {
         dispatch(setisLoading(true));
+        const url =
+
+            page > 0
+
+                ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
+
+                : "https://backend.insjoaquimmir.cat/api/places";
         const headers = {
             headers: {
                 Accept: "application/json",
@@ -204,12 +211,25 @@ export const getPlaces = (authToken) => {
             },
             method: "GET",
         };
-        const url = "https://backend.insjoaquimmir.cat/api/places"
+        // const url = "https://backend.insjoaquimmir.cat/api/places"
         const data = await fetch(url, headers);
         const resposta = await data.json();
         if (resposta.success == true) {
+            if (page > 0) {
+
+                dispatch(setPlaces(resposta.data.collection));
+                
+                dispatch(setPages(resposta.data.links));
+                
+                console.log(resposta.data.links);
+                
+                } else {
+                
+                dispatch(setPlaces(resposta.data));
+                
+                }
             dispatch(setisLoading(false));
-            dispatch(setPlaces(resposta.data));
+            // dispatch(setPlaces(resposta.data));
             console.log(resposta.data)
         }
         else {

@@ -7,6 +7,7 @@ import PlaceList from './PlaceList'
 // import { useFetch } from '../hooks/useFetch';
 import { useSelector,useDispatch } from 'react-redux';
 import { getPlaces } from '../slices/places/thunks';
+import Paginate from './Paginate';
 const PlacesList = () => {
   const dispatch = useDispatch();
 
@@ -80,7 +81,10 @@ const PlacesList = () => {
           ))}
                 
             </table>
+            <Paginate/>
+
         </div>
+    
     )
 }
 
