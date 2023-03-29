@@ -96,7 +96,7 @@ const PostCreate = () => {
       console.log("Longitude is :", pos.coords.longitude);
     });
   }, []);
-  
+
   return (
     <div>
       <div className="card ">
@@ -132,10 +132,17 @@ const PostCreate = () => {
             </select>
 
           </div>
-          <button className="btn btn-primary" onClick={(e) => {
-            e.preventDefault(),
-              dispatch(addPost(authToken, formData, navigate, dispatch));
-          }}>Afegir Comentari</button>
+          {isSaving ?
+            <>
+
+            </> :
+            <>
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault(),
+                  dispatch(addPost(authToken, formData, navigate, dispatch));
+              }}>Afegir Publicació</button>
+            </>
+          }
           <button className="btn btn-secondary" onClick={() => {
             handleReset(e);
           }}>Reset</button>

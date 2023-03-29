@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   formulari: [],
 
+  
+
   isSaving: false,
 
   error: "",
@@ -20,7 +22,6 @@ const initialState = {
 
   postCrear: true,
 
-
 }
 
 export const postSlice = createSlice({
@@ -33,18 +34,18 @@ export const postSlice = createSlice({
     postisLoading: (state, action) => {
       state.isLoading = action.payload;
     },
-    setPosts: (state, action) => {
+    setPost: (state, action) => {
       state.post = action.payload
     },
     setpostCrear: (state, action) => {
       state.postCrear = action.payload
     },
-    setpostError: (state, action) => {
+    setError: (state, action) => {
 
       state.error = action.payload
     }
   }
 });
 
-export const { postisSaving,postisLoading, setPosts, setpostCrear, setpostError } = postSlice.actions;
+export const { postisSaving,postisLoading, setPost, setpostCrear, setError } = postSlice.actions;
 export default postSlice.reducer

@@ -1,4 +1,4 @@
-import { postisSaving, postisLoading, setPosts, setpostCrear, setpostError } from "./postSlice";
+import { postisSaving, postisLoading, setPost, setpostCrear, setError, } from "./postSlice";
 
 export const addPost = (authToken, formData, navigate) => {
 
@@ -36,7 +36,7 @@ export const addPost = (authToken, formData, navigate) => {
     };
 };
 
-export const getPosts = (authToken, id) => {
+export const getPost = (authToken, id) => {
 
     return async (dispatch, getState) => {
 
@@ -53,14 +53,14 @@ export const getPosts = (authToken, id) => {
             method: "GET",
         };
 
-        const url = "https://backend.insjoaquimmir.cat/api/posts/" + id + "/posts"
+        const url = "https://backend.insjoaquimmir.cat/api/posts/" + id
 
         const data = await fetch(url, headers);
         const resposta = await data.json();
 
         if (resposta.success == true) {
             dispatch(postisLoading(false));
-            dispatch(setPosts(resposta.data));
+            dispatch(setPost(resposta.data));
         }
         else {
             dispatch(setError(resposta.message));
@@ -90,7 +90,7 @@ export const delPost = (post, authToken) => {
         if (resposta.success == true) {
             dispatch(setpostCrear(true));
             // usuari no l'indiquem i per defecta estarà a ""
-            dispatch(getPosts(0, post.id, authToken))
+            dispatch(getPost(0, post.id, authToken))
             const state = getState();
         }
 
