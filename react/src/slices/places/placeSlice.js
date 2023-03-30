@@ -8,7 +8,9 @@ const initialState = {
     error: "",
     
     isLoading:false,
-    
+
+    places:[],
+
     place:{ 
         name: "",
         description: "",
@@ -21,6 +23,9 @@ const initialState = {
     
     favorite:true,
 
+    page: 1,
+
+    pages: [], 
 }
 export const placeSlice = createSlice({
 
@@ -53,16 +58,32 @@ export const placeSlice = createSlice({
             state.place = action.payload
 
         },
+        setPlaces: (state,action) => {
+
+            state.places = action.payload
+
+        },
         setFavorite: (state, action) => {
 
             state.favorite = action.payload
 
+        },
+
+        setPage: (state,action) => {
+        
+            state.page = action.payload
+        
+        },
+        setPages: (state,action) => {
+
+            state.pages = action.payload
+            
         }
 
     }
 
 });
 
-export const { setisSaving, setisLoading, setPlace, setError, setFavorite } = placeSlice.actions;
+export const { setisSaving, setisLoading, setPlace, setError, setFavorite,setPlaces,setPages,setPage } = placeSlice.actions;
 
 export default placeSlice.reducer
