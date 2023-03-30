@@ -10,16 +10,14 @@ import { getPlaces } from '../slices/places/thunks';
 import Paginate from './Paginate';
 const PlacesList = () => {
   const dispatch = useDispatch();
+  const { isSaving = true, isLoading,places, favorite } = useSelector((state) => state.places);
 
     let { authToken, setAuthToken,usuari, setUsuari } = useContext(UserContext);
     // let [error, setError] = useState("");
     // let [places, setPlaces] = useState([]);
     // const [ refresh, setRefresh ] = useState(false)
     const { id } = useParams();
-  const { isSaving = true, isLoading,places, favorite } = useSelector((state) => state.places);
-  useEffect(() => {
-    dispatch(getPlaces(authToken))
-  }, []);
+
     // const { data, error,reRender, loading, setUrl } = useFetch("https://backend.insjoaquimmir.cat/api/places", {
     //   headers: {
     //       Accept: "application/json",
@@ -81,7 +79,6 @@ const PlacesList = () => {
           ))}
                 
             </table>
-            <Paginate/>
 
         </div>
     

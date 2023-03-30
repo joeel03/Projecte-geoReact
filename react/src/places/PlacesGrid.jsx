@@ -4,7 +4,7 @@ import PlaceGrid from './PlaceGrid'
 // import { useFetch } from '../hooks/useFetch';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPlaces } from '../slices/places/thunks';
-
+import Paginate from './Paginate';
 // import { useParams } from 'react-router-dom';
 
 const PlacesGrid = () => {
@@ -12,11 +12,12 @@ const PlacesGrid = () => {
   // let [places, setPlaces] = useState([]);
   // const [refresh, setRefresh] = useState(false)
   const dispatch = useDispatch();
-  const { isSaving = true, isLoading,places, favorite } = useSelector((state) => state.places);
+  const { isSaving = true, isLoading,places, favorite,page } = useSelector((state) => state.places);
   useEffect(() => {
-    dispatch(getPlaces(authToken))
-  }, []);
+    dispatch(getPlaces(authToken,page))
+  }, [page]);
   console.log(places)
+  
 
   // const { data, error, reRender, loading, setUrl } = useFetch("https://backend.insjoaquimmir.cat/api/places", {
   //   headers: {
@@ -52,7 +53,6 @@ const PlacesGrid = () => {
   //   }
   return (
     <div>
-      {console.log(places)}
       <h1>Places Grid</h1>
       {isLoading ?
         "cargando.." :
@@ -65,6 +65,8 @@ const PlacesGrid = () => {
               : <></>}
           </tr>
         ))}
+       <Paginate />
+
     </div>
   )
 }

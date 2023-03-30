@@ -84,6 +84,6 @@ export const placeSlice = createSlice({
 
 });
 
-export const { setisSaving, setisLoading, setPlace, setError, setFavorite,setPlaces,setPages } = placeSlice.actions;
+export const { setisSaving, setisLoading, setPlace, setError, setFavorite,setPlaces,setPages,setPage } = placeSlice.actions;
 
 export default placeSlice.reducer
