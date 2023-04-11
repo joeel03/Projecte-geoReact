@@ -60,15 +60,14 @@ export const getPost = (authToken, page = 0) => {
         const data = await fetch(url, headers);
         const resposta = await data.json();
         if (page > 0) {
-            dispatch(postisLoading(false));
-            dispatch(setPlaces(resposta.data.collection));
+            dispatch(setPost(resposta.data));
 
-            dispatch(setPages(resposta.data.links));
-            console.log(resposta.data.links);
+            dispatch(setPages(resposta.data));
+            console.log(resposta.data);
 
         } else {
 
-            dispatch(setPlaces(resposta.data));
+            dispatch(setError(resposta.message));
 
         }
 
