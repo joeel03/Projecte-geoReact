@@ -30,10 +30,9 @@ const Posts = () => {
   const { id } = useParams();
   // let [post, setPost] = useState([])
 
-  let { authToken, setAuthToken } = useContext(UserContext);
-  let { usuari, setUsuari } = useContext(UserContext);
+  let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
   let navigate = useNavigate();
-  const { isSaving = true, error = "",post, isLoading,setError } = useSelector((state) => state.posts);
+  const { isSaving = true, error = "",post, isLoading } = useSelector((state) => state.posts);
   /*
     const init = () => {
       return JSON.parse(localStorage.getItem("marks2")) || []
@@ -173,7 +172,13 @@ const Posts = () => {
                     dispatch(addMark(data))
                   }}>DESA MARK</button>
               }
-
+                {usuari == post.author.email ?
+                    <>
+                        <button onClick={(e) => {navigate("/posts/edit/"+post.id)}}>📝</button> 
+                        <button onClick={(e) => {dispatch(delPost(authToken, navigate, post.id))}}>🗑️</button>
+                    </>
+                    : <></>
+                }
 
             </div>
             <CommentsList

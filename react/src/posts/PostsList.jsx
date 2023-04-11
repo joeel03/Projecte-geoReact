@@ -58,7 +58,7 @@ const PostsList = () => {
                     <th>visibility</th>
                     <th>author</th>
                     <th>likes</th>
-                </tr>
+                </tr>z
                 {loading?
                 "Cargando...":
                 (data.data).map((post) => (

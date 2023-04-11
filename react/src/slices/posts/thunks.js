@@ -45,19 +45,14 @@ export const getPost = (authToken, id) => {
         const headers = {
             headers: {
                 Accept: "application/json",
-
                 "Content-Type": "application/json",
-
                 Authorization: "Bearer " + authToken,
             },
             method: "GET",
         };
-
         const url = "https://backend.insjoaquimmir.cat/api/posts/" + id
-
         const data = await fetch(url, headers);
         const resposta = await data.json();
-
         if (resposta.success == true) {
             dispatch(postisLoading(false));
             dispatch(setPost(resposta.data));
@@ -69,7 +64,7 @@ export const getPost = (authToken, id) => {
     };
 }
 
-export const delPost = (post, authToken) => {
+export const delPost = (authToken, navigate, id) => {
     return async (dispatch, getState) => {
 
 
@@ -85,15 +80,44 @@ export const delPost = (post, authToken) => {
             }
         );
         const resposta = await data.json();
-
         console.log(resposta);
         if (resposta.success == true) {
-            dispatch(setpostCrear(true));
-            // usuari no l'indiquem i per defecta estarà a ""
-            dispatch(getPost(0, post.id, authToken))
-            const state = getState();
+            navigate("/posts/list")
+            console.log("post eliminado");
+        } else {
+            dispatch(setError(resposta.message));
         }
+    };
+};
 
-
+export const editPost = (authToken, id, formulari, navigate) => {
+    return async (dispatch, getState) => {
+        let { body, upload, latitude, longitude, visibility = 1 } = formulari;
+        const formData = new FormData();
+        formData.append("body", body);
+        if (upload != undefined) formData.append("upload", upload);
+        formData.append("latitude", latitude);
+        formData.append("longitude", longitude);
+        formData.append("visibility", visibility);
+        console.log(formData)
+        const data = await fetch(
+            "https://backend.insjoaquimmir.cat/api/posts/" + id,
+            {
+                headers: {
+                    Accept: "application/json",
+                    Authorization: "Bearer " + authToken,
+                },
+                method: "POST",
+                body: formData
+            }
+        );
+        const resposta = await data.json();
+        if (resposta.success == true) {
+            console.log("post editado")
+            navigate("/posts/" + resposta.data.id)
+        } else {
+            console.log(resposta.message)
+            dispatch(setError(resposta.message));
+        }
     };
 };

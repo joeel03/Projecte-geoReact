@@ -3,8 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   formulari: [],
 
-  
-
   isSaving: false,
 
   error: "",
