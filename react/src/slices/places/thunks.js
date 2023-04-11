@@ -1,4 +1,7 @@
-import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces,setPages,setPage } from "./placeSlice"
+import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces, setPages, setPage } from "./placeSlice"
+import { useSelector } from "react-redux";
+// import { useContext } from "react";
+// import { UserContext } from "../../userContext";
 
 export const addPlace = (formData, authToken, navigate) => {
 
@@ -194,16 +197,73 @@ export const handleUpdate = (authToken, id, formulari, navigate) => {
 
     };
 };
-export const getPlaces = (authToken,page=0) => {
+// export const getPlaces = (authToken,page=0) => {
+//     return async (dispatch, getState) => {
+//         dispatch(setisLoading(true));
+//         const url =
+
+//             page > 0
+
+//                 ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
+
+//                 : "https://backend.insjoaquimmir.cat/api/places";
+//         const headers = {
+//             headers: {
+//                 Accept: "application/json",
+//                 Authorization: "Bearer " + authToken,
+//             },
+//             method: "GET",
+//         };
+//         // const url = "https://backend.insjoaquimmir.cat/api/places"
+//         const data = await fetch(url, headers);
+//         const resposta = await data.json();
+//         if (resposta.success == true) {
+//             if (page > 0) {
+//                 dispatch(setPlaces(resposta.data.collection));
+
+//                 dispatch(setPages(resposta.data.links));
+
+//                 console.log(resposta.data.links);
+
+//                 } else {
+
+//                 dispatch(setPlaces(resposta.data));
+
+//                 }
+//             dispatch(setisLoading(false));
+//             // dispatch(setPlaces(resposta.data));
+//             console.log(resposta.data)
+//         }
+//         else {
+//             dispatch(setError(resposta.message));
+//         }
+//     };
+// }
+
+
+export const getPlaces = (authToken, page = 0) => {
+
     return async (dispatch, getState) => {
+        let url = "";
+        const filter = getState().places.filter;
         dispatch(setisLoading(true));
-        const url =
+        if (filter.description == "") {
+            url =
+                page > 0
 
-            page > 0
+                    ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
 
-                ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
+                    : "https://backend.insjoaquimmir.cat/api/places";
+        } else {
+            url =
 
-                : "https://backend.insjoaquimmir.cat/api/places";
+                page > 0
+
+                    ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&description=" + filter.description
+
+                    : "https://backend.insjoaquimmir.cat/api/places?description=" + filter.description;
+        }
+
         const headers = {
             headers: {
                 Accept: "application/json",
@@ -217,16 +277,16 @@ export const getPlaces = (authToken,page=0) => {
         if (resposta.success == true) {
             if (page > 0) {
                 dispatch(setPlaces(resposta.data.collection));
-                
+
                 dispatch(setPages(resposta.data.links));
-                
+
                 console.log(resposta.data.links);
-                
-                } else {
-                
+
+            } else {
+
                 dispatch(setPlaces(resposta.data));
-                
-                }
+
+            }
             dispatch(setisLoading(false));
             // dispatch(setPlaces(resposta.data));
             console.log(resposta.data)

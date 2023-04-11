@@ -25,7 +25,11 @@ const initialState = {
 
     page: 1,
 
+
     pages: [], 
+
+    filter: { description: "", author: ""},
+
 }
 export const placeSlice = createSlice({
 
@@ -78,12 +82,17 @@ export const placeSlice = createSlice({
 
             state.pages = action.payload
             
+        },
+        setFilter: (state,action) => {
+
+            state.filter = action.payload
+            
         }
 
     }
 
 });
 
-export const { setisSaving, setisLoading, setPlace, setError, setFavorite,setPlaces,setPages,setPage } = placeSlice.actions;
+export const { setisSaving, setisLoading, setPlace, setError, setFavorite,setPlaces,setPages,setPage,setFilter } = placeSlice.actions;
 
 export default placeSlice.reducer
