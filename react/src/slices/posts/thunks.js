@@ -36,7 +36,7 @@ export const addPost = (authToken, formData, navigate) => {
     };
 };
 
-export const getPost = (authToken, id) => {
+export const getPost = (authToken, page = 0) => {
 
     return async (dispatch, getState) => {
 
@@ -50,19 +50,32 @@ export const getPost = (authToken, id) => {
             },
             method: "GET",
         };
-        const url = "https://backend.insjoaquimmir.cat/api/posts/" + id
+        const url =
+
+            page > 0
+
+                ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page
+
+                : "https://backend.insjoaquimmir.cat/api/posts";
         const data = await fetch(url, headers);
         const resposta = await data.json();
-        if (resposta.success == true) {
+        if (page > 0) {
             dispatch(postisLoading(false));
-            dispatch(setPost(resposta.data));
-        }
-        else {
-            dispatch(setError(resposta.message));
+            dispatch(setPlaces(resposta.data.collection));
+
+            dispatch(setPages(resposta.data.links));
+            console.log(resposta.data.links);
+
+        } else {
+
+            dispatch(setPlaces(resposta.data));
+
         }
 
-    };
-}
+    }
+};
+
+
 
 export const delPost = (authToken, navigate, id) => {
     return async (dispatch, getState) => {

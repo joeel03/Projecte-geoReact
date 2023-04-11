@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   formulari: [],
 
+  page:1,
+  pages:[],
+
   isSaving: false,
+  isLoading: false,
 
   error: "",
-
-  isLoading: false,
 
   post: {
     body: "",
@@ -17,9 +19,7 @@ const initialState = {
     longitude: 0,
     visibility: 0,
   },
-
   postCrear: true,
-
 }
 
 export const postSlice = createSlice({
@@ -41,6 +41,13 @@ export const postSlice = createSlice({
     setError: (state, action) => {
 
       state.error = action.payload
+    },
+    setPage: (state,action) => {
+      state.page = action.payload
+  
+    },
+    setPages: (state,action) => {
+      state.pages = action.payload  
     }
   }
 });
