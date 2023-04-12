@@ -5,9 +5,11 @@ import { useForm } from '../hooks/useForm';
 import { setFilter } from '../slices/places/placeSlice';
 import { useDispatch } from 'react-redux';
 import { UserContext } from "../userContext";
-
+import { useSelector } from 'react-redux';
 const PlacesMenu = () => {
-let { usuari } = useContext(UserContext);
+let { usuariId } = useContext(UserContext);
+const { filter } = useSelector((state) => state.places);
+
 const dispatch= useDispatch();
    const { formState, onInputChange } = useForm({
 
@@ -23,7 +25,10 @@ const dispatch= useDispatch();
        <Link className='click gray' to="/places/marks">Marks</Link>
        
        <input type="text" name="filtrar" placeholder='filtrar por descripcion' onChange={onInputChange}></input>
-       <button className="btn btn-primary" onClick={(e) => {dispatch(setFilter({...filtrar,description:formState.filtrar}))}}>Find</button>
+       <button className="btn btn-primary" onClick={(e) => {dispatch(setFilter({...filter,description:formState.filtrar}))}}>Find</button>
+       <button className="btn btn-primary" onClick={(e) => {dispatch(setFilter({description:"",author:usuariId}))}}>Mis sitios</button>
+       <button className="btn btn-primary" onClick={(e) => {dispatch(setFilter({description:"",author:""}))}}>Limpiar filtros</button>
+
        
     </div>
   )

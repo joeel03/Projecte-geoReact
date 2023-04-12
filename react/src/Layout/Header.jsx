@@ -12,6 +12,7 @@ const Header = () => {
   let [username, setUsername]=useState("");
   let [ roles, setRoles] = useState([]);
   let {usuari, setUsuari} = useContext(UserContext);
+  let {usuariId, setUsuariId} = useContext(UserContext);
 
   const getUser = async ()=> {
       try {
@@ -29,6 +30,7 @@ const Header = () => {
           setRoles(resposta.roles);
           console.log(resposta.user.email);
           setUsuari(resposta.user.email)
+          setUsuariId(resposta.user.id)
           // console.log(usuari);
 
         }        

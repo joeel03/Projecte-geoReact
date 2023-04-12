@@ -42,6 +42,8 @@ function App() {
   let [authToken, setAuthToken] = useState("");
   let [usuari, setUsuari] = useState("");
   let [refresh,setRefresh] = useState(false);
+  let [usuariId, setUsuariId] = useState("");
+
   // let[reviewCreada,setReviewCreada]=useState(false);
   // let [reviews, setReviews] = useState([]);
   let[comentCreado, setComentCreada]=useState(false);
@@ -51,7 +53,7 @@ function App() {
     <>
       {/* <UserContext.Provider value={{ refresh,setRefresh,usuari, setUsuari,authToken, setAuthToken,reviewCreada,setReviewCreada ,reviews, setReviews,comentCreado,setComentCreada ,coments, setComents}}  > */}
 
-      <UserContext.Provider value={{ refresh,setRefresh,usuari, setUsuari,authToken, setAuthToken,comentCreado,setComentCreada ,coments, setComents}}  >
+      <UserContext.Provider value={{ refresh,setRefresh,usuari, setUsuari,authToken, setAuthToken,comentCreado,setComentCreada ,coments, setComents,usuariId, setUsuariId}}  >
         {authToken ?
           <>
             <Header />

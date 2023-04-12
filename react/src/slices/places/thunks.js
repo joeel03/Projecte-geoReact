@@ -246,15 +246,35 @@ export const getPlaces = (authToken, page = 0) => {
     return async (dispatch, getState) => {
         let url = "";
         const filter = getState().places.filter;
+        console.log("entra: "+filter.description,filter.author)
+
         dispatch(setisLoading(true));
-        if (filter.description == "") {
+        if (filter.description == ""&&filter.author == "") {
             url =
                 page > 0
 
                     ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
 
                     : "https://backend.insjoaquimmir.cat/api/places";
-        } else {
+        }else if (!filter.author == ""&&filter.description == ""){
+            url =
+
+                page > 0
+
+                    ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&author=" + filter.author
+
+                    : "https://backend.insjoaquimmir.cat/api/places?author=" + filter.author;
+        } else if (!filter.author == ""&&!filter.description == ""){
+            console.log("entra al bueno")
+            url =
+
+            page > 0
+
+                ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&description=" + filter.description+"&author="+ filter.author
+
+                : "https://backend.insjoaquimmir.cat/api/places?description=" + filter.description+"&author=" + filter.author;;
+        }
+        else if (filter.author == ""&&!filter.description == ""){
             url =
 
                 page > 0
