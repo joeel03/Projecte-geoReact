@@ -3,14 +3,13 @@ import { useSelector } from 'react-redux';
 import { PaginateLink } from './PaginateLink';
 const Paginate = () => {
     const { pages } = useSelector((state) => state.posts);
-    console.log("Pages="+pages)
-
+    console.log(pages)
 
     return (
         <div>
-            {pages.map((page,i) => (
+            {pages.map((page, i) => (
                 <p key={i}>
-                    <PaginateLink page={page}/>
+                    <PaginateLink page={page} />
                 </p>
             ))}
         </div>

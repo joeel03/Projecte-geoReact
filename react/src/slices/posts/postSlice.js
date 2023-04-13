@@ -11,6 +11,8 @@ const initialState = {
 
   error: "",
 
+  posts:[],
+
   post: {
     body: "",
     file: { filepath: "" },
@@ -35,6 +37,9 @@ export const postSlice = createSlice({
     setPost: (state, action) => {
       state.post = action.payload
     },
+    setPosts: (state, action) => {
+      state.posts = action.payload
+    },
     setpostCrear: (state, action) => {
       state.postCrear = action.payload
     },
@@ -52,5 +57,5 @@ export const postSlice = createSlice({
   }
 });
 
-export const { postisSaving,postisLoading, setPost, setpostCrear, setError } = postSlice.actions;
+export const { postisSaving,postisLoading, setPost,setPosts, setpostCrear, setError, setPage, setPages } = postSlice.actions;
 export default postSlice.reducer

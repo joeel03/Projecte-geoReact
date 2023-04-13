@@ -1,14 +1,13 @@
 import React from 'react'
-import { useContext } from "react";
+import { useContext,useState,useEffect, } from "react";
 import { UserContext } from "../userContext";
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PostGrid from './PostGrid';
 import { useNavigate } from "react-router-dom";
 import { useFetch } from '../hooks/useFetch';
 
 // POSTS SLICES
-import { getPost } from '../slices/posts/thunks';
+import { getPosts } from '../slices/posts/thunks';
 import Paginate from './Paginate';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -18,7 +17,7 @@ const PostsGrid = () => {
   // let [posts, setPosts] = useState([]);
   let dispatch = useDispatch();
   // const [refresh, setRefresh] = useState(false)
-  const { posts = [], isLoading, page } = useSelector((state) => state.posts)
+  const { posts=[], isLoading=true, page=1 } = useSelector((state) => state.posts)
 
   // const { data, /*error, */reRender, loading, setUrl } = useFetch("https://backend.insjoaquimmir.cat/api/posts/", {
   //   headers: {
@@ -30,8 +29,9 @@ const PostsGrid = () => {
   // });
 
   useEffect(() => {
-    dispatch(getPost(authToken, page))
+    dispatch(getPosts(authToken, page))
   }, [page]);
+  console.log(posts)
 
   // const deletePost = async (id) => {
   //   try {
@@ -59,18 +59,18 @@ const PostsGrid = () => {
   return (
     <div>
       <h1>Posts Grid</h1>
-      <button onClick={(e) => { dispatch(delPost(authToken, navigate, post.id)) }}>🗑️</button>
-
-      {isLoading ?
-        "Cargando posts..." :
-        (data.data).map((post) => (
-          <div key={post.id}> {usuari == post.author.email || post.visibility.name == 'public' ?
-            <PostGrid post={post} deletePost={deletePost} />
-
-            : <></>}
-          </div>
+        {isLoading ?
+          "cargando.." :
+          posts.map((post) => (
+          <tr key={post.id}>
+            {usuari == post.author.email || post.visibility.name == 'public' ?
+              
+              //<PostsGrid post={post} deletePost={deletePlace}/>
+              <PostGrid post={post} />
+              : <></>}
+          </tr>
         ))}
-      <Paginate />
+        {isLoading ? <></> : <Paginate/>}
     </div>
   )
 }

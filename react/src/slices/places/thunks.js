@@ -1,4 +1,4 @@
-import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces,setPages,setPage } from "./placeSlice"
+import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces, setPages, setPage } from "./placeSlice"
 
 export const addPlace = (formData, authToken, navigate) => {
 
@@ -194,7 +194,7 @@ export const handleUpdate = (authToken, id, formulari, navigate) => {
 
     };
 };
-export const getPlaces = (authToken,page=0) => {
+export const getPlaces = (authToken, page = 0) => {
     return async (dispatch, getState) => {
         dispatch(setisLoading(true));
         const url =
@@ -217,16 +217,16 @@ export const getPlaces = (authToken,page=0) => {
         if (resposta.success == true) {
             if (page > 0) {
                 dispatch(setPlaces(resposta.data.collection));
-                
+
                 dispatch(setPages(resposta.data.links));
-                
+
                 console.log(resposta.data.links);
-                
-                } else {
-                
+
+            } else {
+
                 dispatch(setPlaces(resposta.data));
-                
-                }
+
+            }
             dispatch(setisLoading(false));
             // dispatch(setPlaces(resposta.data));
             console.log(resposta.data)

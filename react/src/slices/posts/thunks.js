@@ -1,4 +1,4 @@
-import { postisSaving, postisLoading, setPost, setpostCrear, setError, } from "./postSlice";
+import { postisSaving, postisLoading, setPost, setPosts, setpostCrear, setError, setPage, setPages } from "./postSlice";
 
 export const addPost = (authToken, formData, navigate) => {
 
@@ -36,12 +36,9 @@ export const addPost = (authToken, formData, navigate) => {
     };
 };
 
-export const getPost = (authToken, page = 0) => {
-
+export const getPost = (authToken, id) => {
     return async (dispatch, getState) => {
-
         dispatch(postisLoading(true));
-
         const headers = {
             headers: {
                 Accept: "application/json",
@@ -50,6 +47,25 @@ export const getPost = (authToken, page = 0) => {
             },
             method: "GET",
         };
+        const url = "https://backend.insjoaquimmir.cat/api/posts/" + id
+        const data = await fetch(url, headers);
+        const resposta = await data.json();
+        if (resposta.success == true) {
+            dispatch(postisLoading(false));
+            dispatch(setPost(resposta.data));
+            console.log(resposta.data)
+        }
+        else {
+            dispatch(setError(resposta.message));
+        }
+    };
+}
+
+export const getPosts = (authToken, page = 0) => {
+
+    return async (dispatch, getState) => {
+
+        dispatch(postisLoading(true));
         const url =
 
             page > 0
@@ -57,22 +73,30 @@ export const getPost = (authToken, page = 0) => {
                 ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page
 
                 : "https://backend.insjoaquimmir.cat/api/posts";
+        const headers = {
+            headers: {
+                Accept: "application/json",
+                Authorization: "Bearer " + authToken,
+            },
+            method: "GET",
+        };
+
         const data = await fetch(url, headers);
         const resposta = await data.json();
-        if (page > 0) {
-            dispatch(setPost(resposta.data));
-
-            dispatch(setPages(resposta.data));
+        if (resposta.success == true) {
             console.log(resposta.data);
-
+            if (page > 0) {
+                dispatch(postisLoading(false));
+                dispatch(setPosts(resposta.data.collection));
+                dispatch(setPages(resposta.data.links));
+            } else {
+                dispatch(setPosts(resposta.data));
+            }
         } else {
-
             dispatch(setError(resposta.message));
-
         }
-
-    }
-};
+    };
+}
 
 
 
