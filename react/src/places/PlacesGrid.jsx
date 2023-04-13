@@ -12,10 +12,10 @@ const PlacesGrid = () => {
   // let [places, setPlaces] = useState([]);
   // const [refresh, setRefresh] = useState(false)
   const dispatch = useDispatch();
-  const { isSaving = true, isLoading,places, favorite,page } = useSelector((state) => state.places);
+  const { isSaving = true, isLoading,places, favorite,page ,filter} = useSelector((state) => state.places);
   useEffect(() => {
     dispatch(getPlaces(authToken,page))
-  }, [page]);
+  }, [page,filter]);
   console.log(places)
   
 

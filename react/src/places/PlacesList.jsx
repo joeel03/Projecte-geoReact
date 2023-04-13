@@ -17,7 +17,10 @@ const PlacesList = () => {
     // let [places, setPlaces] = useState([]);
     // const [ refresh, setRefresh ] = useState(false)
     const { id } = useParams();
-
+    useEffect(() => {
+      dispatch(getPlaces(authToken))
+    }, []);
+    console.log(places)
     // const { data, error,reRender, loading, setUrl } = useFetch("https://backend.insjoaquimmir.cat/api/places", {
     //   headers: {
     //       Accept: "application/json",

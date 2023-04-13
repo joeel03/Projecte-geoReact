@@ -1,4 +1,10 @@
 import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces, setPages, setPage } from "./placeSlice"
+<<<<<<< HEAD
+=======
+import { useSelector } from "react-redux";
+// import { useContext } from "react";
+// import { UserContext } from "../../userContext";
+>>>>>>> 73d2fb65d14dd10563a70bdd68a760f32ad45044
 
 export const addPlace = (formData, authToken, navigate) => {
 
@@ -194,16 +200,97 @@ export const handleUpdate = (authToken, id, formulari, navigate) => {
 
     };
 };
+<<<<<<< HEAD
 export const getPlaces = (authToken, page = 0) => {
+=======
+// export const getPlaces = (authToken,page=0) => {
+//     return async (dispatch, getState) => {
+//         dispatch(setisLoading(true));
+//         const url =
+
+//             page > 0
+
+//                 ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
+
+//                 : "https://backend.insjoaquimmir.cat/api/places";
+//         const headers = {
+//             headers: {
+//                 Accept: "application/json",
+//                 Authorization: "Bearer " + authToken,
+//             },
+//             method: "GET",
+//         };
+//         // const url = "https://backend.insjoaquimmir.cat/api/places"
+//         const data = await fetch(url, headers);
+//         const resposta = await data.json();
+//         if (resposta.success == true) {
+//             if (page > 0) {
+//                 dispatch(setPlaces(resposta.data.collection));
+
+//                 dispatch(setPages(resposta.data.links));
+
+//                 console.log(resposta.data.links);
+
+//                 } else {
+
+//                 dispatch(setPlaces(resposta.data));
+
+//                 }
+//             dispatch(setisLoading(false));
+//             // dispatch(setPlaces(resposta.data));
+//             console.log(resposta.data)
+//         }
+//         else {
+//             dispatch(setError(resposta.message));
+//         }
+//     };
+// }
+
+
+export const getPlaces = (authToken, page = 0) => {
+
+>>>>>>> 73d2fb65d14dd10563a70bdd68a760f32ad45044
     return async (dispatch, getState) => {
+        let url = "";
+        const filter = getState().places.filter;
+        console.log("entra: "+filter.description,filter.author)
+
         dispatch(setisLoading(true));
-        const url =
+        if (filter.description == ""&&filter.author == "") {
+            url =
+                page > 0
+
+                    ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
+
+                    : "https://backend.insjoaquimmir.cat/api/places";
+        }else if (!filter.author == ""&&filter.description == ""){
+            url =
+
+                page > 0
+
+                    ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&author=" + filter.author
+
+                    : "https://backend.insjoaquimmir.cat/api/places?author=" + filter.author;
+        } else if (!filter.author == ""&&!filter.description == ""){
+            console.log("entra al bueno")
+            url =
 
             page > 0
 
-                ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
+                ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&description=" + filter.description+"&author="+ filter.author
 
-                : "https://backend.insjoaquimmir.cat/api/places";
+                : "https://backend.insjoaquimmir.cat/api/places?description=" + filter.description+"&author=" + filter.author;;
+        }
+        else if (filter.author == ""&&!filter.description == ""){
+            url =
+
+                page > 0
+
+                    ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&description=" + filter.description
+
+                    : "https://backend.insjoaquimmir.cat/api/places?description=" + filter.description;
+        }
+
         const headers = {
             headers: {
                 Accept: "application/json",
