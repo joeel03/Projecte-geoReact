@@ -9,7 +9,7 @@ import { setFilter } from '../slices/places/placeSlice';
 
 const PlaceGrid = ({ place }) => {
   let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
-  let navigate = useNavigate();
+  //REVISAAAAAAAAAAAR let navigate = useNavigate();
   const dispatch= useDispatch();
  
   return (

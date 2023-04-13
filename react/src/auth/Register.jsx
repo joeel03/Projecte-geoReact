@@ -2,36 +2,37 @@ import React from 'react'
 import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../userContext";
-import { useForm } from '../hooks/useForm';
+//import { useForm } from '../hooks/useForm';
 
+import { useForm } from "react-hook-form"; 
 
 const Register = ({ setLogin }) => {
   let [formulari, setFormulari] = useState({});
-  let [error, setError] = useState("");
+   let [error, setError] = useState("");
   let { authToken, setAuthToken } = useContext(UserContext);
 
-  const { formState, onInputChange } = useForm({
+  const { register, handleSubmit , formState: { errors }} = useForm();
 
-    name: "",
-    password: "",
-    password2: "",
-    email: "",
-    
-    });
-  const {name, password, password2, email} = formState 
+  const onSubmit = data => handleRegister(data)
+  // const { formState, onInputChange } = useForm({
+  //   name: "",
+  //   password: "",
+  //   password2: "",
+  //   email: "",
+  //   });
+  // const {name, password, password2, email} = formState 
   
-  const handleChange = (e) => {
-    e.preventDefault();
+  
+  // const handleChange = (e) => {
+  //   e.preventDefault();
 
-    setFormulari({
-      ...formulari,
-      [e.target.name]: e.target.value
-    });
-  };
-  const handleRegister = async (e) => {
-    e.preventDefault();
+  //   setFormulari({
+  //     ...formulari,
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
+  const handleRegister = async (formState) => {
     let { name, password, password2, email } = formState;
-    console.log(formulari)
     try{
       if (password2 !== password) {
         setError("Els passwords han de coincidir")
@@ -60,25 +61,84 @@ const Register = ({ setLogin }) => {
   }
     return (
     <div className="center">
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
 
         <div className="form-outline mb-4">
-          <input name="name" type="text" id="form3Example1cg" className="form-control form-control-lg" onChange={onInputChange} />
-          <label className="form-label" for="form3Example1cg">Your Name</label>
+        <label className="form-label" for="form3Example1cg">Your Name</label>
+
+          <input  {...register("name", {
+            required: "Aquest camp és obligatori",
+            minLength: {
+              value: 4,
+              message: "El nom ha de contenir minim 4 caràcters"
+            },
+            pattern: {
+              value: /^[a-zA-Z]+\s[a-zA-Z]+$/,
+              message:
+                "Has de escriure nom, espai, cognom"
+            }
+
+          })} 
+          // name="name" type="text" id="form3Example1cg" 
+          className="form-control form-control-lg" 
+          // onChange={onInputChange} 
+          />
+
+        </div>
+        {errors.name && <p>{errors.name.message}</p>}
+
+        <div className="form-outline mb-4">
+        <label className="form-label" for="form3Example3cg">Your Email</label>
+
+          <input  {...register("email", {
+            required: "Aquest camp és obligatori",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@insjoaquimmir\.cat$/,
+              message:
+                "El correu ha de ser de la organització insjoaquimmir.cat"
+            }
+
+          })} 
+          // name="email" type="email" id="form3Example3cg" 
+          className="form-control form-control-lg"
+          //onChange={onInputChange} 
+          />
+          {errors.email && <p>{errors.email.message}</p>}
+
         </div>
 
         <div className="form-outline mb-4">
-          <input name="email" type="email" id="form3Example3cg" className="form-control form-control-lg" onChange={onInputChange} />
-          <label className="form-label" for="form3Example3cg">Your Email</label>
+        <label className="form-label" for="form3Example4cg">Password</label>
+
+          <input  {...register("password", {
+            required: "Aquest camp és obligatori",
+            minLength: {
+              value: 8,
+              message: "La contrasenya ha de tenir al menys 8 caràcters"
+            },
+            pattern: {
+              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).+$/,
+              message:
+                "La contrasenya ha de contenir al menys una minúscula, una majúscula, un número i un caracter especial"
+            }
+          })} 
+          //name="password"
+           type="password" id="form3Example4cg"
+          className="form-control form-control-lg" 
+          //onChange={onInputChange} 
+           />
+
+          {errors.password && <p>{errors.password.message}</p>}
+          
         </div>
 
         <div className="form-outline mb-4">
-          <input name="password" type="password" id="form3Example4cg" className="form-control form-control-lg" onChange={onInputChange} />
-          <label className="form-label" for="form3Example4cg">Password</label>
-        </div>
-
-        <div className="form-outline mb-4">
-          <input name="password2" type="password" id="form3Example4cdg" className="form-control form-control-lg" onChange={onInputChange} />
+          <input {...register("password2")} 
+          //name="password2" 
+          type="password" id="form3Example4cdg" 
+          className="form-control form-control-lg" 
+          //onChange={onInputChange} 
+          />
           <label className="form-label" for="form3Example4cdg">Repeat your password</label>
         </div>
 
@@ -90,10 +150,8 @@ const Register = ({ setLogin }) => {
         </div> */}
 
         <div className="d-flex justify-content-center">
-          <button type="button" 
-            className="btn btn-success btn-block btn-lg gradient-custom-4 text-body" onClick={(e) => {
-              handleRegister(e);
-            }}>Register</button>
+          <input type="submit" className="btn btn-success btn-block btn-lg gradient-custom-4 text-body" />
+            {/* // onClick={(e) => {handleRegister(e);}} */}
         </div>
        {error? (<div>{error}</div>):(<></>) }
   

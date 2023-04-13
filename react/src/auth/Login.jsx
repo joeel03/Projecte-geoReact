@@ -2,7 +2,9 @@ import React from 'react'
 import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../userContext";
-import { useForm } from '../hooks/useForm';
+// import { useForm } from '../hooks/useForm';
+
+import { useForm } from "react-hook-form";
 import { useLogin } from '../hooks/useLogin';
 import { useEffect } from 'react';
 const Login = ({ setLogin }) => {
@@ -11,17 +13,18 @@ const Login = ({ setLogin }) => {
   // let [error, setError] = useState("");
   let { authToken, setAuthToken } = useContext(UserContext);
 
-  const { formState, onInputChange } = useForm({
+  // const { formState, onInputChange } = useForm({
 
-    email: "",
+  //   email: "",
 
-    password: "",
+  //   password: "",
 
-  });
-  const { email, password } = formState
+  // });
+  //const { email, password } = formState
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const {doLogin}=useLogin()
-
+  const { doLogin, error, setError } = useLogin()
+  const onSubmit = data => doLogin(data)
   // const sendLogin = async (e) => {
   //   e.preventDefault();
   //   try {
@@ -50,15 +53,25 @@ const Login = ({ setLogin }) => {
   return (
     <div className="center">
       <form>
+      <label className="form-label" for="form2Example1">Email address</label>
+
         <div className="form-outline mb-4">
-          <input name="email" type="email" id="form2Example1" className="form-control" onChange={onInputChange} />
-          <label className="form-label" for="form2Example1">Email address</label>
+          <input {...register("email")}
+            //name="email" 
+            type="email" id="form2Example1" className="form-control"
+          //onChange={onInputChange} 
+          />
         </div>
+        <label className="form-label" for="form2Example2">Password</label>
 
         <div className="form-outline mb-4">
 
-          <input name="password" type="password" id="form2Example2" className="form-control" onChange={onInputChange} />
-          <label className="form-label" for="form2Example2">Password</label>
+          <input {...register("password")}
+            //name="password" 
+            type = "password" id = "form2Example2" className = "form-control"
+          //onChange={onInputChange} 
+          />
+
         </div>
 
         {/* <div className="row mb-4">
@@ -74,9 +87,10 @@ const Login = ({ setLogin }) => {
           </div>
         </div> */}
 
-        <button type="button" className="btn btn-primary btn-block mb-4" onClick={() => {
-          doLogin(formState)
-        }}>Sign in</button>
+        <button type="button" className="btn btn-primary btn-block mb-4"
+          //onClick={() => {doLogin(formState)}}
+          onClick={handleSubmit(onSubmit)}
+        >Sign in</button>
         {/* {error ? (<div>{error}</div>) : (<></>)} */}
 
         <div className="text-center">
