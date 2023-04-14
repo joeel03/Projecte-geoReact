@@ -1,4 +1,4 @@
-import { postisSaving, postisLoading, setPost, setPosts, setpostCrear, setError, setPage, setPages } from "./postSlice";
+import { postisSaving, postisLoading, setPost, setFilter, setPosts, setpostCrear, setError, setPage, setPages } from "./postSlice";
 
 export const addPost = (authToken, formData, navigate) => {
 
@@ -24,7 +24,6 @@ export const addPost = (authToken, formData, navigate) => {
             console.log("post creado: " + resposta.data)
             dispatch(postisSaving(false))
 
-            // dispatch(setPlaces(resposta.data));
             navigate("/posts/" + resposta.data.id)
 
         }
@@ -64,15 +63,45 @@ export const getPost = (authToken, id) => {
 export const getPosts = (authToken, page = 0) => {
 
     return async (dispatch, getState) => {
-
         dispatch(postisLoading(true));
-        const url =
+        let url = "";
+        const filter = getState().posts.filter;
 
-            page > 0
+        if (filter.description == "" && filter.author == "") {
+            url =
+                page > 0
 
-                ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page
+                    ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page
 
-                : "https://backend.insjoaquimmir.cat/api/posts";
+                    : "https://backend.insjoaquimmir.cat/api/posts";
+            console.log("DASDASDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+
+        } else if (!filter.author == "" && !filter.description == "") {
+            url =
+
+                page > 0
+
+                    ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page + "&description=" + filter.description + "&author=" + filter.author
+
+                    : "https://backend.insjoaquimmir.cat/api/posts?description=" + filter.description + "&author=" + filter.author;;
+        } else if (filter.author == "" && !filter.description == "") {
+            url =
+
+                page > 0
+
+                    ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page + "&description=" + filter.description
+
+                    : "https://backend.insjoaquimmir.cat/api/posts?description=" + filter.description;
+        } else if (!filter.author == "" && filter.description == "") {
+            url =
+
+                page > 0
+
+                    ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page + "&author=" + filter.author
+
+                    : "https://backend.insjoaquimmir.cat/api/posts?description=" + filter.author;
+        }
+
         const headers = {
             headers: {
                 Accept: "application/json",
@@ -80,7 +109,7 @@ export const getPosts = (authToken, page = 0) => {
             },
             method: "GET",
         };
-
+        console.log(url);
         const data = await fetch(url, headers);
         const resposta = await data.json();
         if (resposta.success == true) {
@@ -91,6 +120,7 @@ export const getPosts = (authToken, page = 0) => {
                 dispatch(setPages(resposta.data.links));
             } else {
                 dispatch(setPosts(resposta.data));
+                dispatch(postisLoading(false));
             }
         } else {
             dispatch(setError(resposta.message));

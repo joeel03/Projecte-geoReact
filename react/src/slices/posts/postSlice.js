@@ -3,15 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   formulari: [],
 
-  page:1,
-  pages:[],
+  filter: { description: "", author: "" },
+
+  page: 1,
+  pages: [],
 
   isSaving: false,
   isLoading: false,
 
   error: "",
 
-  posts:[],
+  posts: [],
 
   post: {
     body: "",
@@ -47,15 +49,18 @@ export const postSlice = createSlice({
 
       state.error = action.payload
     },
-    setPage: (state,action) => {
+    setPage: (state, action) => {
       state.page = action.payload
-  
+
     },
-    setPages: (state,action) => {
-      state.pages = action.payload  
+    setPages: (state, action) => {
+      state.pages = action.payload
+    },
+    setFilter: (state, action) => {
+      state.filter = action.payload
     }
   }
 });
 
-export const { postisSaving,postisLoading, setPost,setPosts, setpostCrear, setError, setPage, setPages } = postSlice.actions;
+export const { postisSaving, postisLoading, setPost, setPosts, setFilter, setpostCrear, setError, setPage, setPages } = postSlice.actions;
 export default postSlice.reducer

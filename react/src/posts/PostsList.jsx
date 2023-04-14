@@ -6,73 +6,83 @@ import { useFetcher, useParams } from 'react-router-dom';
 import PostList from './PostList'
 import { useFetch } from '../hooks/useFetch';
 
+// POST SLICE
+import { useSelector, useDispatch } from 'react-redux';
+import { getPost, getPosts } from '../slices/posts/thunks';
+
+
 const PostsList = () => {
-    let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
-    //let [error, setError] = useState("");
-    let [posts, setPosts] = useState([]);
-    const { id } = useParams();
-    const [refresh, setRefresh] = useState(false);
+  let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
+  //let [error, setError] = useState("");
+  // let [posts, setPosts] = useState([]);
+  const { id } = useParams();
+  const [refresh, setRefresh] = useState(false);
+  const { isSaving = true, isLoading, posts, favorite } = useSelector((state) => state.posts);
 
-    const { data, reRender, /*error,*/ loading, seUrl } = useFetch("https://backend.insjoaquimmir.cat/api/posts/", {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer ' + authToken,
-        },
-        method: "GET",
-    });
-    console.log(data)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPosts(authToken))
+  }, []);
 
-    const deletePost = async (id) => {
-        try {
-          const data = await fetch(("https://backend.insjoaquimmir.cat/api/posts/"+id), {
-            headers: {
-              'Accept': 'application/json',
-              'Authorization': 'Bearer ' + authToken
-            },
-            method: "DELETE",
-          });
-          const resposta = await data.json();
-          if (resposta.success === true) {
-            console.log("post eliminado")
-            reRender();
-          }
-          else {
-            console.log(resposta.message)
-            setError(resposta.message);
-          }
-        } catch(err) {
-          console.log(err.message);
-          alert("Catch");
-        };
-      }    
+  // const { data, reRender, /*error,*/ loading, seUrl } = useFetch("https://backend.insjoaquimmir.cat/api/posts/", {
+  //     headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         'Authorization': 'Bearer ' + authToken,
+  //     },
+  //     method: "GET",
+  // });
+  // console.log(data)
 
-    return (
-        <div>
-            <h1>Posts List</h1>
-            <table>
-                <tr>
-                    <th>body</th>
-                    <th>latitude</th>
-                    <th>longitude</th>
-                    <th>visibility</th>
-                    <th>author</th>
-                    <th>likes</th>
-                </tr>z
-                {loading?
-                "Cargando...":
-                (data.data).map((post) => (
-                    <tr key={post.id}>
-                        {usuari == post.author.email || post.visibility.name == 'public'?
+  // const deletePost = async (id) => {
+  //     try {
+  //       const data = await fetch(("https://backend.insjoaquimmir.cat/api/posts/"+id), {
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Authorization': 'Bearer ' + authToken
+  //         },
+  //         method: "DELETE",
+  //       });
+  //       const resposta = await data.json();
+  //       if (resposta.success === true) {
+  //         console.log("post eliminado")
+  //         reRender();
+  //       }
+  //       else {
+  //         console.log(resposta.message)
+  //         setError(resposta.message);
+  //       }
+  //     } catch(err) {
+  //       console.log(err.message);
+  //       alert("Catch");
+  //     };
+  //   }    
 
-                            <PostList post={post} deletePost={deletePost} />
-                            : <></>}
-                    </tr>
-                ))}
-
-            </table>
-        </div>
-    )
+  return (
+    <div>
+      <h1>Posts List</h1>
+      <table>
+        <tr>
+          <th>body</th>
+          <th>latitude</th>
+          <th>longitude</th>
+          <th>visibility</th>
+          <th>author</th>
+          <th>likes</th>
+        </tr>
+        {isLoading ?
+          "Cargando posts..." :
+          posts.map((post) => (
+            <tr key={post.id}>
+              {usuari == post.author.email || post.visibility.name == 'public' ?
+                // <PostList post={post} deletePost={deletePost} />
+                <PostList post={post} />
+                : <></>}
+            </tr>
+          ))}
+      </table>
+    </div>
+  )
 }
 
 export default PostsList

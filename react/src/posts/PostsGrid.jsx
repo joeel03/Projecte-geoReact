@@ -17,7 +17,7 @@ const PostsGrid = () => {
   // let [posts, setPosts] = useState([]);
   let dispatch = useDispatch();
   // const [refresh, setRefresh] = useState(false)
-  const { posts=[], isLoading=true, page=1 } = useSelector((state) => state.posts)
+  const { posts=[], isLoading=true, page, filter} = useSelector((state) => state.posts)
 
   // const { data, /*error, */reRender, loading, setUrl } = useFetch("https://backend.insjoaquimmir.cat/api/posts/", {
   //   headers: {
@@ -30,8 +30,7 @@ const PostsGrid = () => {
 
   useEffect(() => {
     dispatch(getPosts(authToken, page))
-  }, [page]);
-  console.log(posts)
+  }, [page, filter]);
 
   // const deletePost = async (id) => {
   //   try {
@@ -60,7 +59,7 @@ const PostsGrid = () => {
     <div>
       <h1>Posts Grid</h1>
         {isLoading ?
-          "cargando.." :
+          "Cargando posts.." :
           posts.map((post) => (
           <tr key={post.id}>
             {usuari == post.author.email || post.visibility.name == 'public' ?

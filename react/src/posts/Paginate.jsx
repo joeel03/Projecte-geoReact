@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { PaginateLink } from './PaginateLink';
 const Paginate = () => {
     const { pages } = useSelector((state) => state.posts);
-    console.log(pages)
 
     return (
         <div>
