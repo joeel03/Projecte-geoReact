@@ -80,32 +80,6 @@ const PlaceEdit = () => {
     }
   };
 
-  // const handleUpdate = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/places/" + id), {
-  //       headers: {
-  //         'Accept': 'application/json',
-  //         'Authorization': 'Bearer ' + authToken
-  //       },
-  //       method: "POST",
-  //       body: formData
-  //     });
-  //     const resposta = await data.json();
-  //     if (resposta.success === true) {
-  //       console.log("place actualizado")
-  //       navigate("/places/" + resposta.data.id)
-  //     }
-  //     else {
-  //       console.log(resposta.message)
-  //       setError(resposta.message);
-  //     }
-  //   } catch {
-  //     console.log("Error");
-  //     alert("Catchch");
-  //   };
-  // }
-
 
   return (
     <>

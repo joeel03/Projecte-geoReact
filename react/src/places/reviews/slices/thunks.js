@@ -107,10 +107,11 @@ export const delReview = (review, authToken) => {
 
 };
 
-export const addReview = (authToken,formData,id) => {
+export const addReview = (authToken,dataa,id) => {
 
     return async (dispatch, getState) => {
 
+        console.log(dataa)
         const data = await fetch(
 
             "https://backend.insjoaquimmir.cat/api/places/" +
@@ -124,13 +125,14 @@ export const addReview = (authToken,formData,id) => {
                 headers: {
 
                     Accept: "application/json",
+                    "Content-Type": "application/json",
 
                     Authorization: "Bearer " + authToken,
 
                 },
 
                 method: "POST",
-                body:formData
+                body:JSON.stringify(dataa)
 
             }
 

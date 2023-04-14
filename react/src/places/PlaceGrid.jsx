@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { UserContext } from '../userContext';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { setFilter } from '../slices/places/placeSlice';
 // import { useParams } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { setFilter } from '../slices/places/placeSlice';
 
 const PlaceGrid = ({ place }) => {
   let { authToken, setAuthToken, usuari, setUsuari } = useContext(UserContext);
-  //REVISAAAAAAAAAAAR let navigate = useNavigate();
+   let navigate = useNavigate();
   const dispatch= useDispatch();
  
   return (
@@ -27,7 +27,8 @@ const PlaceGrid = ({ place }) => {
           <div className="veureeditaresborrar"><button onClick={(e) => { navigate("/places/" + place.id) }}>veure</button>
             {usuari == place.author.email ?
               <>
-                <button onClick={(e) => { navigate("/places/edit/" + place.id) }}>Editar</button> <button onClick={(e) => {
+                <button onClick={(e) => { navigate("/places/edit/" + place.id) }}>Editar</button>
+                 <button onClick={(e) => {
                   dispatch(delPlace(place.id))
                 }}>Esborrar</button>
               </>
