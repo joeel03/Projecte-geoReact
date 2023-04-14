@@ -1,10 +1,7 @@
 import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces, setPages, setPage } from "./placeSlice"
-<<<<<<< HEAD
-=======
 import { useSelector } from "react-redux";
 // import { useContext } from "react";
 // import { UserContext } from "../../userContext";
->>>>>>> 73d2fb65d14dd10563a70bdd68a760f32ad45044
 
 export const addPlace = (formData, authToken, navigate) => {
 
@@ -200,9 +197,6 @@ export const handleUpdate = (authToken, id, formulari, navigate) => {
 
     };
 };
-<<<<<<< HEAD
-export const getPlaces = (authToken, page = 0) => {
-=======
 // export const getPlaces = (authToken,page=0) => {
 //     return async (dispatch, getState) => {
 //         dispatch(setisLoading(true));
@@ -249,7 +243,6 @@ export const getPlaces = (authToken, page = 0) => {
 
 export const getPlaces = (authToken, page = 0) => {
 
->>>>>>> 73d2fb65d14dd10563a70bdd68a760f32ad45044
     return async (dispatch, getState) => {
         let url = "";
         const filter = getState().places.filter;
