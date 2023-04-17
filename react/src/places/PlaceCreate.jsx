@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 const PlaceCreate = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
-  let [formulari, setFormulari] = useState({});
+  //let [formulari, setFormulari] = useState({});
   // let [error, setError] = useState("");
 
   const { isSaving = true, error = "" } = useSelector((state) => state.places);
@@ -124,18 +124,29 @@ const PlaceCreate = () => {
 
           <div className="form-group">
             <label for="upload">File</label>
-            <input type="file" {...register("upload", {
+            <input type="file" accept=".gif,.jpg,.jpeg,.png,.mp4" {...register("upload", {
             required: "Aquest camp és obligatori",
             maxLength: {
               value: 2048,
               message: "El nom de la imatge pot contenir un maxim de 2048 caràcters"
             },
+            // ESTA EXPRESION REGULAR ESTA COMENTADA PORQUE NO HACE FALTA,
+            // YA QUE HE PUESTO UN ACCEPT EN EL INPUT Y EL NAVEGADOR SOLO DEJA SELECCIONAR LOS TIPOS QUE PONE
+            //pattern: {
+
+            //   value: /\.(gif|jpe?g|png|mp4)$/,
+  
+            //   message:
+  
+            //     "El tipus ha de ser un del seguents gif, jpeg, jpg, png, mp4."
+  
+            // }
            
           })} 
             //value={formulari.file} onChange={handleChange} name="upload" 
             className="form-control" />
           </div>
-          {errors.file && <p>{errors.file.message}</p>}
+          {errors.upload && <p>{errors.upload.message}</p>}
 
           <div className="form-group">
             <label for="latitude">Latitude</label>
@@ -180,7 +191,7 @@ const PlaceCreate = () => {
             <>
              <button className="btn btn-primary" 
              //</>onClick={(e) => {e.preventDefault(); dispatch(addPlace(formData, authToken, navigate,dispatch));}}
-              onClick={(e) => {handleSubmit(afegir)}}
+              onClick={handleSubmit(afegir)}
              >Create</button>
             </>
           }

@@ -1,12 +1,18 @@
 import { setisSaving, setisLoading, setError, setPlace, setFavorite, setPlaces, setPages, setPage } from "./placeSlice"
-import { useSelector } from "react-redux";
 // import { useContext } from "react";
 // import { UserContext } from "../../userContext";
 
-export const addPlace = (formData, authToken, navigate) => {
+export const addPlace = (data2, authToken, navigate) => {
     return async (dispatch, getState) => {
-        
-        dispatch(setisSaving(true))
+
+        let { name, description, upload, latitude, longitude, visibility = 1 } = data2;
+        const formData = new FormData;
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("upload", upload);
+        formData.append("latitude", latitude);
+        formData.append("longitude", longitude);
+        formData.append("visibility", visibility);
 
         // dispatch(startLoadingReviews());
         const headers = {
@@ -246,17 +252,17 @@ export const getPlaces = (authToken, page = 0) => {
     return async (dispatch, getState) => {
         let url = "";
         const filter = getState().places.filter;
-        console.log("entra: "+filter.description,filter.author)
+        console.log("entra: " + filter.description, filter.author)
 
         dispatch(setisLoading(true));
-        if (filter.description == ""&&filter.author == "") {
+        if (filter.description == "" && filter.author == "") {
             url =
                 page > 0
 
                     ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page
 
                     : "https://backend.insjoaquimmir.cat/api/places";
-        }else if (!filter.author == ""&&filter.description == ""){
+        } else if (!filter.author == "" && filter.description == "") {
             url =
 
                 page > 0
@@ -264,17 +270,17 @@ export const getPlaces = (authToken, page = 0) => {
                     ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&author=" + filter.author
 
                     : "https://backend.insjoaquimmir.cat/api/places?author=" + filter.author;
-        } else if (!filter.author == ""&&!filter.description == ""){
+        } else if (!filter.author == "" && !filter.description == "") {
             console.log("entra al bueno")
             url =
 
-            page > 0
+                page > 0
 
-                ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&description=" + filter.description+"&author="+ filter.author
+                    ? "https://backend.insjoaquimmir.cat/api/places?paginate=1&page=" + page + "&description=" + filter.description + "&author=" + filter.author
 
-                : "https://backend.insjoaquimmir.cat/api/places?description=" + filter.description+"&author=" + filter.author;;
+                    : "https://backend.insjoaquimmir.cat/api/places?description=" + filter.description + "&author=" + filter.author;;
         }
-        else if (filter.author == ""&&!filter.description == ""){
+        else if (filter.author == "" && !filter.description == "") {
             url =
 
                 page > 0
