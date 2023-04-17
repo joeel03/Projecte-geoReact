@@ -13,7 +13,7 @@ const PlaceCreate = () => {
 
   const { isSaving = true, error = "" } = useSelector((state) => state.places);
   let { authToken, setAuthToken } = useContext(UserContext);
-  const { register, handleSubmit , formState: { errors },setValue} = useForm();
+  const { register, handleSubmit , formState: { errors },setValue,reset} = useForm();
 
   const afegir = (data) => {
     const data2 = { ...data, upload: data.upload[0]}
@@ -198,7 +198,7 @@ const PlaceCreate = () => {
 
 
           <button className="btn btn-secondary"
-           onClick={() => { reset }}
+           onClick={()=>reset()}
            //onClick={(e) => { handleReset(e)  }}
            >Reset</button>
           {error ? (<div>{error}</div>) : (<></>)}        </form>
