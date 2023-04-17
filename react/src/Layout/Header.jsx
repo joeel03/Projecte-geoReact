@@ -28,7 +28,6 @@ const Header = () => {
         if (resposta.success === true) {
           setUsername(resposta.user.name);
           setRoles(resposta.roles);
-          console.log(resposta.user.email);
           setUsuari(resposta.user.email)
           setUsuariId(resposta.user.id)
           // console.log(usuari);

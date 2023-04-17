@@ -67,39 +67,40 @@ export const getPosts = (authToken, page = 0) => {
         let url = "";
         const filter = getState().posts.filter;
 
-        if (filter.description == "" && filter.author == "") {
+        if (filter.body == "" && filter.author == "") {
             url =
                 page > 0
 
                     ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page
 
                     : "https://backend.insjoaquimmir.cat/api/posts";
-            console.log("DASDASDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
-        } else if (!filter.author == "" && !filter.description == "") {
+        } else if (!filter.author == "" && !filter.body == "") {
             url =
 
                 page > 0
 
-                    ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page + "&description=" + filter.description + "&author=" + filter.author
+                    ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page + "&body=" + filter.body + "&author=" + filter.author
 
-                    : "https://backend.insjoaquimmir.cat/api/posts?description=" + filter.description + "&author=" + filter.author;;
-        } else if (filter.author == "" && !filter.description == "") {
+                    : "https://backend.insjoaquimmir.cat/api/posts?body=" + filter.body + "&author=" + filter.author;;
+            console.log(url);
+
+        } else if (filter.author == "" && !filter.body == "") {
             url =
 
                 page > 0
 
-                    ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page + "&description=" + filter.description
+                    ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page + "&body=" + filter.body
 
-                    : "https://backend.insjoaquimmir.cat/api/posts?description=" + filter.description;
-        } else if (!filter.author == "" && filter.description == "") {
+                    : "https://backend.insjoaquimmir.cat/api/posts?body=" + filter.body;
+        } else if (!filter.author == "" && filter.body == "") {
             url =
 
                 page > 0
 
                     ? "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page + "&author=" + filter.author
 
-                    : "https://backend.insjoaquimmir.cat/api/posts?description=" + filter.author;
+                    : "https://backend.insjoaquimmir.cat/api/posts?body=" + filter.author;
         }
 
         const headers = {

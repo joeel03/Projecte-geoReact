@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserContext } from "../userContext";
 
 const PostsMenu = () => {
-  let { user } = useContext(UserContext);
+  let { usuariId } = useContext(UserContext);
+  
   const dispatch = useDispatch();
   const { formState, onInputChange } = useForm({
 
@@ -15,7 +16,6 @@ const PostsMenu = () => {
 
   });
   const { filter } = useSelector((state) => state.posts);
-
   return (
     <div className="menu">
       <Link className='click orange' to="/posts/add">Afegir Entrada</Link>
@@ -23,11 +23,11 @@ const PostsMenu = () => {
       <Link className='click blue' to="/posts/list">Llista</Link>
       <Link className='click orange' to="/posts/marks">Marks</Link>
 
-      <input type="text" name="filtrar" placeholder='filtrar por descripcion' onChange={onInputChange}></input>
+      <input type="text" name="filtrar" placeholder='Filtrar' onChange={onInputChange}></input>
 
-      <button className="btn btn-primary" onClick={(e) => { dispatch(setFilter({ ...filter, description: formState.filtrar })) }}>Cerca</button>
-      <button className="btn btn-primary" onClick={(e) => { dispatch(setFilter({ description: "", author: user })) }}>Mis Publicacions</button>
-      <button className="btn btn-primary" onClick={(e) => { dispatch(setFilter({ description: "", author: "" })) }}>Rentar Fiiltres</button>
+      <button className="btn btn-primary" onClick={(e) => { dispatch(setFilter({ ...filter, body: formState.filtrar })) }}>Cerca</button>
+      <button className="btn btn-primary" onClick={(e) => { dispatch(setFilter({ body: "", author: usuariId })) }}>Mis Publicacions</button>
+      <button className="btn btn-primary" onClick={(e) => { dispatch(setFilter({ body: "", author: "" })) }}>Rentar Fiiltres</button>
     </div>
   )
 }

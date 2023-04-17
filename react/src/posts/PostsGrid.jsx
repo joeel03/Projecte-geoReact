@@ -32,6 +32,11 @@ const PostsGrid = () => {
     dispatch(getPosts(authToken, page))
   }, [page, filter]);
 
+  useEffect(() => {
+    console.log(page)
+    dispatch(getPosts(authToken, page))
+  }, []);
+
   // const deletePost = async (id) => {
   //   try {
   //     const data = await fetch(("https://backend.insjoaquimmir.cat/api/posts/" + id), {

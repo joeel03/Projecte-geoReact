@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   formulari: [],
 
-  filter: { description: "", author: "" },
+  filter: { body: "", author: "" },
 
   page: 1,
   pages: [],
