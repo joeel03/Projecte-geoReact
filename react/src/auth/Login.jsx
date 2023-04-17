@@ -56,11 +56,20 @@ const Login = ({ setLogin }) => {
       <label className="form-label" for="form2Example1">Email address</label>
 
         <div className="form-outline mb-4">
-          <input {...register("email")}
+          <input {...register("email" ,{
+            required: "Aquest camp és obligatori",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@insjoaquimmir\.cat$/,
+              message:
+                "El correu ha de ser de la organització insjoaquimmir.cat"
+            }
+          })}
             //name="email" 
             type="email" id="form2Example1" className="form-control"
           //onChange={onInputChange} 
           />
+                    {errors.email && <p>{errors.email.message}</p>}
+
         </div>
         <label className="form-label" for="form2Example2">Password</label>
 
