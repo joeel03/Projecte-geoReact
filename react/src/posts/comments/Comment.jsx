@@ -6,49 +6,53 @@ import { CommentsContext } from "./commentsContext";
 import TimeAgo from "react-timeago";
 import catStrings from "react-timeago/lib/language-strings/ca";
 import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
+import { useDispatch, useSelector } from "react-redux";
+import { delComment } from "../../slices/posts/comments/thunks";
+
 
 export const Comment = ({ comment }) => {
-  let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
-  let { setAdd, setRefresca, commentsCount, setCommentsCount } =
-    useContext(CommentsContext);
+  const { usuari, email, setUsuari, authToken, setAuthToken } = useContext(UserContext);
+  const dispatch = useDispatch();
+
+  // let { setAdd, setRefresca} = useContext(CommentsContext);
   const formatter = buildFormatter(catStrings);
 
   console.log(comment)
 
-  const deleteComment = async (id, e) => {
-    const headers = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + authToken,
-      },
-      method: "DELETE",
-    };
+  // const deleteComment = async (id, e) => {
+  //   const headers = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + authToken,
+  //     },
+  //     method: "DELETE",
+  //   };
 
-    e.preventDefault();
+  //   e.preventDefault();
 
-    let confirma = confirm("Estas  segur?");
+  //   let confirma = confirm("Estas  segur?");
 
-    if (confirma) {
-      const data = await fetch(
-        "https://backend.insjoaquimmir.cat/api/posts/" +
-          comment.post.id +
-          "/comments/" +
-          comment.id,
-        headers
-      );
-      const resposta = await data.json();
+  //   if (confirma) {
+  //     const data = await fetch(
+  //       "https://backend.insjoaquimmir.cat/api/posts/" +
+  //       comment.post.id +
+  //       "/comments/" +
+  //       comment.id,
+  //       headers
+  //     );
+  //     const resposta = await data.json();
 
-      console.log(resposta);
-      if (resposta.success == true) {
-        console.log("OK");
-        // provoca el refrescat del component i la reexecució de useEffect
-        setRefresca(true);
-        setAdd(true);
-        setCommentsCount(commentsCount - 1);
-      }
-    }
-  };
+  //     console.log(resposta);
+  //     if (resposta.success == true) {
+  //       console.log("OK");
+  //       // provoca el refrescat del component i la reexecució de useEffect
+  //       setRefresca(true);
+  //       setAdd(true);
+  //       setCommentsCount(commentsCount - 1);
+  //     }
+  //   }
+  // };
 
   return (
     <div class="px-10">
@@ -83,11 +87,10 @@ export const Comment = ({ comment }) => {
                 </span>
               </div>
             </div>
-            {comment.user.email === usuari ? (
+            {comment.user.email === email ? (
               <>
                 <button
-                  onClick={(e) => deleteComment(comment.id, e)}
-                  type="button"
+                  onClick={(e) => dispatch(delComment(comment, authToken))}
                   class="inline-block px-6 py-2 border-2 border-red-600 text-red-600 font-medium text-xs leading-tight uppercase rounded-full hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
                 >
                   Esborrar

@@ -1,15 +1,33 @@
 import React, { useEffect } from 'react'
-import { useState } from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../userContext";
+import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
+// USANDO POSTSLICE
+import { useSelector, useDispatch } from 'react-redux';
+import { useForm } from '../hooks/useForm';
+import { addPost } from '../slices/posts/thunks';
+
 const PostCreate = () => {
+  const dispatch = useDispatch();
   let navigate = useNavigate();
   let [formulari, setFormulari] = useState({});
-  let [error, setError] = useState("");
+  //  let [error, setError] = useState("");
+
+  const { id } = useParams();
+
+  const { isSaving = true, error = "" } = useSelector((state) => state.posts);
+
   let { authToken, setAuthToken } = useContext(UserContext);
 
+  let { body, upload, latitude, longitude, visibility = 1 } = formulari;
+  const formData = new FormData;
+  formData.append("body", body);
+  formData.append("upload", upload);
+  formData.append("latitude", latitude);
+  formData.append("longitude", longitude);
+  formData.append("visibility", visibility);
 
 
   const handleChange = (e) => {
@@ -25,6 +43,7 @@ const PostCreate = () => {
       })
     }
   };
+
   const handleReset = (e) => {
     e.preventDefault()
     setFormulari({
@@ -33,37 +52,37 @@ const PostCreate = () => {
       upload: ""
     })
   };
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    let { body, upload, latitude, longitude, visibility = 1} = formulari;
-    const formData = new FormData();
-    formData.append("body", body);
-    formData.append("upload", upload);
-    formData.append("latitude", latitude);
-    formData.append("longitude", longitude);
-    formData.append("visibility", visibility);
-    try {
-      const data = await fetch("https://backend.insjoaquimmir.cat/api/posts", {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + authToken
-        },
-        method: "POST",
-        body: formData
-      });
-      const resposta = await data.json();
-      if (resposta.success === true) {
-        console.log("post creado")
-        navigate("/posts/" + resposta.data.id)
-      } else {
-        console.log(resposta.message)
-        setError(resposta.message);
-      }
-    } catch {
-      console.log("Error");
-      alert("catch");
-    };
-  }
+  //  const handleCreate = async (e) => {
+  //    e.preventDefault();
+  //    let { body, upload, latitude, longitude, visibility = 1 } = formulari;
+  //    const formData = new FormData();
+  //    formData.append("body", body);
+  //    formData.append("upload", upload);
+  //    formData.append("latitude", latitude);
+  //    formData.append("longitude", longitude);
+  //    formData.append("visibility", visibility);
+  //    try {
+  //      const data = await fetch("https:backend.insjoaquimmir.cat/api/posts", {
+  //        headers: {
+  //          'Accept': 'application/json',
+  //          'Authorization': 'Bearer ' + authToken
+  //        },
+  //        method: "POST",
+  //        body: formData
+  //      });
+  //      const resposta = await data.json();
+  //      if (resposta.success === true) {
+  //        console.log("post creado")
+  //        navigate("/posts/" + resposta.data.id)
+  //      } else {
+  //        console.log(resposta.message)
+  //        setError(resposta.message);
+  //      }
+  //    } catch {
+  //      console.log("Error");
+  //      alert("catch");
+  //    };
+  //  }
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -76,7 +95,8 @@ const PostCreate = () => {
       console.log("Latitude is :", pos.coords.latitude);
       console.log("Longitude is :", pos.coords.longitude);
     });
-  },[])
+  }, []);
+
   return (
     <div>
       <div className="card ">
@@ -112,11 +132,19 @@ const PostCreate = () => {
             </select>
 
           </div>
-          <button className="btn btn-primary" onClick={(e) => {
-            handleCreate(e);
-          }}>Create</button>
-          <button className="btn btn-secondary" onClick={(e) => {
-            handleReset(e)
+          {isSaving ?
+            <>
+
+            </> :
+            <>
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault(),
+                  dispatch(addPost(authToken, formData, navigate, dispatch));
+              }}>Afegir Publicació</button>
+            </>
+          }
+          <button className="btn btn-secondary" onClick={() => {
+            handleReset(e);
           }}>Reset</button>
           {error ? (<div>{error}</div>) : (<></>)}        </form>
       </div>
