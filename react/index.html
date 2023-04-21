@@ -22,6 +22,26 @@
   </script>
   <!-- End Matomo Code -->
 
+  <!-- OWA Tracking Code -->
+<script type="text/javascript">
+  //<![CDATA[
+  var owa_baseUrl = 'https://projecte-geo-react-o410jc165-joeel03.vercel.app/';
+  var owa_cmds = owa_cmds || [];
+  owa_cmds.push(['setSiteId', 'c1dcc0420cb67644499dde5686885b02']);
+  owa_cmds.push(['trackPageView']);
+  owa_cmds.push(['trackClicks']);
+  owa_cmds.push(['trackDomStream']);
+  
+  (function() {
+  var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+  owa_baseUrl = ('https:' == document.location.protocol ? window.location.protocol + '//' + owa_baseUrl.replace(/^http:/, 'https:') : owa_baseUrl);
+  _owa.src = owa_baseUrl + 'modules/base/js/owa.tracker-combined-min.js';
+  var _s = document.getElementsByTagName('script')[0]; _s.parentNode.insertBefore(_owa, _s);
+  }());
+  //]]>
+  </script>
+  <!-- End OWA Tracking Code -->
+  
   <title>Vite + React</title>
 </head>
 
